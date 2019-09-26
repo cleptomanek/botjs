@@ -1,7 +1,7 @@
 //google sheet stuff
 var GoogleSpreadsheet = require('google-spreadsheet');
 var async = require('async');
-var doc = new GoogleSpreadsheet('1xvRX89Ki2FuUf-MWsipKZeIYw_V2UJssuBJV65Y9dng');
+var doc = new GoogleSpreadsheet('1Q47r52ICYGl2QQo5x45N3pzKOdO9lz9hGCb5hF6aeWc');
 var sheet;
 var creds = require('./client_secret.json');
 
@@ -59,14 +59,18 @@ client.on("message", async message => {
   
   // Let's go with a few common example commands! Feel free to delete or change those.
   if(command === "getusers") {
+	  if(message.author.id != 177107237053923328)
+      return message.reply("Sorry, i'm still in debug mode and respond only to clepto :clown:");
 		let guilds = client.guilds.array();
 		doc.useServiceAccountAuth(creds, function (err) {
 		doc.getInfo(function(err, info) {
+			message.channel.send ("Dumping user data into roster sheet. Might take a while...");
 			sheet = info.worksheets[1];
 				sheet.getCells({
 					'min-row': 2,
-					'max-row': 30,
-					'max-col': 2,
+					'max-row': 40,
+					'min-col': 2,
+					'max-col': 3,
 					'return-empty': true
 				}, function(err, cells) {
 					var i;
@@ -87,7 +91,59 @@ client.on("message", async message => {
 			});
 		});
   }
+  if(command === "cleanusers") {
+	  if(message.author.id != 177107237053923328)
+      return message.reply("Sorry, i'm still in debug mode and respond only to clepto :clown:");
+		let guilds = client.guilds.array();
+		doc.useServiceAccountAuth(creds, function (err) {
+		doc.getInfo(function(err, info) {
+			message.channel.send ("Cleaning user data in roster sheet. Might take a while...");
+			sheet = info.worksheets[1];
+				sheet.getCells({
+					'min-row': 2,
+					'max-row': 40,
+					'min-col': 2,
+					'max-col': 4,
+					'return-empty': true
+				}, function(err, cells) {
+					var i;
+					for (i = 0; i < cells.length; i++) {
+							cells[i].value = '';
+							//cells[i].save();
+					}
+					sheet.bulkUpdateCells(cells);						
+				});
+			});
+		});
+  }
+  if(command === "cleanatt") {
+	  if(message.author.id != 177107237053923328)
+      return message.reply("Sorry, i'm still in debug mode and respond only to clepto :clown:");
+		let guilds = client.guilds.array();
+		doc.useServiceAccountAuth(creds, function (err) {
+		doc.getInfo(function(err, info) {
+			message.channel.send ("Cleaning attendance data in roster sheet...");
+			sheet = info.worksheets[1];
+				sheet.getCells({
+					'min-row': 2,
+					'max-row': 40,
+					'min-col': 4,
+					'max-col': 4,
+					'return-empty': true
+				}, function(err, cells) {
+					var i;
+					for (i = 0; i < cells.length; i++) {
+							cells[i].value = '';
+							//cells[i].save();
+					}
+					sheet.bulkUpdateCells(cells);						
+				});
+			});
+		});
+  }
   if(command === "ping") {
+	  if(message.author.id != 177107237053923328)
+      return message.reply("Sorry, i'm still in debug mode and respond only to clepto :clown:");
     // Calculates ping between sending a message and editing it, giving a nice round-trip latency.
     // The second ping is an average latency between the bot and the websocket server (one-way, not round-trip)
     const m = await message.channel.send("Ping?");
@@ -95,6 +151,8 @@ client.on("message", async message => {
   }
   
   if(command === "say") {
+	  if(message.author.id != 177107237053923328)
+      return message.reply("Sorry, i'm still in debug mode and respond only to clepto :clown:");
     // makes the bot say something and delete the message. As an example, it's open to anyone to use. 
     // To get the "message" itself we join the `args` back into a string with spaces: 
     const sayMessage = args.join(" ");
@@ -105,82 +163,235 @@ client.on("message", async message => {
   }
   
   if(command === "yes") {
+	  if(message.author.id != 177107237053923328)
+      return message.reply("Sorry, i'm still in debug mode and respond only to clepto :clown:");
 	doc.useServiceAccountAuth(creds, function (err) {
 	doc.getInfo(function(err, info) {
-		console.log('Loaded doc: '+info.title+' by '+info.author.email);
 		sheet = info.worksheets[1];
-		console.log('sheet 1: '+sheet.title+' '+sheet.rowCount+'x'+sheet.colCount);
 			sheet.getCells({
-				'min-row': 1,
-				'max-row': 5,
-				'max-col': 3,
+				'min-row': 2,
+				'max-row': 40,
+				'min-col': 2,
+				'max-col': 4,
 				'return-empty': true
 			}, function(err, cells) {
 				var i;
 				for (i = 0; i < cells.length; i++) {
-					//if (cells[i].value == 1)
-						//cells[i+1].value = 'potion';
-				 console.log('Cell R'+cells[i].row+'C'+cells[i].col+' = '+cells[i].value+'\n');
+					if (cells[i].value == message.author.id)
+					{
+						cells[i+2].value = 'yes';
+						cells[i+2].save();
+						//return message.author.send("Your message here.");
+						return message.reply("I've set your attendance to 'yes'. Use **?build** command to get your build for woe (if someone bothered to make it :clown:)");
+					}
 				}
-				//sheet.bulkUpdateCells(cells);				
+			return message.reply("You are not in the roster :slight_frown: Ask someone with access rights to add you.");				
 			});
 		});
 	});
   }
   
-  if(command === "kick") {
-    // This command must be limited to mods and admins. In this example we just hardcode the role names.
-    // Please read on Array.some() to understand this bit: 
-    // https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/some?
-    if(!message.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)) )
-      return message.reply("Sorry, you don't have permissions to use this :)");
-    
-    // Let's first check if we have a member and if we can kick them!
-    // message.mentions.members is a collection of people that have been mentioned, as GuildMembers.
-    // We can also support getting the member by ID, which would be args[0]
+  if(command === "no") {
+	  if(message.author.id != 177107237053923328)
+      return message.reply("Sorry, i'm still in debug mode and respond only to clepto :clown:");
+	doc.useServiceAccountAuth(creds, function (err) {
+	doc.getInfo(function(err, info) {
+		sheet = info.worksheets[1];
+			sheet.getCells({
+				'min-row': 2,
+				'max-row': 40,
+				'min-col': 2,
+				'max-col': 4,
+				'return-empty': true
+			}, function(err, cells) {
+				var i;
+				for (i = 0; i < cells.length; i++) {
+					if (cells[i].value == message.author.id)
+					{
+						cells[i+2].value = 'no';
+						cells[i+2].save();
+						return message.reply("I've set your attendance to 'no'.");
+					}
+				}
+			return message.reply("You are not in the roster :slight_frown: Ask someone with access rights to add you.");				
+			});
+		});
+	});
+  }
+  
+  if(command === "forceyes") {
+	   if(message.author.id != 177107237053923328)
+      return message.reply("Sorry, i'm still in debug mode and respond only to clepto :clown:");
+
+   // if(!message.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)) )
+      //return message.reply("Sorry, you don't have permissions to use this :smile:");
+
     let member = message.mentions.members.first() || message.guild.members.get(args[0]);
     if(!member)
-      return message.reply("Please mention a valid member of this server");
-    if(!member.kickable) 
-      return message.reply("I cannot kick this user! Do they have a higher role? Do I have kick permissions?");
-    
-    // slice(1) removes the first part, which here should be the user mention or ID
-    // join(' ') takes all the various parts to make it a single string.
-    let reason = args.slice(1).join(' ');
-    if(!reason) reason = "No reason provided";
-    
-    // Now, time for a swift kick in the nuts!
-    await member.kick(reason)
-      .catch(error => message.reply(`Sorry ${message.author} I couldn't kick because of : ${error}`));
-    message.reply(`${member.user.tag} has been kicked by ${message.author.tag} because: ${reason}`);
+    return message.reply("Please mention a valid member of this server");
+	var done = 0;
+	doc.useServiceAccountAuth(creds, function (err) {
+	doc.getInfo(function(err, info) {
+		sheet = info.worksheets[1];
+			sheet.getCells({
+				'min-row': 2,
+				'max-row': 40,
+				'min-col': 2,
+				'max-col': 4,
+				'return-empty': true
+			}, function(err, cells) {
+				var i;
+				for (i = 0; i < cells.length; i++) {
+					if (cells[i].value == member.user.id)
+					{
+						cells[i+2].value = 'yes';
+						cells[i+2].save();
+						return message.channel.send("<@"+member.user.id+"> is forced to go to woe :joy:");
+					}
+				}
+			return message.channel.send("<@"+member.user.id+"> is not in the roster :slight_frown: Ask someone with access rights to add you.");				
+			});
+		});
+		});
+  }
+  
+  if(command === "forceno") {
+	   if(message.author.id != 177107237053923328)
+      return message.reply("Sorry, i'm still in debug mode and respond only to clepto :clown:");
 
+   // if(!message.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)) )
+      //return message.reply("Sorry, you don't have permissions to use this :smile:");
+
+    let member = message.mentions.members.first() || message.guild.members.get(args[0]);
+    if(!member)
+    return message.reply("Please mention a valid member of this server");
+	var done = 0;
+	doc.useServiceAccountAuth(creds, function (err) {
+	doc.getInfo(function(err, info) {
+		sheet = info.worksheets[1];
+			sheet.getCells({
+				'min-row': 2,
+				'max-row': 40,
+				'min-col': 2,
+				'max-col': 4,
+				'return-empty': true
+			}, function(err, cells) {
+				var i;
+				for (i = 0; i < cells.length; i++) {
+					if (cells[i].value == member.user.id)
+					{
+						cells[i+2].value = 'no';
+						cells[i+2].save();
+						return message.channel.send("<@"+member.user.id+"> is forcefully removed from woe :cry:");
+					}
+				}
+			return message.channel.send("<@"+member.user.id+"> is not in the roster :slight_frown: Ask someone with access rights to add you.");				
+			});
+		});
+		});
   }
   
    if(command === "add") {
-    // This command must be limited to mods and admins. In this example we just hardcode the role names.
-    // Please read on Array.some() to understand this bit: 
-    // https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/some?
+	   if(message.author.id != 177107237053923328)
+      return message.reply("Sorry, i'm still in debug mode and respond only to clepto :clown:");
+
    // if(!message.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)) )
       //return message.reply("Sorry, you don't have permissions to use this :smile:");
-if(!message.member.roles.some(r=>["clepto"].includes(r.name)) )
-      return message.reply("Sorry, you don't have permissions to use this!");
 
-    
-    // Let's first check if we have a member and if we can kick them!
-    // message.mentions.members is a collection of people that have been mentioned, as GuildMembers.
-    // We can also support getting the member by ID, which would be args[0]
     let member = message.mentions.members.first() || message.guild.members.get(args[0]);
     if(!member)
-      return message.reply("Please mention a valid member of this server");
+    return message.reply("Please mention a valid member of this server");
+	var done = 0;
+	doc.useServiceAccountAuth(creds, function (err) {
+	doc.getInfo(function(err, info) {
+		sheet = info.worksheets[1];
+			sheet.getCells({
+				'min-row': 2,
+				'max-row': 40,
+				'min-col': 2,
+				'max-col': 2,
+				'return-empty': true
+			}, function(err, cells) {
+				var i;
+				for (i = 0; i < cells.length; i++) {
+					if (cells[i].value == member.user.id)
+					{
+						return message.channel.send("<@"+member.user.id+"> is already in the roster :thinking:");
+					}
+				}
+				sheet.getCells({
+				'min-row': 2,
+				'max-row': 40,
+				'min-col': 2,
+				'max-col': 3,
+				'return-empty': true
+			}, function(err, cells) {
+				var i;
+				for (i = 0; i < cells.length; i++) {
+					if (cells[i].value == "")
+					{
+						cells[i].value=member.user.id;
+						cells[i].save();
+						i++;
+						cells[i].value=member.user.username;
+						cells[i].save();
+						return message.reply(" added <@"+member.user.id+"> to the roster :smile: (id: "+member.user.id+")");	
+					}
+				}				
+			});
+			});
+		});
+		});
+  }
+  
+  if(command === "remove") {
+	   if(message.author.id != 177107237053923328)
+      return message.reply("Sorry, i'm still in debug mode and respond only to clepto :clown:");
 
-      return message.reply(" added <@"+member.user.id+"> to the roster :smile: (id: "+member.user.id+")");
-   
+   // if(!message.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)) )
+      //return message.reply("Sorry, you don't have permissions to use this :smile:");
+
+    let member = message.mentions.members.first() || message.guild.members.get(args[0]);
+    if(!member)
+    return message.reply("Please mention a valid member of this server");
+	var done = 0;
+	doc.useServiceAccountAuth(creds, function (err) {
+	doc.getInfo(function(err, info) {
+		sheet = info.worksheets[1];
+			sheet.getCells({
+				'min-row': 2,
+				'max-row': 40,
+				'min-col': 2,
+				'max-col': 4,
+				'return-empty': true
+			}, function(err, cells) {
+				var i;
+				for (i = 0; i < cells.length; i++) {
+					if (cells[i].value == member.user.id)
+					{
+						cells[i].value="";
+						cells[i].save();
+						i++;
+						cells[i].value="";
+						cells[i].save();
+						i++;
+						cells[i].value="";
+						cells[i].save();
+						return message.reply(" removed <@"+member.user.id+"> from the roster :smile: (id: "+member.user.id+")");	
+					}
+				}
+				return message.channel.send("<@"+member.user.id+"> is not in the roster :thinking:");
+			});
+		});
+		});
   }
   
   if(command === "ban") {
+	  if(message.author.id != 177107237053923328)
+      return message.reply("Sorry, i'm still in debug mode and respond only to clepto :clown:");
     // Most of this command is identical to kick, except that here we'll only let admins do it.
     // In the real world mods could ban too, but this is just an example, right? ;)
-    if(!message.member.roles.some(r=>["Administrator"].includes(r.name)) )
+    if(!message.member.roles.some(r=>["clepto"].includes(r.name)) )
       return message.reply("Sorry, you don't have permissions to use this!");
     
     let member = message.mentions.members.first();
