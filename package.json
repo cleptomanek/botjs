@@ -1,7 +1,4 @@
 {
-  "scripts": {
-    "start": "node bot.js"
-  },
   "name": "attendance-bot",
   "version": "1.0.0",
   "description": "Attendance Bot",
