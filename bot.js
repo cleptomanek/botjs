@@ -57,10 +57,13 @@ client.on("message", async message => {
   // args = ["Is", "this", "the", "real", "life?"]
   const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
-  
+  if ((message.author.id == 444) || (message.author.id == 177107237053923328) || (message.author.id == 184327765070315521) || (message.author.id == 162610908307259392))
+	var admin=1
+else
+	var admin=0
   // Let's go with a few common example commands! Feel free to delete or change those.
   if(command === "getusers") {
-	  if(message.author.id != (177107237053923328 || 184327765070315521 || 162610908307259392))
+	  if (admin == 0)
       return message.reply("Sorry, you are not allowed to use admin commands :clown: Ask clepto if you think you should have rights");
 		doc.useServiceAccountAuth(creds, function (err) {
 		doc.getInfo(function(err, info) {
@@ -120,18 +123,21 @@ client.on("message", async message => {
 	  txt=txt+"           Forces 'yes' for specified user. \n\n"
 	  txt=txt+"+          "+config.prefix+"forceno @username \n"
 	  txt=txt+"           Forces 'no' for specified user. \n\n"
+	  txt=txt+"+          "+config.prefix+"fcheck @username \n"
+	  txt=txt+"           Forces attendance check on specified user. \n\n"
 	  txt=txt+"+          "+config.prefix+"add @username \n"
 	  txt=txt+"           Adds specified user into roster sheet. \n\n"
 	  txt=txt+"+          "+config.prefix+"remove @username \n"
-	  txt=txt+"           Removes specified user into roster sheet. \n\n"
+	  txt=txt+"           Removes specified user from roster sheet. \n\n"
 	  txt=txt+"+          "+config.prefix+"purge (1-100) \n"
 	  txt=txt+"           Purges from 1 to 100 messages on channel. \n\n\n\n"
 	  txt=txt+"```"
 	  txt=txt+"If you want some new commands or something doesnt work - DM clepto"
+	  message.reply("Sending commands info. Check your DM.");
 	return message.author.send(txt);
   }
   else if(command === "cleanusers") {
-	  if(message.author.id != (177107237053923328 || 184327765070315521 || 162610908307259392))
+	  if (admin == 0)
       return message.reply("Sorry, you are not allowed to use admin commands :clown: Ask clepto if you think you should have rights");
 		let guilds = client.guilds.array();
 		doc.useServiceAccountAuth(creds, function (err) {
@@ -156,7 +162,7 @@ client.on("message", async message => {
 		});
   }
   else if(command === "cleanatt") {
-	  if(message.author.id != (177107237053923328 || 184327765070315521 || 162610908307259392))
+	  if (admin == 0)
       return message.reply("Sorry, you are not allowed to use admin commands :clown: Ask clepto if you think you should have rights");
 		let guilds = client.guilds.array();
 		doc.useServiceAccountAuth(creds, function (err) {
@@ -314,7 +320,7 @@ client.on("message", async message => {
   }
   
   else if(command === "fcheck") {
-	  if(message.author.id != (177107237053923328 || 184327765070315521 || 162610908307259392))
+	  if (admin == 0)
       return message.reply("Sorry, you are not allowed to use admin commands :clown: Ask clepto if you think you should have rights");
   let member = message.mentions.members.first() || message.guild.members.get(args[0]);
     if(!member)
@@ -341,7 +347,7 @@ client.on("message", async message => {
 						return message.channel.send("<@"+member.user.id+"> attendance status is not set yet. Use ```fix\n "+config.prefix+"yes or "+config.prefix+"no\n``` commands to set it");
 					}
 				}
-			return message.reply("You are not in the roster :slight_frown: Ask someone with access rights to add you.");				
+			return message.reply("<@"+member.user.id+"> is not in the roster :slight_frown: ");				
 			});
 		});
 	});
@@ -374,7 +380,7 @@ client.on("message", async message => {
   }
   
   else if(command === "forceyes") {
-	if(message.author.id != (177107237053923328 || 184327765070315521 || 162610908307259392))
+	if (admin == 0)
       return message.reply("Sorry, you are not allowed to use admin commands :clown: Ask clepto if you think you should have rights");
 
    // if(!message.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)) )
@@ -409,7 +415,7 @@ client.on("message", async message => {
   }
   
   else if(command === "forceno") {
-	if(message.author.id != (177107237053923328 || 184327765070315521 || 162610908307259392))
+	if (admin == 0)
       return message.reply("Sorry, you are not allowed to use admin commands :clown: Ask clepto if you think you should have rights");
 
    // if(!message.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)) )
@@ -445,7 +451,7 @@ client.on("message", async message => {
   }
   
    else if(command === "add") {
-	   if(message.author.id != (177107237053923328 || 184327765070315521 || 162610908307259392))
+	   if (admin == 0)
       return message.reply("Sorry, you are not allowed to use admin commands :clown: Ask clepto if you think you should have rights");
 
    // if(!message.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)) )
@@ -498,7 +504,7 @@ client.on("message", async message => {
   }
   
   else if(command === "remove") {
-	   if(message.author.id != (177107237053923328 || 184327765070315521 || 162610908307259392))
+	   if (admin == 0)
       return message.reply("Sorry, you are not allowed to use admin commands :clown: Ask clepto if you think you should have rights");
 
    // if(!message.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)) )
@@ -541,7 +547,7 @@ client.on("message", async message => {
   
   else if(command === "purge") {
     // This command removes all messages from all users in the channel, up to 100.
-   if(message.author.id != (177107237053923328 || 184327765070315521 || 162610908307259392))
+   if (admin == 0)
       return message.reply("Sorry, you are not allowed to use admin commands :clown: Ask clepto if you think you should have rights");
     // get the delete count, as an actual number.
     const deleteCount = parseInt(args[0], 10);
