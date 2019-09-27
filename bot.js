@@ -2,6 +2,7 @@
 var GoogleSpreadsheet = require('google-spreadsheet');
 var async = require('async');
 var doc = new GoogleSpreadsheet('1WPD5PPkaL-gbSuho0gxZttJQTuW8fMfJ2uN4dHulG4g');
+//var doc = new GoogleSpreadsheet('1Q47r52ICYGl2QQo5x45N3pzKOdO9lz9hGCb5hF6aeWc'); //copy
 var sheet;
 var creds = require('./client_secret.json');
 
@@ -61,7 +62,6 @@ client.on("message", async message => {
   if(command === "getusers") {
 	  if(message.author.id != (177107237053923328 || 184327765070315521 || 162610908307259392))
       return message.reply("Sorry, you are not allowed to use admin commands :clown: Ask clepto if you think you should have rights");
-		let guilds = client.guilds.array();
 		doc.useServiceAccountAuth(creds, function (err) {
 		doc.getInfo(function(err, info) {
 			message.channel.send ("Dumping user data into roster sheet. Might take a while...");
@@ -74,8 +74,7 @@ client.on("message", async message => {
 					'return-empty': true
 				}, function(err, cells) {
 					var i;
-					for (i = 0; i < guilds.length; i++) {
-						client.guilds.get(guilds[i].id).fetchMembers().then(r => {
+						client.guilds.get(message.guild.id).fetchMembers().then(r => {
 							var j=0;
 						r.members.array().forEach(r => {
 							cells[j].value=r.user.id;
@@ -85,8 +84,7 @@ client.on("message", async message => {
 							cells[j].save();
 							j++;
 							});
-						});
-					}		
+						});		
 				});
 			});
 		});
@@ -115,7 +113,7 @@ client.on("message", async message => {
 	  txt=txt+"           Gets you woe stats of specified player ***will be ready after first woe*** \n\n"
 	  txt=txt+"-          Admin Commands: \n\n\n"
 	  txt=txt+"+          "+config.prefix+"getusers \n"
-	  txt=txt+"           Gets all users from server into roster sheet. Use only when creating attendance from scratch. \n\n"
+	  txt=txt+"           Gets all users from server into roster sheet. Use ONLY when creating attendance from scratch. \n\n"
 	  txt=txt+"+          "+config.prefix+"cleanusers \n"
 	  txt=txt+"           Cleans all users on roster sheet. \n\n"
 	  txt=txt+"+          "+config.prefix+"forceyes @username \n"
