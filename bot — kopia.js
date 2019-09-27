@@ -1,7 +1,7 @@
 //google sheet stuff
 var GoogleSpreadsheet = require('google-spreadsheet');
 var async = require('async');
-var doc = new GoogleSpreadsheet('1WPD5PPkaL-gbSuho0gxZttJQTuW8fMfJ2uN4dHulG4g');
+var doc = new GoogleSpreadsheet('1Q47r52ICYGl2QQo5x45N3pzKOdO9lz9hGCb5hF6aeWc');
 var sheet;
 var creds = require('./client_secret.json');
 
@@ -59,8 +59,8 @@ client.on("message", async message => {
   
   // Let's go with a few common example commands! Feel free to delete or change those.
   if(command === "getusers") {
-	  if(message.author.id != (177107237053923328 || 184327765070315521 || 162610908307259392))
-      return message.reply("Sorry, you are not allowed to use admin commands :clown: Ask clepto if you think you should have rights");
+	  if(message.author.id != 177107237053923328)
+      return message.reply("Sorry, i'm still in debug mode and respond only to clepto :clown:");
 		let guilds = client.guilds.array();
 		doc.useServiceAccountAuth(creds, function (err) {
 		doc.getInfo(function(err, info) {
@@ -99,20 +99,10 @@ client.on("message", async message => {
 	  txt=txt+"           Put your attendance on 'yes' for next woe \n\n"
 	  txt=txt+"+          "+config.prefix+"no \n"
 	  txt=txt+"           Put your attendance on 'no' for next woe \n\n"
-	  txt=txt+"+          "+config.prefix+"check \n"
-	  txt=txt+"           Checks your attendance status for next woe \n\n"
 	  txt=txt+"+          "+config.prefix+"build \n"
-	  txt=txt+"           Gets you a build for next woe (if it is available) \n\n"
-	  txt=txt+"+          "+config.prefix+"comment \n"
-	  txt=txt+"           Lets you put a comment on the roster sheet \n\n"
-	  txt=txt+"+          "+config.prefix+"devo \n"
-	  txt=txt+"           Gets you your devo targets ***not ready yet*** \n\n"
-	  txt=txt+"+          "+config.prefix+"pt \n"
-	  txt=txt+"           Gets you party setup if you are a party leader ***not ready yet*** \n\n"
-	  txt=txt+"+          "+config.prefix+"gstats (guildname) \n"
-	  txt=txt+"           Gets you woe stats of specified guild ***will be ready after first woe*** \n\n"
-	  txt=txt+"+          "+config.prefix+"pstats (playername) \n"
-	  txt=txt+"           Gets you woe stats of specified player ***will be ready after first woe*** \n\n"
+	  txt=txt+"           Gets you a build for next woe (if it is available) ***not ready yet*** \n\n"
+	  txt=txt+"+          "+config.prefix+"check \n"
+	  txt=txt+"           Checks your attendance status for next woe ***not ready yet*** \n\n\n"
 	  txt=txt+"-          Admin Commands: \n\n\n"
 	  txt=txt+"+          "+config.prefix+"getusers \n"
 	  txt=txt+"           Gets all users from server into roster sheet. Use only when creating attendance from scratch. \n\n"
@@ -133,8 +123,8 @@ client.on("message", async message => {
 	return message.author.send(txt);
   }
   else if(command === "cleanusers") {
-	  if(message.author.id != (177107237053923328 || 184327765070315521 || 162610908307259392))
-      return message.reply("Sorry, you are not allowed to use admin commands :clown: Ask clepto if you think you should have rights");
+	  if(message.author.id != 177107237053923328)
+      return message.reply("Sorry, i'm still in debug mode and respond only to clepto :clown:");
 		let guilds = client.guilds.array();
 		doc.useServiceAccountAuth(creds, function (err) {
 		doc.getInfo(function(err, info) {
@@ -158,8 +148,8 @@ client.on("message", async message => {
 		});
   }
   else if(command === "cleanatt") {
-	  if(message.author.id != (177107237053923328 || 184327765070315521 || 162610908307259392))
-      return message.reply("Sorry, you are not allowed to use admin commands :clown: Ask clepto if you think you should have rights");
+	  if(message.author.id != 177107237053923328)
+      return message.reply("Sorry, i'm still in debug mode and respond only to clepto :clown:");
 		let guilds = client.guilds.array();
 		doc.useServiceAccountAuth(creds, function (err) {
 		doc.getInfo(function(err, info) {
@@ -204,6 +194,8 @@ client.on("message", async message => {
   }
   
   else if(command === "yes") {
+	  if(message.author.id != 177107237053923328)
+      return message.reply("Sorry, i'm still in debug mode and respond only to clepto :clown:");
 	doc.useServiceAccountAuth(creds, function (err) {
 	doc.getInfo(function(err, info) {
 		sheet = info.worksheets[1];
@@ -221,126 +213,7 @@ client.on("message", async message => {
 						cells[i+2].value = 'yes';
 						cells[i+2].save();
 						//return message.author.send("Your message here.");
-						return message.reply("I've set your attendance to **'yes'**. ```fix\n "+config.prefix+"build\n``` command is used to get you a build for woe (if someone bothered to make it :clown:)");
-					}
-				}
-			return message.reply("You are not in the roster :slight_frown: Ask someone with access rights to add you.");				
-			});
-		});
-	});
-  }
-  
-  else if(command === "comment") {
-	const comment = args.join(" ");
-	doc.useServiceAccountAuth(creds, function (err) {
-	doc.getInfo(function(err, info) {
-		sheet = info.worksheets[1];
-			sheet.getCells({
-				'min-row': 2,
-				'max-row': 40,
-				'min-col': 2,
-				'max-col': 6,
-				'return-empty': true
-			}, function(err, cells) {
-				var i;
-				for (i = 0; i < cells.length; i++) {
-					if (cells[i].value == message.author.id)
-					{
-						cells[i+4].value = comment;
-						cells[i+4].save();
-						return message.reply("I've set your comment.");
-					}
-				}
-			return message.reply("You are not in the roster :slight_frown: Ask someone with access rights to add you.");				
-			});
-		});
-	});
-  }
-  
-   else if(command === "build") {
-	doc.useServiceAccountAuth(creds, function (err) {
-	doc.getInfo(function(err, info) {
-		sheet = info.worksheets[1];
-			sheet.getCells({
-				'min-row': 2,
-				'max-row': 40,
-				'min-col': 2,
-				'max-col': 5,
-				'return-empty': true
-			}, function(err, cells) {
-				var i;
-				for (i = 0; i < cells.length; i++) {
-					if (cells[i].value == message.author.id)
-					{
-						if (cells[i+3].value == '') {
-							return message.reply("Build is not ready");
-						}
-						else {
-							message.reply("Sending build. Check your DM.");
-							return message.author.send(cells[i+3].value);
-						}
-					}
-				}
-			return message.reply("You are not in the roster :slight_frown: Ask someone with access rights to add you.");				
-			});
-		});
-	});
-  }
-  else if(command === "check") {
-	doc.useServiceAccountAuth(creds, function (err) {
-	doc.getInfo(function(err, info) {
-		sheet = info.worksheets[1];
-			sheet.getCells({
-				'min-row': 2,
-				'max-row': 40,
-				'min-col': 2,
-				'max-col': 4,
-				'return-empty': true
-			}, function(err, cells) {
-				var i;
-				for (i = 0; i < cells.length; i++) {
-					if (cells[i].value == message.author.id)
-					{
-						if (cells[i+2].value == 'yes')
-						return message.reply("Your attendance status is set to: **'"+cells[i+2].value+"'** ```fix\n "+config.prefix+"build\n``` command is used to get you a build for woe (if someone bothered to make it :clown:)");
-						if (cells[i+2].value == 'no')
-						return message.reply("Your attendance status is set to: **'"+cells[i+2].value+"'**");
-						else
-						return message.reply("Your attendance status is not set yet. Use ```fix\n "+config.prefix+"yes or "+config.prefix+"no\n``` commands to set it");
-					}
-				}
-			return message.reply("You are not in the roster :slight_frown: Ask someone with access rights to add you.");				
-			});
-		});
-	});
-  }
-  
-  else if(command === "fcheck") {
-	  if(message.author.id != (177107237053923328 || 184327765070315521 || 162610908307259392))
-      return message.reply("Sorry, you are not allowed to use admin commands :clown: Ask clepto if you think you should have rights");
-  let member = message.mentions.members.first() || message.guild.members.get(args[0]);
-    if(!member)
-    return message.reply("Please mention a valid member of this server");
-	doc.useServiceAccountAuth(creds, function (err) {
-	doc.getInfo(function(err, info) {
-		sheet = info.worksheets[1];
-			sheet.getCells({
-				'min-row': 2,
-				'max-row': 40,
-				'min-col': 2,
-				'max-col': 4,
-				'return-empty': true
-			}, function(err, cells) {
-				var i;
-				for (i = 0; i < cells.length; i++) {
-					if (cells[i].value == member.user.id)
-					{
-						if (cells[i+2].value == 'yes')
-						return message.channel.send("<@"+member.user.id+"> attendance status is set to: **'"+cells[i+2].value+"'**");
-						if (cells[i+2].value == 'no')
-						return message.channel.send("<@"+member.user.id+"> attendance status is set to: **'"+cells[i+2].value+"'**");
-						else
-						return message.channel.send("<@"+member.user.id+"> attendance status is not set yet. Use ```fix\n "+config.prefix+"yes or "+config.prefix+"no\n``` commands to set it");
+						return message.reply("I've set your attendance to 'yes'. ```fix\n "+config.prefix+"build\n``` command is used to get you a build for woe (if someone bothered to make it :clown:)");
 					}
 				}
 			return message.reply("You are not in the roster :slight_frown: Ask someone with access rights to add you.");				
@@ -350,6 +223,8 @@ client.on("message", async message => {
   }
   
   else if(command === "no") {
+	  if(message.author.id != 177107237053923328)
+      return message.reply("Sorry, i'm still in debug mode and respond only to clepto :clown:");
 	doc.useServiceAccountAuth(creds, function (err) {
 	doc.getInfo(function(err, info) {
 		sheet = info.worksheets[1];
@@ -366,7 +241,7 @@ client.on("message", async message => {
 					{
 						cells[i+2].value = 'no';
 						cells[i+2].save();
-						return message.reply("I've set your attendance to **'no'**.");
+						return message.reply("I've set your attendance to 'no'.");
 					}
 				}
 			return message.reply("You are not in the roster :slight_frown: Ask someone with access rights to add you.");				
@@ -376,8 +251,8 @@ client.on("message", async message => {
   }
   
   else if(command === "forceyes") {
-	if(message.author.id != (177107237053923328 || 184327765070315521 || 162610908307259392))
-      return message.reply("Sorry, you are not allowed to use admin commands :clown: Ask clepto if you think you should have rights");
+	   if(message.author.id != 177107237053923328)
+      return message.reply("Sorry, i'm still in debug mode and respond only to clepto :clown:");
 
    // if(!message.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)) )
       //return message.reply("Sorry, you don't have permissions to use this :smile:");
@@ -385,6 +260,7 @@ client.on("message", async message => {
     let member = message.mentions.members.first() || message.guild.members.get(args[0]);
     if(!member)
     return message.reply("Please mention a valid member of this server");
+	var done = 0;
 	doc.useServiceAccountAuth(creds, function (err) {
 	doc.getInfo(function(err, info) {
 		sheet = info.worksheets[1];
@@ -411,8 +287,8 @@ client.on("message", async message => {
   }
   
   else if(command === "forceno") {
-	if(message.author.id != (177107237053923328 || 184327765070315521 || 162610908307259392))
-      return message.reply("Sorry, you are not allowed to use admin commands :clown: Ask clepto if you think you should have rights");
+	   if(message.author.id != 177107237053923328)
+      return message.reply("Sorry, i'm still in debug mode and respond only to clepto :clown:");
 
    // if(!message.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)) )
       //return message.reply("Sorry, you don't have permissions to use this :smile:");
@@ -447,8 +323,8 @@ client.on("message", async message => {
   }
   
    else if(command === "add") {
-	   if(message.author.id != (177107237053923328 || 184327765070315521 || 162610908307259392))
-      return message.reply("Sorry, you are not allowed to use admin commands :clown: Ask clepto if you think you should have rights");
+	   if(message.author.id != 177107237053923328)
+      return message.reply("Sorry, i'm still in debug mode and respond only to clepto :clown:");
 
    // if(!message.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)) )
       //return message.reply("Sorry, you don't have permissions to use this :smile:");
@@ -500,8 +376,8 @@ client.on("message", async message => {
   }
   
   else if(command === "remove") {
-	   if(message.author.id != (177107237053923328 || 184327765070315521 || 162610908307259392))
-      return message.reply("Sorry, you are not allowed to use admin commands :clown: Ask clepto if you think you should have rights");
+	   if(message.author.id != 177107237053923328)
+      return message.reply("Sorry, i'm still in debug mode and respond only to clepto :clown:");
 
    // if(!message.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)) )
       //return message.reply("Sorry, you don't have permissions to use this :smile:");
@@ -541,10 +417,32 @@ client.on("message", async message => {
 		});
   }
   
+  else if(command === "ban") {
+	  if(message.author.id != 177107237053923328)
+      return message.reply("Sorry, i'm still in debug mode and respond only to clepto :clown:");
+    // Most of this command is identical to kick, except that here we'll only let admins do it.
+    // In the real world mods could ban too, but this is just an example, right? ;)
+    if(!message.member.roles.some(r=>["clepto"].includes(r.name)) )
+      return message.reply("Sorry, you don't have permissions to use this!");
+    
+    let member = message.mentions.members.first();
+    if(!member)
+      return message.reply("Please mention a valid member of this server");
+    if(!member.bannable) 
+      return message.reply("I cannot ban this user! Do they have a higher role? Do I have ban permissions?");
+
+    let reason = args.slice(1).join(' ');
+    if(!reason) reason = "No reason provided";
+    
+    await member.ban(reason)
+      .catch(error => message.reply(`Sorry ${message.author} I couldn't ban because of : ${error}`));
+    message.reply(`${member.user.tag} has been banned by ${message.author.tag} because: ${reason}`);
+  }
+  
   else if(command === "purge") {
     // This command removes all messages from all users in the channel, up to 100.
-   if(message.author.id != (177107237053923328 || 184327765070315521 || 162610908307259392))
-      return message.reply("Sorry, you are not allowed to use admin commands :clown: Ask clepto if you think you should have rights");
+    if(message.author.id != 177107237053923328)
+      return message.reply("Sorry, i'm still in debug mode and respond only to clepto :clown:");
     // get the delete count, as an actual number.
     const deleteCount = parseInt(args[0], 10);
     

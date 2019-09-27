@@ -1,0 +1,44 @@
+```diff
+-         User Commands:
+
+
++          yes
+Put your attendance on 'yes' for next woe
+
++          no
+Put your attendance on 'no' for next woe
+
++          build
+Gets you a build for next woe (if it is available) ***not ready yet***
+
++          check
+Checks your attendance status for next woe ***not ready yet***
+
+
+-         Admin Commands:
+
+
++          getusers
+Gets all users from server into roster sheet. Use only when creating attendance from scratch.
+
++          cleanusers
+Cleans all users on roster sheet.
+
++          cleanatt
+Cleans attendance status for all users.
+
++          forceyes @username
+Forces 'yes' for specified user.
+
++          forceno @username
+Forces 'no' for specified user.
+
++          add @username
+Adds specified user into roster sheet.
+
++          remove @username
+Removes specified user into roster sheet.
+
++          purge (1-100)
+Purges from 1 to 100 messages on channel.
+```
