@@ -9,6 +9,9 @@ const Discord = require("discord.js");
 const client = new Discord.Client();
 const config = require("./config.json");
 
+const request = require('request');
+const cheerio = require('cheerio');
+const fs = require('fs');
 
 client.on("ready", () => {
   console.log(`Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`); 
@@ -36,8 +39,156 @@ client.on("message", async message => {
 	var admin=1
 else
 	var admin=0
+
+  if(command === "gstat") {
+	  //&woe_date=1554584400
+	  //var url = 'https://ragnarok.life/?server=Ragnarok.Life&module=ranking&action=woerank&woe_date=1554584400&opt=0&ser=0&ord=0';
+	  var url = 'https://ragnarok.life/?module=ranking&action=woerank&woe_date=1554584400&opt=101&server=Ragnarok.Life&buscar=';
+	  gname = args.join("+");
+	  url+=gname;
+	  var kills, deaths, top, done, recv, supc, supw, healc, healw, emp, bar, stone, guard, demp, dbar, dstone, dguard, hp, sp, ygem, rgem, bgem, arrow, ad, poison, spirit, zeny, gypsy, gypsyd,hw,ganb;
+		kills=deaths=top=done=recv=supc=supw=healc=healw=emp=bar=stone=guard=demp=dbar=dstone=dguard=hp=sp=ygem=rgem=bgem=arrow=ad=poison=spirit=zeny=gypsyd=ganb=0;
+		request(url, function (error, response, body) {
+			const $ = cheerio.load(body);
+			fullname = $("#ladder_div table.battlerank-table:nth-child(1) tr.battlerank-header td:nth-child(3)").text().trim();
+			var i;
+			$("#ladder_div table.battlerank-table").each (function () {
+				i=1;
+				if ($("tr.battlerank-header td:nth-child(5)", this).text().trim() === "Gypsy")
+					gypsy = 1;
+				else
+					gypsy = 0;
+				if ($("tr.battlerank-header td:nth-child(5)", this).text().trim() === "High Wizard")
+					hw = 1;
+				else
+					hw = 0;
+				$("table.stat-table", this).each (function () {
+					$(".text-primary", this).each (function () { 
+					if (i==1)
+						kills+=parseInt($(this).html().replace(/,/g, ''));
+					if (i==2) {
+						if (gypsy==1)
+							gypsyd+=parseInt($(this).html().replace(/,/g, ''));
+						else
+							deaths+=parseInt($(this).html().replace(/,/g, ''));
+					}
+					if (i==3)
+						top+=parseInt($(this).html().replace(/,/g, ''));
+					if (i==4)
+						done+=parseInt($(this).html().replace(/,/g, ''));
+					if (i==5)
+						recv+=parseInt($(this).html().replace(/,/g, ''));
+					if (i==6)
+						supc+=parseInt($(this).html().replace(/,/g, ''));
+					if (i==7)
+						supw+=parseInt($(this).html().replace(/,/g, ''));
+					if (i==8)
+						healc+=parseInt($(this).html().replace(/,/g, ''));
+					if (i==9)
+						healw+=parseInt($(this).html().replace(/,/g, ''));
+					if (i==10)
+						emp+=parseInt($(this).html().replace(/,/g, ''));
+					if (i==11)
+						bar+=parseInt($(this).html().replace(/,/g, ''));
+					if (i==12)
+						stone+=parseInt($(this).html().replace(/,/g, ''));
+					if (i==13)
+						guard+=parseInt($(this).html().replace(/,/g, ''));
+					if (i==14)
+						demp+=parseInt($(this).html().replace(/,/g, ''));
+					if (i==15)
+						dbar+=parseInt($(this).html().replace(/,/g, ''));
+					if (i==16)
+						dstone+=parseInt($(this).html().replace(/,/g, ''));
+					if (i==17)
+						dguard+=parseInt($(this).html().replace(/,/g, ''));
+					if (i==18)
+						hp+=parseInt($(this).html().replace(/,/g, ''));
+					if (i==19)
+						sp+=parseInt($(this).html().replace(/,/g, ''));
+					if (i==20)
+						if (hw == 1)
+							ganb+=parseInt($(this).html().replace(/,/g, ''));
+						ygem+=parseInt($(this).html().replace(/,/g, ''));
+					if (i==21)
+						rgem+=parseInt($(this).html().replace(/,/g, ''));
+					if (i==22)
+						bgem+=parseInt($(this).html().replace(/,/g, ''));
+					if (i==23)
+						arrow+=parseInt($(this).html().replace(/,/g, ''));
+					if (i==24)
+						ad+=parseInt($(this).html().replace(/,/g, ''));
+					if (i==25)
+						poison+=parseInt($(this).html().replace(/,/g, ''));
+					if (i==26)
+						spirit+=parseInt($(this).html().replace(/,/g, ''));
+					if (i==27)
+						zeny+=parseInt($(this).html().replace(/,/g, ''));
+					i++;
+					});
+				}); 
+			});
+kills = kills.toLocaleString();
+deaths = deaths.toLocaleString();
+done = done.toLocaleString();
+recv = recv.toLocaleString();
+ad = ad.toLocaleString();
+hp = hp.toLocaleString();
+sp = sp.toLocaleString();
+ganb = ganb.toLocaleString();
+gypsyd = gypsyd.toLocaleString();
+var spaces=" ";
+var offset;
+var gap="";
+spaces = " ";
+var txt = "```diff\n"
+txt+="-GUILD STATS FOR: "+fullname+"\n\n\n"
+txt+="--- Basic info:\n";
+txt+="!kills:             ";
+txt+="deaths:             ";
+txt+="damage done:        ";
+txt+="received:           \n";
+offset = 20 - kills.toString().length;
+gap=spaces.repeat(offset);
+txt+=kills+gap;
+offset = 20 - deaths.toString().length;
+gap=spaces.repeat(offset);
+txt+=deaths+gap;
+offset = 20 - done.toString().length;
+gap=spaces.repeat(offset);
+txt+=done+gap;
+offset = 20 - recv.toString().length;
+gap=spaces.repeat(offset);
+txt+=recv+gap;
+txt+="\n\n--- Additional stuff:\n";
+txt+="!ad used:           ";
+txt+="hp potions:         ";
+txt+="sp potions:         ";
+txt+="ganb used:          ";
+txt+="gypsy deaths:       \n";
+offset = 20 - ad.toString().length;
+gap=spaces.repeat(offset);
+txt+=ad+gap;
+offset = 20 - hp.toString().length;
+gap=spaces.repeat(offset);
+txt+=hp+gap;
+offset = 20 - sp.toString().length;
+gap=spaces.repeat(offset);
+txt+=sp+gap;
+offset = 20 - ganb.toString().length;
+gap=spaces.repeat(offset);
+txt+=ganb+gap;
+offset = 20 - gypsyd.toString().length;
+gap=spaces.repeat(offset);
+txt+=gypsyd+gap;
+txt+="\n```";
+return message.channel.send(txt);
+});
+	  return;
+	  
+  }
   
-  if(command === "help") {
+  else if(command === "help") {
 	  var txt=""
 	  txt=txt+"```diff\n"
 	  txt=txt+"-          User Commands: \n\n\n"
@@ -58,9 +209,7 @@ else
 	  txt=txt+"+          "+config.prefix+"party \n"
 	  txt=txt+"           Gets you party setup if you are a party leader \n\n"
 	  txt=txt+"+          "+config.prefix+"gstats (guildname) \n"
-	  txt=txt+"           Gets you woe stats of specified guild ***will be ready after first woe*** \n\n"
-	  txt=txt+"+          "+config.prefix+"pstats (playername) \n"
-	  txt=txt+"           Gets you woe stats of specified player ***will be ready after first woe*** \n\n\n"
+	  txt=txt+"           Gets you woe stats of specified guild ***will be ready after first woe - pulls from ragnarok.life as for now*** \n\n\n"
 	  txt=txt+"-          Admin Commands: \n\n\n"
 	  txt=txt+"+          "+config.prefix+"getusers \n"
 	  txt=txt+"           Gets all users from server into roster sheet. Use ONLY when creating attendance from scratch. \n\n"
@@ -589,7 +738,7 @@ doc.useServiceAccountAuth(creds, function (err) {
 								var spaces=" ";
 								var txt="```diff\n";
 								txt=txt+"+DEVO TARGETS: \n\n";
-								txt=txt+"-name:                  class:              priority:\n";
+								txt=txt+"-name:                  class:               priority:\n";
 								for (i = 0; i < cells.length; i++) {
 									if ((cells[i].value.substring(0, 1) == pal))
 									{ 
@@ -678,7 +827,7 @@ doc.useServiceAccountAuth(creds, function (err) {
 								var spaces=" ";
 								var txt="```diff\n";
 								txt=txt+"+DEVO TARGETS: \n\n";
-								txt=txt+"-name:                  class:              priority:\n";
+								txt=txt+"-name:                  class:               priority:\n";
 								for (i = 0; i < cells.length; i++) {
 									if ((cells[i].value.substring(0, 1) == pal))
 									{ 
