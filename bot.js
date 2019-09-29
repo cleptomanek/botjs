@@ -33,13 +33,13 @@ client.on("guildDelete", guild => {
 client.on("message", async message => {
   if(message.author.bot) return;
   if(message.content.indexOf(config.prefix) !== 0) return;
-  
+  var admin;
   var args = message.content.slice(config.prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
   if ((message.author.id == 444) || (message.author.id == 177107237053923328) || (message.author.id == 184327765070315521) || (message.author.id == 162610908307259392))
-	var admin=1
+	admin=1
 else
-	var admin=0
+	admin=0
 const week = 168;
 const weeksec = 604800000;
 var displaydate=0;
@@ -75,6 +75,10 @@ var displaydate=0;
 	  }
 	  if (!args[0])
 		  return message.channel.send("Write part of a guild name you want stats of.");
+	  /*var dd = new Date().getTime();
+			dd.setHours(dd.getHours() - 3);
+			dd=dd/1000;
+			woedate=dd; FOR CURRENT WOE!!!!*/ 
 	  var url = 'https://ragnarok.life/?module=ranking&action=woerank&woe_date='+woedate+'&opt=101&server=Ragnarok.Life&buscar=';
 	  gname = args.join("+");
 	  const m = await message.channel.send("Pulling data...");
@@ -436,6 +440,7 @@ txt+="ad used:  ";
 txt+="dmg/ad:\n";
 }
 request(url, function (error, response, body) {
+	var section=0;
 	const $ = cheerio.load(body);
 	var i;
 	var j=1;
@@ -499,6 +504,7 @@ request(url, function (error, response, body) {
 					ygem=parseInt($(this).html().replace(/,/g, ''));
 					ygem = ygem.toLocaleString().split(',').join('.');
 					txt+=ygem+'\n';
+					j++;
 				}
 				if (i==23 && job == 'snip') {
 					arrow=parseFloat($(this).html().replace(/,/g, ''));
@@ -529,10 +535,13 @@ request(url, function (error, response, body) {
 				if (i==25) {
 					if (j>10) {
 						txt+="```";
+						if (section>0)
+							message.channel.send(txt);
 						m.edit(txt);
 						txt="";
 						j=1;
 						txt=txt+"```diff\n"
+						section++;
 					}
 				}
 			}
@@ -541,6 +550,9 @@ request(url, function (error, response, body) {
 		}); 
 	});
 txt+="```";
+if (section == 0)
+	m.edit(txt);
+else
 return message.channel.send(txt);
 });
 return
