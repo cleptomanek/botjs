@@ -3,12 +3,29 @@ var async = require('async');
 var doc = new GoogleSpreadsheet('1WPD5PPkaL-gbSuho0gxZttJQTuW8fMfJ2uN4dHulG4g');
 //var doc = new GoogleSpreadsheet('1Q47r52ICYGl2QQo5x45N3pzKOdO9lz9hGCb5hF6aeWc'); //copy
 var sheet;
+const Discord = require("discord.js");
+const client = new Discord.Client();
+
+//const config = require("./config.json");
 //const creds = require('./client_secret.json');
+var pkey = '-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCePbSWPBO0YinZ\nyBHAb/bSZ9wK0hUiNsIPNtg2l66lo';
+pkey+='PsXQeoiC2qZvTlR0QcfAI553n0ciDxCgYBs\nJbI9pk76xRnp/bItqByDbiCUY+dE8y6cTfP3kMIR3GLrCSWf2N3X4udPmeTTDAAq\n0xvNBkeYNzTj4K0IzL2rffkJqFMtpM3';
+pkey+='VJYn1G6+1cj8xzWJ7KXpm3NwwNYbxOkDc\nqiLY4NcYjzPdMjAKXXfslpKWi8p5M/L7aWe1cVt4Vs4e/thMrly8U8beT7J9vpTO\nfm7CUm5bKSaX5BSmIYYq7g2ime71FzCqd6';
+pkey+='Re0BLqS7To7B/3faS/p7XqIYW1y2O7\n7BK7yMs/AgMBAAECggEAL/byOyugqWer2dh8EQGfJi3XE+yT/VftwKDWLs4RYSEH\nmwgeyQz+1fT2X+dlKi+IAEbBU5mz8lDAtYdDnM';
+pkey+='5BWF/QOA3vKUmwwuHpvDEAE/VG\nZph2X88gFDviO+382pPowpyDkqxKIPKdRl3RKndB0lDBlmUu7eDpiQbZKuU7uTSm\nCACxupBjAe2L1TnbWvl7u0THqyjAanKVK57J03kjhCEA';
+pkey+='ol6YNubu2lmGsh/7dcMJ\njZaUvgBccMKAYUp6Cq8JPdy3Lktn+JBqfn5taaeZtwVGQHKCB/7eKVp37yTMADcm\n3ny9X4RDLTYUzB4nuW0v7U7LWfidJ3GaxoMvQPcyQQKBgQDTnshXM';
+pkey+='nc202qVPTkZ\n3UA0DSYr8LR6V9DBILL5JM0xSH0TGEVKLPfkqv6C1WFPFhreNF0O+BNGsaCGGsyJ\nepcbaXpqSzYMx13e3bCa6MJCmBED0w0vRDDew5EeN3YhYXJqEOUuNZKJ41iQvUW';
+pkey+='t\nptQdGYspWKw1lhN4la8cpe+34QKBgQC/bSm+dv6OyWido2vFudOW/M4DxPgeGOPk\nQAgns9ut/hiwxsqCBd92qAcbrfSh8sF1Xs28xh3O3N2Samexw8+hWIuw8hHY5mB3\nEPH2vyui';
+pkey+='gfatfO7iq3l5GRRQN7ln/Qta6HINdsKi0h9ocXWoj9KOt6rM0Bbmu76K\nJcMHEYZnHwKBgBtNJd2SBi1NkzeTwXUjxS+x7pXGpRIPmEACPvTDmbFc/73h6LaM\nHKMkqFcqvjYczPST3tmai';
+pkey+='aoaKnKCrJaj+TCxJ/jkoSF+6w5gnXMuyjkbMz7CELZj\nXsauhl9WmmfuEXu7mEWg5bniWb+6m22u0zi53elEplr3dKWe8guJIOchAoGBALhJ\nqrdvrY/fPLUOYDHhvV8NkHQ2izvGcJcMQg2';
+pkey+='e7K2sAy8kok7cwo5kIzu1k97Zav/I\nvj6vaID/RtyvTZbo0RoeuZUm5qGu4E2gZaFL2AFCJy5MKVrVBEPeLh0wGHGRPf5N\n64ckvyqrKYuON1yI4Yd+MJOu/W0yb7RluEU0zPS3AoGAHJ4kR';
+pkey+='qf20yQKnHl9FfHv\nkn++FqTOnGIZVxWqZH77OpxkdRzETzLEIGIjAt0E9x3NxYtaC/Ttyq1U1ZPFfhXr\nDIh/ZS2FQXwkU53PLMBksqesk0GqwpI2mq7LXuscb0p3lsIxrDtBAp5kgn+a66Dm';
+pkey+='\nDFZuJwSI1xrcaRvy1JF8Pv8=\n-----END PRIVATE KEY-----\n';
 const creds = {
   "type": "service_account",
   "project_id": "attendance-254008",
   "private_key_id": process.env.pkeyid,
-  "private_key": process.env.pkey,
+  "private_key": pkey,
   "client_email": "clepto@attendance-254008.iam.gserviceaccount.com",
   "client_id": "107710444065339479409",
   "auth_uri": "https://accounts.google.com/o/oauth2/auth",
@@ -16,10 +33,6 @@ const creds = {
   "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
   "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/clepto%40attendance-254008.iam.gserviceaccount.com"
 };
-
-const Discord = require("discord.js");
-const client = new Discord.Client();
-//const config = require("./config.json");
 const config = {
 "token": process.env.token,
 "prefix": "?"
