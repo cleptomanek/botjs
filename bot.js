@@ -3,11 +3,27 @@ var async = require('async');
 var doc = new GoogleSpreadsheet('1WPD5PPkaL-gbSuho0gxZttJQTuW8fMfJ2uN4dHulG4g');
 //var doc = new GoogleSpreadsheet('1Q47r52ICYGl2QQo5x45N3pzKOdO9lz9hGCb5hF6aeWc'); //copy
 var sheet;
-var creds = require('./client_secret.json');
+//const creds = require('./client_secret.json');
+const creds = {
+  "type": "service_account",
+  "project_id": "attendance-254008",
+  "private_key_id": process.env.pkeyid,
+  "private_key": process.env.pkey,
+  "client_email": "clepto@attendance-254008.iam.gserviceaccount.com",
+  "client_id": "107710444065339479409",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/clepto%40attendance-254008.iam.gserviceaccount.com"
+};
 
 const Discord = require("discord.js");
 const client = new Discord.Client();
-const config = require("./config.json");
+//const config = require("./config.json");
+const config = {
+"token": process.env.token,
+"prefix": "?"
+}
 
 const request = require('request');
 const cheerio = require('cheerio');
