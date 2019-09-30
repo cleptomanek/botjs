@@ -1,13 +1,16 @@
-var GoogleSpreadsheet = require('google-spreadsheet');
-var async = require('async');
+const GoogleSpreadsheet = require('google-spreadsheet');
+const async = require('async');
+const request = require('request');
+const cheerio = require('cheerio');
+const fs = require('fs');
 var doc = new GoogleSpreadsheet('1WPD5PPkaL-gbSuho0gxZttJQTuW8fMfJ2uN4dHulG4g');
-//var doc = new GoogleSpreadsheet('1Q47r52ICYGl2QQo5x45N3pzKOdO9lz9hGCb5hF6aeWc'); //copy
+//var doc = new GoogleSpreadsheet('1Q47r52ICYGl2QQo5x45N3pzKOdO9lz9hGCb5hF6aeWc'); //test sheet\n
 var sheet;
 const Discord = require("discord.js");
 const client = new Discord.Client();
 
-//const config = require("./config.json");
-//const creds = require('./client_secret.json');
+//const config = require("./config.json"); //for local deploy
+//const creds = require('./client_secret.json'); //for local deploy
 var pkey = '-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCePbSWPBO0YinZ\nyBHAb/bSZ9wK0hUiNsIPNtg2l66lo';
 pkey+='PsXQeoiC2qZvTlR0QcfAI553n0ciDxCgYBs\nJbI9pk76xRnp/bItqByDbiCUY+dE8y6cTfP3kMIR3GLrCSWf2N3X4udPmeTTDAAq\n0xvNBkeYNzTj4K0IzL2rffkJqFMtpM3';
 pkey+='VJYn1G6+1cj8xzWJ7KXpm3NwwNYbxOkDc\nqiLY4NcYjzPdMjAKXXfslpKWi8p5M/L7aWe1cVt4Vs4e/thMrly8U8beT7J9vpTO\nfm7CUm5bKSaX5BSmIYYq7g2ime71FzCqd6';
@@ -38,10 +41,6 @@ const config = {
 "prefix": "?"
 }
 
-const request = require('request');
-const cheerio = require('cheerio');
-const fs = require('fs');
-
 client.on("ready", () => {
   console.log(`Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`); 
   //client.user.setActivity('the sound of silence', { type: 'LISTENING' })
@@ -58,22 +57,20 @@ client.on("guildDelete", guild => {
  // client.user.setActivity(`Serving ${client.guilds.size} servers`);
 });
 
-
-client.on("message", async message => {
-  if(message.author.bot) return;
-  if(message.content.indexOf(config.prefix) !== 0) return;
-  var admin;
-  var args = message.content.slice(config.prefix.length).trim().split(/ +/g);
-  const command = args.shift().toLowerCase();
-  if ((message.author.id == 444) || (message.author.id == 177107237053923328) || (message.author.id == 184327765070315521) || (message.author.id == 162610908307259392))
-	admin=1
-else
-	admin=0
+var admin = 0;
 const week = 168;
 const weeksec = 604800000;
 var displaydate=0;
+client.on("message", async message => {
+  if(message.author.bot) return;
+  if(message.content.indexOf(config.prefix) !== 0) return;
+  var args = message.content.slice(config.prefix.length).trim().split(/ +/g);
+  const command = args.shift().toLowerCase();
+  if ((message.author.id == 444) || (message.author.id == 177107237053923328) || (message.author.id == 184327765070315521) || (message.author.id == 162610908307259392))
+	admin=1 
+  
   if(command === "gstats" || command === "gs") {
-	  var woedate=1554584400;
+	  var woedate=1554584400; //default for tests
 	  //var url = 'https://ragnarok.life/?server=Ragnarok.Life&module=ranking&action=woerank&woe_date=1554584400&opt=0&ser=0&ord=0';
 	  if (args[0] === "-w" && args[1] != "") {
 		  var firstwoe= new Date('2019-04-06 23:00').getTime();
@@ -81,13 +78,13 @@ var displaydate=0;
 			var diff = Math.abs(today - firstwoe);
 			diff = Math.trunc(diff/weeksec);
 			var wbehind = parseInt(args[1]);
-			var arch = diff-wbehind;
-			arch=(arch*weeksec)+firstwoe;
-			arch=arch/1000;
-			woedate=arch;
+			diff = diff-wbehind;
+			diff=(diff*weeksec)+firstwoe;
+			diff=diff/1000;
+			woedate=diff;
 			args=args.splice(2);
 			var d = new Date(0);
-			d.setUTCSeconds(arch+3600);
+			d.setUTCSeconds(diff+3600);
 			d=d.toString();
 			displaydate=2;
 	  }
@@ -104,19 +101,23 @@ var displaydate=0;
 	  }
 	  if (!args[0])
 		  return message.channel.send("Write part of a guild name you want stats of.");
-	  /*var dd = new Date().getTime();
-			dd.setHours(dd.getHours() - 3);
-			dd=dd/1000;
-			woedate=dd; FOR CURRENT WOE!!!!*/ 
+	  /*
+			var firstwoe= new Date('2019-04-06 23:00').getTime();
+			today = new Date().getTime();
+			var diff = Math.abs(today - firstwoe);
+			diff+=(firstwoe;
+			diff=diff/1000;
+			woedate=diff;
+	  
+			today.setHours(today.getHours() - 3); //for time adjust if needed
+		FOR CURRENT WOE!!!!*/ 
 	  var url = 'https://ragnarok.life/?module=ranking&action=woerank&woe_date='+woedate+'&opt=101&server=Ragnarok.Life&buscar=';
 	  gname = args.join("+");
 	  const m = await message.channel.send("Pulling data...");
 	  url+=gname;
-	  var rlk,rhp,rhw,rhwfs,rws,rsnip,rsin,rpal,rchamp,rprof,rdlp,rstalk,rchem,rspp,rclown,rgyp,rslinger,rninja,rtaek,rsg,rlinker;
-	  rlk=rhp=rhw=rhwfs=rws=rsnip=rsin=rpal=rchamp=rprof=rdlp=rstalk=rchem=rspp=rclown=rgyp=rslinger=rninja=rtaek=rsg=rlinker=0;
-	  var kills, deaths, top, done, recv, supc, supw, healc, healw, emp, bar, stone, guard, demp, dbar, dstone, dguard, hp, sp, ygem, rgem, bgem, arrow, ad, poison, spirit, zeny,stat;
-	  var gypsy, gypsyd,hw,ganb,sniper,chem,chemd,sniperd,sarrow,prof,dispel,disp;
-		stat=kills=deaths=top=done=recv=supc=supw=healc=healw=emp=bar=stone=guard=demp=dbar=dstone=dguard=hp=sp=ygem=rgem=bgem=arrow=ad=poison=spirit=zeny=gypsyd=ganb=chemd=sniperd=sarrow=dispel=disp=0;
+	  var rlk=rhp=rhw=rhwfs=rws=rsnip=rsin=rpal=rchamp=rprof=rdlp=rstalk=rchem=rspp=rclown=rgyp=rslinger=rninja=rtaek=rsg=rlinker=0;
+	  var gypsy,hw,sniper,chem,prof;
+	  var stat=kills=deaths=top=done=recv=supc=supw=healc=healw=emp=bar=stone=guard=demp=dbar=dstone=dguard=hp=sp=ygem=rgem=bgem=arrow=ad=poison=spirit=zeny=gypsyd=ganb=chemd=sniperd=sarrow=dispel=disp=0;
 		request(url, function (error, response, body) {
 			const $ = cheerio.load(body);
 			fullname = $("#ladder_div table.battlerank-table:nth-child(1) tr.battlerank-header td:nth-child(3)").text().trim();
@@ -185,23 +186,21 @@ var displaydate=0;
 					
 				$("table.stat-table", this).each (function () {
 					$(".text-primary", this).each (function () { 
+					if (i<6 || (i>17 && i<25))
+						stat = parseFloat($(this).html().replace(/,/g, ''));
 					if (i==1) {
-						stat = parseInt($(this).html().replace(/,/g, ''));
 						kills+=stat;
 					}
 					if (i==2) {
-						stat = parseInt($(this).html().replace(/,/g, ''));
 						if (gypsy==1)
 							gypsyd+=stat;
 						else
 							deaths+=stat;
 					}
 					if (i==3) {
-						stat = parseInt($(this).html().replace(/,/g, ''));
 						top+=stat;
 					}
 					if (i==4) {
-						stat = parseFloat($(this).html().replace(/,/g, ''));
 						if ((chem==1) && (stat > 500000)) {
 							chemd+=stat;
 							rchem+=1;
@@ -216,55 +215,50 @@ var displaydate=0;
 						done+=stat;
 					}
 					if (i==5) {
-						stat = parseInt($(this).html().replace(/,/g, ''));
+						
 						recv+=stat;
 					}
 					/*if (i==6)
-						supc+=parseInt($(this).html().replace(/,/g, ''));
+						supc+=stat;
 					if (i==7)
-						supw+=parseInt($(this).html().replace(/,/g, ''));
+						supw+=stat;
 					if (i==8)
-						healc+=parseInt($(this).html().replace(/,/g, ''));
+						healc+=stat;
 					if (i==9)
-						healw+=parseInt($(this).html().replace(/,/g, ''));
+						healw+=stat;
 					if (i==10)
-						emp+=parseInt($(this).html().replace(/,/g, ''));
+						emp+=stat;
 					if (i==11)
-						bar+=parseInt($(this).html().replace(/,/g, ''));
+						bar+=stat;
 					if (i==12)
-						stone+=parseInt($(this).html().replace(/,/g, ''));
+						stone+=stat;
 					if (i==13)
-						guard+=parseInt($(this).html().replace(/,/g, ''));
+						guard+=stat;
 					if (i==14)
-						demp+=parseInt($(this).html().replace(/,/g, ''));
+						demp+=stat;
 					if (i==15)
-						dbar+=parseInt($(this).html().replace(/,/g, ''));
+						dbar+=stat;
 					if (i==16)
-						dstone+=parseInt($(this).html().replace(/,/g, ''));
+						dstone+=stat;
 					if (i==17)
-						dguard+=parseInt($(this).html().replace(/,/g, '')); */
+						dguard+=stat; */
 					if (i==18) {
-						stat = parseInt($(this).html().replace(/,/g, ''));
 						hp+=stat;
 					}
-					if (i==19) {
-						stat = parseInt($(this).html().replace(/,/g, ''));
+					if (i==19) {				
 						sp+=stat;
 					}
-					if (i==20) {
-						stat = parseInt($(this).html().replace(/,/g, ''));
+					if (i==20) {						
 						if (hw == 1) 
 							ganb+=stat;
 						if (prof == 1)
 							disp=stat;
 						ygem+=stat;
 					}
-					if (i==21) {
-						stat = parseInt($(this).html().replace(/,/g, ''));
+					if (i==21) {						
 						rgem+=stat;
 					}
-					if (i==22) {
-						stat = parseInt($(this).html().replace(/,/g, ''));
+					if (i==22) {						
 						if ((prof == 1) && (stat <500)) {
 							dispel+=disp;
 							rprof+=1;
@@ -272,22 +266,20 @@ var displaydate=0;
 						}
 						bgem+=stat;
 					}
-					if (i==23) {
-						stat = parseInt($(this).html().replace(/,/g, ''));
+					if (i==23) {						
 						if (sniper == 1)
 							sarrow+=stat;
 						arrow+=stat;
 					}
 					if (i==24) {
-						stat = parseFloat($(this).html().replace(/,/g, ''));
 						ad+=stat;
 					}
 					/*if (i==25)
-						poison+=parseInt($(this).html().replace(/,/g, ''));
+						poison+=stat;
 					if (i==26)
-						spirit+=parseInt($(this).html().replace(/,/g, ''));
+						spirit+=stat;
 					if (i==27)
-						zeny+=parseInt($(this).html().replace(/,/g, '')); */
+						zeny+=stat; */
 					i++;
 					});
 				}); 
@@ -308,10 +300,8 @@ sp = sp.toLocaleString().split(',').join('.');
 ganb = ganb.toLocaleString().split(',').join('.');
 gypsyd = gypsyd.toLocaleString().split(',').join('.');
 dispel = dispel.toLocaleString().split(',').join('.');
-var spaces=" ";
 var offset;
 var gap="";
-spaces = " ";
 var txt = "```diff\n"
 if (displaydate!=0)
 	txt+="-ARCHIVE WOE DATE: "+d+"\n\n"
@@ -322,16 +312,16 @@ txt+="deaths:             ";
 txt+="damage done:        ";
 txt+="received:           \n";
 offset = 20 - kills.length;
-gap=spaces.repeat(offset);
+gap=" ".repeat(offset);
 txt+=kills+gap;
 offset = 20 - deaths.length;
-gap=spaces.repeat(offset);
+gap=" ".repeat(offset);
 txt+=deaths+gap;
 offset = 20 - done.length;
-gap=spaces.repeat(offset);
+gap=" ".repeat(offset);
 txt+=done+gap;
 offset = 20 - recv.length;
-gap=spaces.repeat(offset);
+gap=" ".repeat(offset);
 txt+=recv+gap;
 txt+="\n\n--- Additional stuff:\n";
 txt+="!ad used:           ";
@@ -339,32 +329,32 @@ txt+="hp potions:         ";
 txt+="sp potions:         ";
 txt+="gypsy deaths:       \n";
 offset = 20 - ad.length;
-gap=spaces.repeat(offset);
+gap=" ".repeat(offset);
 txt+=ad+gap;
 offset = 20 - hp.length;
-gap=spaces.repeat(offset);
+gap=" ".repeat(offset);
 txt+=hp+gap;
 offset = 20 - sp.length;
-gap=spaces.repeat(offset);
+gap=" ".repeat(offset);
 txt+=sp+gap;
 offset = 20 - gypsyd.length;
-gap=spaces.repeat(offset);
+gap=" ".repeat(offset);
 txt+=gypsyd+gap;
 txt+="\n\n!dmg per ad:        ";
 txt+="dmg per fas:        ";
 txt+="ganb used:          ";
 txt+="dispel used:        \n";
 offset = 20 - add.length;
-gap=spaces.repeat(offset);
+gap=" ".repeat(offset);
 txt+=add+gap;
 offset = 20 - fas.length;
-gap=spaces.repeat(offset);
+gap=" ".repeat(offset);
 txt+=fas+gap;
 offset = 20 - ganb.length;
-gap=spaces.repeat(offset);
+gap=" ".repeat(offset);
 txt+=ganb+gap;
 offset = 20 - dispel.length;
-gap=spaces.repeat(offset);
+gap=" ".repeat(offset);
 txt+=dispel+gap;
 
 txt+="\n\n--- Roster composition:\n";
@@ -442,13 +432,11 @@ if (job == 'wiz' || job == 'wizard') {
 	jobtext = 'DD WIZARDS:';
 }
 var url = 'https://ragnarok.life/?module=ranking&action=woerank&woe_date=1554584400&opt='+jobid+'&server=Ragnarok.Life';
-var kills, deaths, top, done, recv, hp, sp, ygem, bgem, arrow, ad,name,add,dd,donef,guild;
+var name,dd,guild;
 kills=deaths=top=done=recv=hp=sp=ygem=bgem=arrow=add=ad=donef=0;
-var spaces=" ";
 var offset;
 var gap="";
-var txt="";
-txt=txt+"```diff\n"
+var txt="```diff\n";
 txt+="-COMPARING "+jobtext+"\n\n"
 txt+="!name:                   ";
 txt+="guild:                   ";
@@ -485,10 +473,10 @@ request(url, function (error, response, body) {
 			dd=1;
 		if (dd == 1) {
 			offset = 25 - name.length;
-			gap=spaces.repeat(offset);
+			gap=" ".repeat(offset);
 			txt+=name+gap;
 			offset = 25 - guild.length;
-			gap=spaces.repeat(offset);
+			gap=" ".repeat(offset);
 			txt+=guild+gap;
 		}
 		$("table.stat-table", this).each (function () {
@@ -498,35 +486,35 @@ request(url, function (error, response, body) {
 					kills=parseInt($(this).html());
 					kills = kills.toLocaleString().split(',').join('.');
 					offset = 5 - kills.length;
-					gap=spaces.repeat(offset);
+					gap=" ".repeat(offset);
 					txt+=kills+gap;
 				}
 				if (i==2) {
 					deaths=parseInt($(this).html());
 					deaths = deaths.toLocaleString().split(',').join('.');
 					offset = 5 - deaths.length;
-					gap=spaces.repeat(offset);
+					gap=" ".repeat(offset);
 					txt+=deaths+gap;
 				}
 				if (i==3 && job == 'wiz') {
 					top=parseInt($(this).html().replace(/,/g, ''));
 					top = top.toLocaleString().split(',').join('.');
 					offset = 12 - top.length;
-					gap=spaces.repeat(offset);
+					gap=" ".repeat(offset);
 					txt+=top+gap;
 				}
 				if (i==4) {
 					donef=parseFloat($(this).html().replace(/,/g, ''));
 					done = donef.toLocaleString().split(',').join('.');
 					offset = 13 - done.length;
-					gap=spaces.repeat(offset);
+					gap=" ".repeat(offset);
 					txt+=done+gap;
 				}
 				if (i==5) {
 					recv=parseInt($(this).html().replace(/,/g, ''));
 					recv = recv.toLocaleString().split(',').join('.');
 					offset = 13 - recv.length;
-					gap=spaces.repeat(offset);
+					gap=" ".repeat(offset);
 					txt+=recv+gap;
 				}
 				if (i==20 && job == 'wiz') {
@@ -542,7 +530,7 @@ request(url, function (error, response, body) {
 					fas = Math.round(fas);
 					fas = fas.toLocaleString().split(',').join('.');
 					offset = 11 - arrow.length;
-					gap=spaces.repeat(offset);
+					gap=" ".repeat(offset);
 					txt+=arrow+gap;
 					txt+=fas;
 					txt+="\n";
@@ -555,7 +543,7 @@ request(url, function (error, response, body) {
 					add = Math.round(add);
 					add = add.toLocaleString().split(',').join('.');
 					offset = 10 - ad.length;
-					gap=spaces.repeat(offset);
+					gap=" ".repeat(offset);
 					txt+=ad+gap;
 					txt+=add;
 					txt+="\n";
@@ -569,7 +557,7 @@ request(url, function (error, response, body) {
 						m.edit(txt);
 						txt="";
 						j=1;
-						txt=txt+"```diff\n"
+						txt+="```diff\n"
 						section++;
 					}
 				}
@@ -588,57 +576,56 @@ return
 }
   
   else if(command === "help" || command === "h") {
-	  var txt="";
-	  txt=txt+"```diff\n"
-	  txt=txt+"-USER COMMANDS: \n\n\n"
-	  txt=txt+""+config.prefix+"woeinfo (alternative: "+config.prefix+"wi)\n"
-	  txt=txt+"+Displays basic woe info \n\n"
-	  txt=txt+""+config.prefix+"yes \n"
-	  txt=txt+"+Put your attendance on 'yes' for next woe \n\n"
-	  txt=txt+""+config.prefix+"no \n"
-	  txt=txt+"+Put your attendance on 'no' for next woe \n\n"
-	  txt=txt+""+config.prefix+"check \n"
-	  txt=txt+"+Checks your attendance status for next woe \n\n"
-	  txt=txt+""+config.prefix+"build \n"
-	  txt=txt+"+Gets you a build for next woe (if it is available) \n\n"
-	  txt=txt+""+config.prefix+"comment (alternative: "+config.prefix+"cmt)\n"
-	  txt=txt+"+Lets you put a comment on the roster sheet \n\n"
-	  txt=txt+""+config.prefix+"devo \n"
-	  txt=txt+"+Gets you your devo targets \n\n"
-	  txt=txt+""+config.prefix+"party (alternative: "+config.prefix+"pt)\n"
-	  txt=txt+"+Gets you party setup if you are a party leader \n\n"
-	  txt=txt+""+config.prefix+"gstats (guildname - can be just a part of it) (alternative: "+config.prefix+"gs)\n"
-	  txt=txt+"+Gets you woe stats of specified guild ***will be ready after first woe - pulls from ragnarok.life as for now***\n---ex. '?gstats worst', '?gs 'pique', '?gs worst players', '?gstats love' \n"
-	  txt=txt+"+You can use this command to get archive woe data aswell using -d and -w options. -w specifies how many weeks ago from current date woe occured and -d lets you provide exact date of woe\n"
-	  txt=txt+"---ex. '?gs -w 3 guildname' (pulls woe from 3 weeks ago for specified guildname), '?gs -d 2019-09-08 guildname' (woe from 08 september 2019 for guildname - format is RRRR/MM/DD) \n\n"
-	  txt=txt+""+config.prefix+"compare (dd class) (alternative: "+config.prefix+"cmp)\n"
-	  txt=txt+"+Compares DD classes stats (use command with class name ***will be ready after first woe - pulls from ragnarok.life as for now***\n---ex. '?cmp chem', '?compare 'sniper', '?compare creo', '?cmp wiz' "
-	  txt=txt+"```"
+	  var txt="```diff\n";
+	  txt+="-USER COMMANDS: \n\n\n"
+	  txt+=""+config.prefix+"woeinfo (alternative: "+config.prefix+"wi)\n"
+	  txt+="+Displays basic woe info \n\n"
+	  txt+=""+config.prefix+"yes \n"
+	  txt+="+Put your attendance on 'yes' for next woe \n\n"
+	  txt+=""+config.prefix+"no \n"
+	  txt+="+Put your attendance on 'no' for next woe \n\n"
+	  txt+=""+config.prefix+"check \n"
+	  txt+="+Checks your attendance status for next woe \n\n"
+	  txt+=""+config.prefix+"build \n"
+	  txt+="+Gets you a build for next woe (if it is available) \n\n"
+	  txt+=""+config.prefix+"comment (alternative: "+config.prefix+"cmt)\n"
+	  txt+="+Lets you put a comment on the roster sheet \n\n"
+	  txt+=""+config.prefix+"devo \n"
+	  txt+="+Gets you your devo targets \n\n"
+	  txt+=""+config.prefix+"party (alternative: "+config.prefix+"pt)\n"
+	  txt+="+Gets you party setup if you are a party leader \n\n"
+	  txt+=""+config.prefix+"gstats (guildname - can be just a part of it) (alternative: "+config.prefix+"gs)\n"
+	  txt+="+Gets you woe stats of specified guild ***will be ready after first woe - pulls from ragnarok.life as for now***\n---ex. '?gstats worst', '?gs 'pique', '?gs worst players', '?gstats love' \n"
+	  txt+="+You can use this command to get archive woe data aswell using -d and -w options. -w specifies how many weeks ago from current date woe occured and -d lets you provide exact date of woe\n"
+	  txt+="---ex. '?gs -w 3 guildname' (pulls woe from 3 weeks ago for specified guildname), '?gs -d 2019-09-08 guildname' (woe from 08 september 2019 for guildname - format is RRRR/MM/DD) \n\n"
+	  txt+=""+config.prefix+"compare (dd class) (alternative: "+config.prefix+"cmp)\n"
+	  txt+="+Compares DD classes stats (use command with class name ***will be ready after first woe - pulls from ragnarok.life as for now***\n---ex. '?cmp chem', '?compare 'sniper', '?compare creo', '?cmp wiz' "
+	  txt+="```"
 	  message.author.send(txt);
 	  txt="```diff\n"
-	  txt=txt+"-ADMIN COMMANDS: \n\n\n"
-	  txt=txt+""+config.prefix+"getusers (alternative: "+config.prefix+"gusers)\n"
-	  txt=txt+"+Gets all users from server into roster sheet. Use ONLY when creating attendance from scratch. \n\n"
-	  txt=txt+""+config.prefix+"cleanusers (alternative: "+config.prefix+"cusers)\n"
-	  txt=txt+"+Cleans all users on roster sheet. \n\n"
-	  txt=txt+""+config.prefix+"forceyes @username (alternative: "+config.prefix+"fyes)\n"
-	  txt=txt+"+Forces 'yes' for specified user. \n\n"
-	  txt=txt+""+config.prefix+"forceno @username (alternative: "+config.prefix+"fno)\n"
-	  txt=txt+"+Forces 'no' for specified user. \n\n"
-	  txt=txt+""+config.prefix+"fcheck @username \n"
-	  txt=txt+"+Forces attendance check on specified user. \n\n"
-	  txt=txt+""+config.prefix+"cdevo @username \n"
-	  txt=txt+"+Checks devo targets of specified user. \n\n"
-	  txt=txt+""+config.prefix+"cparty (1-2) (alternative: "+config.prefix+"cpt)\n"
-	  txt=txt+"+Checks party setup of specified party. \n\n"
-	  txt=txt+""+config.prefix+"add @username \n"
-	  txt=txt+"+Adds specified user into roster sheet. \n\n"
-	  txt=txt+""+config.prefix+"remove @username (alternative: "+config.prefix+"rmv)\n"
-	  txt=txt+"+Removes specified user from roster sheet. \n\n"
-	  txt=txt+""+config.prefix+"purge (1-100) \n"
-	  txt=txt+"+Purges from 1 to 100 messages on channel. \n\n\n\n"
-	  txt=txt+"```"
-	  txt=txt+"If you want some new commands or something doesnt work - DM clepto"
+	  txt+="-ADMIN COMMANDS: \n\n\n"
+	  txt+=""+config.prefix+"getusers (alternative: "+config.prefix+"gusers)\n"
+	  txt+="+Gets all users from server into roster sheet. Use ONLY when creating attendance from scratch. \n\n"
+	  txt+=""+config.prefix+"cleanusers (alternative: "+config.prefix+"cusers)\n"
+	  txt+="+Cleans all users on roster sheet. \n\n"
+	  txt+=""+config.prefix+"forceyes @username (alternative: "+config.prefix+"fyes)\n"
+	  txt+="+Forces 'yes' for specified user. \n\n"
+	  txt+=""+config.prefix+"forceno @username (alternative: "+config.prefix+"fno)\n"
+	  txt+="+Forces 'no' for specified user. \n\n"
+	  txt+=""+config.prefix+"fcheck @username \n"
+	  txt+="+Forces attendance check on specified user. \n\n"
+	  txt+=""+config.prefix+"cdevo @username \n"
+	  txt+="+Checks devo targets of specified user. \n\n"
+	  txt+=""+config.prefix+"cparty (1-2) (alternative: "+config.prefix+"cpt)\n"
+	  txt+="+Checks party setup of specified party. \n\n"
+	  txt+=""+config.prefix+"add @username \n"
+	  txt+="+Adds specified user into roster sheet. \n\n"
+	  txt+=""+config.prefix+"remove @username (alternative: "+config.prefix+"rmv)\n"
+	  txt+="+Removes specified user from roster sheet. \n\n"
+	  txt+=""+config.prefix+"purge (1-100) \n"
+	  txt+="+Purges from 1 to 100 messages on channel. \n\n\n\n"
+	  txt+="```"
+	  txt+="If you want some new commands or something doesnt work - DM clepto"
 	  message.reply("Sending commands info. Check your DM.");
 	return message.author.send(txt);
   }
@@ -655,41 +642,36 @@ return
 				'return-empty': true
 			}, function(err, cells) {
 				var i;
-				var spaces=" ";
+				var gap="";
 				var offset;
-				spaces = " ";
 				var txt="```diff\n";
-				txt=txt+"+PARTY LEADERS: \n\n";
-				txt=txt+"-ingame name:           name:\n";
-				offset = 20 - cells[141].value.length;
-				spaces = spaces+spaces.repeat(offset);
-				txt=txt+"\n1. "+cells[141].value+spaces;
-				spaces=" ";
-				txt=txt+cells[141-5].value;
-				offset = 20 - cells[143].value.length;
-				spaces = spaces+spaces.repeat(offset);
-				txt=txt+"\n2. "+cells[143].value+spaces;
-				spaces=" ";
-				txt=txt+cells[143-5].value;
-				txt=txt+"\n\n-Check party setup with ?party command!";
-				txt=txt+"```";
-				txt=txt+"```diff\n";
-				txt=txt+"+PALADINS: \n\n";
-				txt=txt+"-ingame name:           name:\n";
-				var i;
+				txt+="+PARTY LEADERS: \n\n";
+				txt+="-ingame name:           name:\n";
+				offset = 21 - cells[141].value.length;
+				gap = " ".repeat(offset);
+				txt+="\n1. "+cells[141].value+gap;
+				txt+=cells[141-5].value;
+				offset = 21 - cells[143].value.length;
+				gap = " ".repeat(offset);
+				txt+="\n2. "+cells[143].value+gap;
+				txt+=cells[143-5].value;
+				txt+="\n\n-Check party setup with ?party command!";
+				txt+="```";
+				txt+="```diff\n";
+				txt+="+PALADINS: \n\n";
+				txt+="-ingame name:           name:\n";
 				var k=0;
 					for (i = 0; i < cells.length; i++) {
 						if (cells[i].value.substring(0, 7) == 'Paladin') {
 							k++;
-							offset = 20 - cells[i+141].value.length;
-							spaces = spaces+spaces.repeat(offset);
-							txt=txt+"\n"+k+". "+cells[i+141].value+spaces;
-							spaces=" ";
-							txt=txt+cells[i+141-5].value;
+							offset = 21 - cells[i+141].value.length;
+							gap = " ".repeat(offset);
+							txt+="\n"+k+". "+cells[i+141].value+gap;
+							txt+=cells[i+141-5].value;
 						}
 					}
-				txt=txt+"\n\n-Check your devo targets with ?devo command!";
-				txt=txt+"```";
+				txt+="\n\n-Check your devo targets with ?devo command!";
+				txt+="```";
 				return m.edit(txt);
 			});
 	});
@@ -709,7 +691,6 @@ return
 					'max-col': 3,
 					'return-empty': true
 				}, function(err, cells) {
-					var i;
 						client.guilds.get(message.guild.id).fetchMembers().then(r => {
 							var j=0;
 						r.members.array().forEach(r => {
@@ -743,7 +724,6 @@ return
 					var i;
 					for (i = 0; i < cells.length; i++) {
 							cells[i].value = '';
-							//cells[i].save();
 					}
 					sheet.bulkUpdateCells(cells);						
 				});
@@ -768,7 +748,6 @@ return
 					var i;
 					for (i = 0; i < cells.length; i++) {
 							cells[i].value = '';
-							//cells[i].save();
 					}
 					sheet.bulkUpdateCells(cells);						
 				});
@@ -794,12 +773,12 @@ return
 					{
 						if (cells[i+2].value == 'yes') {
 							var reply = "Your attendance status is set to **'yes'**. Use following commands to get more info:";
-							reply=reply+"```fix\n"+config.prefix+"build - used to get you a build for woe (if someone bothered to make it :clown:)\n";
-							reply=reply+config.prefix+"devo - check your devo targets (only for pallies)\n";
-							reply=reply+config.prefix+"party - check your party setup (only for party leaders)\n";
-							reply=reply+config.prefix+"check - check your attendance status\n";
-							reply=reply+config.prefix+"comment - put your comment on the roster sheet\n";
-							reply=reply+config.prefix+"no - sets your attendance status on no (not recommended :smile:)\n```";
+							reply+="```fix\n"+config.prefix+"build - used to get you a build for woe (if someone bothered to make it :clown:)\n";
+							reply+=config.prefix+"devo - check your devo targets (only for pallies)\n";
+							reply+=config.prefix+"party - check your party setup (only for party leaders)\n";
+							reply+=config.prefix+"check - check your attendance status\n";
+							reply+=config.prefix+"comment - put your comment on the roster sheet\n";
+							reply+=config.prefix+"no - sets your attendance status on no (not recommended :smile:)\n```";
 						
 							return message.reply(reply);
 						}
@@ -923,12 +902,12 @@ return
 						cells[i+2].value = 'yes';
 						cells[i+2].save();
 						var reply = "I've set your attendance to **'yes'**. Use following commands to get more info:";
-						reply=reply+"```fix\n"+config.prefix+"build - used to get you a build for woe (if someone bothered to make it :clown:)\n";
-						reply=reply+config.prefix+"devo - check your devo targets (only for pallies)\n";
-						reply=reply+config.prefix+"party - check your party setup (only for party leaders)\n";
-						reply=reply+config.prefix+"check - check your attendance status\n";
-						reply=reply+config.prefix+"comment - put your comment on the roster sheet\n";
-						reply=reply+config.prefix+"no - sets your attendance status on no (not recommended :smile:)\n```";
+						reply+="```fix\n"+config.prefix+"build - used to get you a build for woe (if someone bothered to make it :clown:)\n";
+						reply+=config.prefix+"devo - check your devo targets (only for pallies)\n";
+						reply+=onfig.prefix+"party - check your party setup (only for party leaders)\n";
+						reply+=config.prefix+"check - check your attendance status\n";
+						reply+=config.prefix+"comment - put your comment on the roster sheet\n";
+						reply+=config.prefix+"no - sets your attendance status on no (not recommended :smile:)\n```";
 					
 						return message.reply(reply);
 					}
@@ -1000,7 +979,6 @@ return
     let member = message.mentions.members.first() || message.guild.members.get(args[0]);
     if(!member)
     return message.reply("Please mention a valid member of this server");
-	var done = 0;
 	doc.useServiceAccountAuth(creds, function (err) {
 	doc.getInfo(function(err, info) {
 		sheet = info.worksheets[1];
@@ -1031,7 +1009,6 @@ return
     let member = message.mentions.members.first() || message.guild.members.get(args[0]);
     if(!member)
     return message.reply("Please mention a valid member of this server");
-	var done = 0;
 	doc.useServiceAccountAuth(creds, function (err) {
 	doc.getInfo(function(err, info) {
 		sheet = info.worksheets[1];
@@ -1069,7 +1046,6 @@ return
     let member = message.mentions.members.first() || message.guild.members.get(args[0]);
     if(!member)
     return message.reply("Please mention a valid member of this server");
-	var done = 0;
 	doc.useServiceAccountAuth(creds, function (err) {
 	doc.getInfo(function(err, info) {
 		sheet = info.worksheets[1];
@@ -1108,7 +1084,6 @@ return
 	const m = await message.channel.send("Checking roster sheet...");
 doc.useServiceAccountAuth(creds, function (err) {
 	doc.getInfo(function(err, info) {
-		name="";
 		sheet = info.worksheets[1];
 			sheet.getCells({
 				'min-row': 2,
@@ -1130,41 +1105,35 @@ doc.useServiceAccountAuth(creds, function (err) {
 								'max-col': 22,
 								'return-empty': true
 							}, function(err, cells) {
-								var i;
 								for (i = 0; i < cells.length; i++) {
 									if ((cells[i].value == name) && (cells[i+1].value.substring(1, 2) == 'P'))
 									{
-										if (pal == "") {
 											pal = cells[i+1].value;
 											pal = pal.substring(0, 1);
-										}
 									}
 								}
 								if (pal == "")
 									return m.edit("<@"+message.author.id+">, You are not a paladin or you're not in the party setup yet :frowning:");
 								var k = 1;
-								var spaces=" ";
+								var gap = "";
 								var txt="```diff\n";
-								txt=txt+"+DEVO TARGETS: \n\n";
-								txt=txt+"-name:                  class:               priority:\n";
+								txt+="+DEVO TARGETS: \n\n";
+								txt+="-name:                  class:               priority:\n";
 								for (i = 0; i < cells.length; i++) {
 									if ((cells[i].value.substring(0, 1) == pal))
 									{ 
 										if ((cells[i].value.substring(1, 2) == 'X') || (cells[i].value.substring(1, 2) == 'T')){
-											var offset = 20 - cells[i+4].value.length;
-											spaces = spaces+spaces.repeat(offset);
-											txt=txt+k+'. '+cells[i+4].value+spaces;
-											spaces = " ";
-											offset = 20 - cells[i-137].value.length;
-											spaces = spaces+spaces.repeat(offset);
-											txt=txt+cells[i-137].value+spaces;
-											spaces = spaces+spaces.repeat(offset);
+											var offset = 21 - cells[i+4].value.length;
+											gap = " ".repeat(offset);
+											txt+=k+'. '+cells[i+4].value+gap;
+											offset = 21 - cells[i-137].value.length;
+											gap = " ".repeat(offset);
+											txt+=cells[i-137].value+gap;
 											if (cells[i].value.substring(1, 2) == 'X')
-												txt=txt+"HIGH\n";
+												txt+="HIGH\n";
 											if (cells[i].value.substring(1, 2) == 'T')
-												txt=txt+"NORMAL\n";
+												txt+="NORMAL\n";
 											k++;
-											spaces=" ";
 										}
 									}
 								}
@@ -1172,7 +1141,7 @@ doc.useServiceAccountAuth(creds, function (err) {
 									return m.edit("<@"+message.author.id+">, There are no devo tragets for you? :thinking:");
 								else {
 									m.edit("Sending devo targets. Check DM.");
-									txt=txt+"```";
+									txt+="```";
 									return message.author.send(txt);
 								}
 							});
@@ -1198,7 +1167,6 @@ doc.useServiceAccountAuth(creds, function (err) {
 	const m = await message.channel.send("Checking roster sheet...");
 doc.useServiceAccountAuth(creds, function (err) {
 	doc.getInfo(function(err, info) {
-		name="";
 		sheet = info.worksheets[1];
 			sheet.getCells({
 				'min-row': 2,
@@ -1220,41 +1188,35 @@ doc.useServiceAccountAuth(creds, function (err) {
 								'max-col': 22,
 								'return-empty': true
 							}, function(err, cells) {
-								var i;
 								for (i = 0; i < cells.length; i++) {
 									if ((cells[i].value == name) && (cells[i+1].value.substring(1, 2) == 'P'))
 									{
-										if (pal == "") {
 											pal = cells[i+1].value;
 											pal = pal.substring(0, 1);
-										}
 									}
 								}
 								if (pal == "")
 									return m.edit("<@"+member.user.id+"> is not a paladin or is not in the party setup yet :frowning:");
 								var k = 1;
-								var spaces=" ";
+								var gap='';
 								var txt="```diff\n";
-								txt=txt+"+DEVO TARGETS: \n\n";
-								txt=txt+"-name:                  class:               priority:\n";
+								txt+="+DEVO TARGETS: \n\n";
+								txt+="-name:                  class:               priority:\n";
 								for (i = 0; i < cells.length; i++) {
 									if ((cells[i].value.substring(0, 1) == pal))
 									{ 
 										if ((cells[i].value.substring(1, 2) == 'X') || (cells[i].value.substring(1, 2) == 'T')){
-											var offset = 20 - cells[i+4].value.length;
-											spaces = spaces+spaces.repeat(offset);
-											txt=txt+k+'. '+cells[i+4].value+spaces;
-											spaces = " ";
-											offset = 20 - cells[i-137].value.length;
-											spaces = spaces+spaces.repeat(offset);
-											txt=txt+cells[i-137].value+spaces;
-											spaces = spaces+spaces.repeat(offset);
+											var offset = 21 - cells[i+4].value.length;
+											gap = " ".repeat(offset);
+											txt+=k+'. '+cells[i+4].value+gap;
+											offset = 21 - cells[i-137].value.length;
+											gap = " ".repeat(offset);
+											txt+=cells[i-137].value+gap;
 											if (cells[i].value.substring(1, 2) == 'X')
-												txt=txt+"HIGH\n";
+												txt+="HIGH\n";
 											if (cells[i].value.substring(1, 2) == 'T')
-												txt=txt+"NORMAL\n";
+												txt+="NORMAL\n";
 											k++;
-											spaces=" ";
 										}
 									}
 								}
@@ -1262,7 +1224,7 @@ doc.useServiceAccountAuth(creds, function (err) {
 									return m.edit("There are no devo tragets for <@"+member.user.id+">? :thinking:");
 								else {
 									m.edit("Sending devo targets of <@"+member.user.id+">. Check DM.");
-									txt=txt+"```";
+									txt+="```";
 									return message.author.send(txt);
 								}
 							});
@@ -1284,7 +1246,6 @@ doc.useServiceAccountAuth(creds, function (err) {
 	const m = await message.channel.send("Checking roster sheet...");
 	doc.useServiceAccountAuth(creds, function (err) {
 	doc.getInfo(function(err, info) {
-		name="";
 		sheet = info.worksheets[1];
 			sheet.getCells({
 				'min-row': 2,
@@ -1306,35 +1267,31 @@ doc.useServiceAccountAuth(creds, function (err) {
 								'max-col': 22,
 								'return-empty': true
 							}, function(err, cells) {
-								var i;
-								if (((cells[136].value == name) || (cells[138].value == name)))
+								if (((cells[136].value == name) || (cells[138].value == name))) //leader name cells
 								{
 									pt=1;
-									var spaces=" ";
 									var txt="```diff\n";
-									txt=txt+"+PARTY SETUP: \n\n";
-									txt=txt+"-name:                   class:\n";
+									txt+="+PARTY SETUP: \n\n";
+									txt+="-name:                   class:\n";
 									var k=0;
 									m.edit("Sending party setup. Check DM.");
 								for (i = 0; i < cells.length; i++) {
 									if (cells[i].value == name) {
-										var lead = i+5;
-										var i = lead;
+										i+=5;
 										for (i; i < cells.length; i+=8) {
 											k++;
-											var offset = 20 - cells[i].value.length;
-											spaces = spaces+spaces.repeat(offset);
+											var offset = 21 - cells[i].value.length;
+											gap = " ".repeat(offset);
 											if (k < 10)
-												spaces=spaces+" ";
-											txt=txt+k+". "+cells[i].value+spaces+cells[i-141].value+"\n";
-											spaces=" ";
+												gap+=" ";
+											txt+=k+". "+cells[i].value+gap+cells[i-141].value+"\n";
 										}
 									}
 								}
 							}
 							if (pt == 1)
 							{
-								txt=txt+"```";
+								txt+="```";
 								return message.author.send(txt);
 							}
 							else
@@ -1373,28 +1330,26 @@ else if (command === "cparty" || command === "cpt")
 					name = cells[136].value;
 				if (p == 2)
 					name = cells[138].value;
-				var spaces=" ";
+				var gap='';
 				var txt="```diff\n";
-				txt=txt+"+PARTY SETUP: \n\n";
-				txt=txt+"-name:                   class:\n";
+				txt+="+PARTY SETUP: \n\n";
+				txt+="-name:                   class:\n";
 				var k=0;
 				m.edit("Sending party setup. Check DM.");
 				for (i = 0; i < cells.length; i++) {
 					if (cells[i].value == name) {
-						var lead = i+5;
-						var i = lead;
+						i+=5;
 						for (i; i < cells.length; i+=8) {
 							k++;
-							var offset = 20 - cells[i].value.length;
-							spaces = spaces+spaces.repeat(offset);
+							var offset = 21 - cells[i].value.length;
+							gap = " ".repeat(offset);
 							if (k < 10)
-								spaces=spaces+" ";
-							txt=txt+k+". "+cells[i].value+spaces+cells[i-141].value+"\n";
-							spaces=" ";
+								gap+=" ";
+							txt+=k+". "+cells[i].value+gap+cells[i-141].value+"\n";
 						}
 					}
 				}
-				txt=txt+"```";
+				txt+="```";
 				return message.author.send(txt);
 			});
 	});
