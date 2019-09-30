@@ -90,7 +90,8 @@ client.on("message", async message => {
 	  }
 	  if (args[0] === "-d" && args[1] != "") {
 			var dd = new Date(args[1]);
-			dd.setHours(dd.getHours() - 3);
+			//dd.setHours(dd.getHours() - 3); //for local
+			dd.setHours(dd.getHours() - 1);
 			dd=dd/1000;
 			woedate=dd;
 			args=args.splice(2);
