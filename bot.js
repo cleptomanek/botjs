@@ -68,8 +68,11 @@ client.on("message", async message => {
   const command = args.shift().toLowerCase();
   if ((message.author.id == 444) || (message.author.id == 177107237053923328) || (message.author.id == 184327765070315521) || (message.author.id == 162610908307259392))
 	admin=1 
+
+if (command === "bot-status") 
+	return message.channel.send(`Bot is serving ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`); 
   
-  if(command === "gstats" || command === "gs") {
+  else if(command === "gstats" || command === "gs") {
 	  var woedate=1554584400; //default for tests
 	  //var url = 'https://ragnarok.life/?server=Ragnarok.Life&module=ranking&action=woerank&woe_date=1554584400&opt=0&ser=0&ord=0';
 	  if (args[0] === "-w" && args[1] != "") {
