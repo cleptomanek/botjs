@@ -84,21 +84,21 @@ client.on("message", async message => {
 			woedate=diff;
 			args=args.splice(2);
 			var d = new Date(0);
-			d.setUTCSeconds(diff+3600);
+			d.setUTCSeconds(diff+3600); // fix date from 23:00
 			d=d.toString();
-			displaydate=2;
+			displaydate=1;
 	  }
 	  if (args[0] === "-d" && args[1] != "") {
 			var dd = new Date(args[1]);
 			//dd.setHours(dd.getHours() - 3); //for local
-			dd.setHours(dd.getHours() - 1);
+			dd.setHours(dd.getHours() - 1); // need to set 23:00
 			dd=dd/1000;
 			woedate=dd;
 			args=args.splice(2);
 			var d = new Date(0);
-			d.setUTCSeconds(dd+3600);
+			d.setUTCSeconds(dd+3600); // go back to 0:00
 			d=d.toString();
-			displaydate=2;
+			displaydate=1;
 	  }
 	  if (!args[0])
 		  return message.channel.send("Write part of a guild name you want stats of.");
@@ -106,7 +106,8 @@ client.on("message", async message => {
 			var firstwoe= new Date('2019-04-06 23:00').getTime();
 			today = new Date().getTime();
 			var diff = Math.abs(today - firstwoe);
-			diff+=(firstwoe;
+			diff = Math.trunc(diff/weeksec); // cut off to full weeks
+			diff=(diff*weeksec)+firstwoe;
 			diff=diff/1000;
 			woedate=diff;
 	  
