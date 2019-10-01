@@ -686,6 +686,8 @@ else if(command === "help" || command === "h") {
 	txt+="+Forces attendance check on specified user. \n\n"
 	txt+=""+config.prefix+"cdevo @username \n"
 	txt+="+Checks devo targets of specified user. \n\n"
+	txt+=""+config.prefix+"devoall \n"
+	txt+="+Checks all devo targets. \n\n"
 	txt+=""+config.prefix+"cparty (1-2) (alternative: "+config.prefix+"cpt)\n"
 	txt+="+Checks party setup of specified party. \n\n"
 	txt+=""+config.prefix+"add @username \n"
