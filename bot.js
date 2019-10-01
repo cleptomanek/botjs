@@ -1331,20 +1331,22 @@ doc.getInfo(function(err, info) {
 			var k=0;
 			var pals = [];
 			var palsn = [];
+			var palsign = [];
 			var txt="";
 			for (i = 0; i < cells.length; i++){
 				if (cells[i].value.substring(0, 7) == 'Paladin') {
 					pals.push(cells[i+cdgap].value); //get all devo symbols for pals
-					palsn.push(cells[i+icgap].value); //get all pallies ingame names
+					palsn.push(cells[i+icgap].value); //get all pallies names
+					palsign.push(cells[i+icgap].value); //get all pallies ingame names
 				}
 				console.log(pals);
 			}
 			for (var j = 0; j < pals.length; j++) {
 				txt+="```diff\n";
-				txt+="+DEVO TARGETS FOR: "+palsn[j]+"\n\n";
+				txt+="+DEVO TARGETS FOR: "+palsign[j]+" ("pals[j]+")+\n\n";
 				txt+="-ingame name:           name:\n";
 				for (i = 0; i < cells.length; i++) {
-					if ((cells[i].value.substring(0, 1) == pals[j]))
+					if ((cells[i].value.substring(0, 1) == pals[j].substring(0, 1))
 					{ 
 						if ((cells[i].value.substring(1, 2) == 'X') || (cells[i].value.substring(1, 2) == 'T')){
 							var offset = 21 - cells[i+idgap].value.length;
