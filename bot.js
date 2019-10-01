@@ -1333,7 +1333,7 @@ doc.getInfo(function(err, info) {
 			var palsn = [];
 			var palsign = [];
 			var txt="";
-			/*for (i = 0; i < cells.length; i++){
+			for (i = 0; i < cells.length; i++){
 				if (cells[i].value.substring(0, 7) == 'Paladin') {
 					pals.push(cells[i+cdgap].value); //get all devo symbols for pals
 					palsn.push(cells[i+cngap].value); //get all pallies names
