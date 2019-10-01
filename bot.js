@@ -3,11 +3,27 @@ const async = require('async');
 const request = require('request');
 const cheerio = require('cheerio');
 const fs = require('fs');
-var doc = new GoogleSpreadsheet('1WPD5PPkaL-gbSuho0gxZttJQTuW8fMfJ2uN4dHulG4g');
-//var doc = new GoogleSpreadsheet('1Q47r52ICYGl2QQo5x45N3pzKOdO9lz9hGCb5hF6aeWc'); //test sheet\n
+const doc = new GoogleSpreadsheet('1WPD5PPkaL-gbSuho0gxZttJQTuW8fMfJ2uN4dHulG4g');
+//const doc = new GoogleSpreadsheet('1Q47r52ICYGl2QQo5x45N3pzKOdO9lz9hGCb5hF6aeWc'); //test sheet
 var sheet;
 const Discord = require("discord.js");
 const client = new Discord.Client();
+
+
+//!!! IMPORTANT STUFF !!!
+//FOR 32 ROW, 8 COL PULL - IT WILL CHANGE WHEN CHANGING SIZES OF PARTY WINDOWS
+//UPPER LEFT CORNER SHOULD HAVE CLASS NAMES
+//LOWER LEFT CORNER SHOULD HAVE NAMES
+//LOWER LEFT CORNER SHOULD HAVE INGAME NAMES
+//UPPER RIGHT WHATEVER (doesnt read from it)
+
+const ptl1 = 136; //party leader1 NAME cell (not ingame)
+const ptl2 = 138; //party leader2 NAME cell (not ingame)
+const icgap = 141; //gap in cells between ingame name and class
+const ingap = 5; //ingame name and name
+const idgap = 4; //ingame name and devo symbol 
+const cngap = icgap-ingap; //class and name
+const cdgap = icgap-idgap; //class and devo symbol
 
 //const config = require("./config.json"); //for local deploy
 //const creds = require('./client_secret.json'); //for local deploy
@@ -59,21 +75,22 @@ client.on("guildDelete", guild => {
 });
 
 var admin = 0;
-const week = 168;
+const week = 168; //helper numbers for date calculation
 const weeksec = 604800000;
 var displaydate=0;
 client.on("message", async message => {
-	if(message.author.bot) return;
-	if(message.content.indexOf(config.prefix) !== 0) return;
+	if(message.author.bot) return; //dont respond do own messages
+	if(message.content.indexOf(config.prefix) !== 0) return; //ignore messages without prefix
 	var args = message.content.slice(config.prefix.length).trim().split(/ +/g);
 	const command = args.shift().toLowerCase();
-	if ((message.author.id == 444) || (message.author.id == 177107237053923328) || (message.author.id == 184327765070315521) || (message.author.id == 162610908307259392))
+	if ((message.author.id == 444) || (message.author.id == 177107237053923328) || (message.author.id == 184327765070315521) || (message.author.id == 162610908307259392)) //admin ids
 	admin=1;
 
-if (command === "bot-status") 
+if (command === "bot-status")
 	return message.channel.send(`Bot is serving ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`); 
-  
-else if(command === "gstats" || command === "gs") {
+ 
+//WOE GUILD STATS 
+else if(command === "gstats" || command === "gs") { 
 	var woedate=1554584400; //default for tests
 	  //var url = 'https://ragnarok.life/?server=Ragnarok.Life&module=ranking&action=woerank&woe_date=1554584400&opt=0&ser=0&ord=0';
 	if (args[0] === "-w" && args[1] != "") {
@@ -88,19 +105,19 @@ else if(command === "gstats" || command === "gs") {
 		woedate=diff;
 		args=args.splice(2);
 		var d = new Date(0);
-		d.setUTCSeconds(diff+3600); // fix date from 23:00
+		d.setUTCSeconds(diff+3600); // fix date from 23:00 to 0:00
 		d=d.toString();
 		displaydate=1;
 	  }
 	if (args[0] === "-d" && args[1] != "") {
-		var dd = new Date(args[1]);
-		//dd.setHours(dd.getHours() - 3); //for local
-		dd.setHours(dd.getHours() - 1); // need to set 23:00
-		dd=dd/1000;
-		woedate=dd;
+		var dwoe = new Date(args[1]);
+		//dwoe.setHours(dwoe.getHours() - 3); //for local
+		dwoe.setHours(dwoe.getHours() - 1); // need to set 23:00
+		dwoe=dwoe/1000;
+		woedate=dwoe;
 		args=args.splice(2);
 		var d = new Date(0);
-		d.setUTCSeconds(dd+3600); // go back to 0:00
+		d.setUTCSeconds(dwoe+3600); // go back to 0:00
 		d=d.toString();
 		displaydate=1;
 	  }
@@ -121,17 +138,18 @@ else if(command === "gstats" || command === "gs") {
 	gname = args.join("+");
 	const m = await message.channel.send("Pulling data...");
 	url+=gname;
-	var rlk=rhp=rhw=rhwfs=rws=rsnip=rsin=rpal=rchamp=rprof=rdlp=rstalk=rchem=rspp=rclown=rgyp=rslinger=rninja=rtaek=rsg=rlinker=0;
-	var gypsy,hw,sniper,chem,prof;
-	var stat=kills=deaths=top=done=recv=supc=supw=healc=healw=emp=bar=stone=guard=demp=dbar=dstone=dguard=hp=sp=ygem=rgem=bgem=arrow=ad=poison=spirit=zeny=gypsyd=ganb=chemd=sniperd=sarrow=dispel=disp=0;
+	var rlk=rhp=rhw=rhwfs=rws=rsnip=rsin=rpal=rchamp=rprof=rdlp=rstalk=rchem=rspp=rclown=rgyp=rslinger=rninja=rtaek=rsg=rlinker=0; //roster vars
+	var gypsy,hw,sniper,chem,prof; //class checks
+	var stat=kills=deaths=top=done=recv=supc=supw=healc=healw=emp=bar=stone=guard=demp=dbar=dstone=dguard=hp=sp=ygem=rgem=bgem=arrow=ad=poison=spirit=zeny=gypsyd=ganb=chemd=sniperd=sarrow=dispel=disp=0; //stat vars
 		request(url, function (error, response, body) {
 			const $ = cheerio.load(body);
-			fullname = $("#ladder_div table.battlerank-table:nth-child(1) tr.battlerank-header td:nth-child(3)").text().trim();
+			fullname = $("#ladder_div table.battlerank-table:nth-child(1) tr.battlerank-header td:nth-child(3)").text().trim(); //guild full name
 			if (fullname == "")
 				return m.edit("No players found with guild name containing **"+gname+"** :frowning:");
 			var i;
 			$("#ladder_div table.battlerank-table").each (function () {
 				i=1;
+				//classname checks for roster composition and class-specific stats
 				if ($("tr.battlerank-header td:nth-child(5)", this).text().trim() === "Lord Knight")
 					rlk+=1;
 				if ($("tr.battlerank-header td:nth-child(5)", this).text().trim() === "High Priest")
@@ -189,17 +207,17 @@ else if(command === "gstats" || command === "gs") {
 				if ($("tr.battlerank-header td:nth-child(5)", this).text().trim() === "Soul Linker")
 					rlinker+=1;
 				
-					
+				//get stats	
 				$("table.stat-table", this).each (function () {
 					$(".text-primary", this).each (function () { 
-					if (i<6 || (i>17 && i<25))
+					if (i<6 || (i>17 && i<25)) //ignore not needed stats
 						stat = parseFloat($(this).html().replace(/,/g, ''));
 					if (i==1) {
 						kills+=stat;
 					}
 					if (i==2) {
 						if (gypsy==1)
-							gypsyd+=stat;
+							gypsyd+=stat; //gypsy deaths
 						else
 							deaths+=stat;
 					}
@@ -207,12 +225,12 @@ else if(command === "gstats" || command === "gs") {
 						top+=stat;
 					}
 					if (i==4) {
-						if ((chem==1) && (stat > 500000)) {
+						if ((chem==1) && (stat > 500000)) { //check for dd chem
 							chemd+=stat;
 							rchem+=1;
 							rspp=rspp-1;
 						}
-						if ((hw==1) && (stat < 500000)) {
+						if ((hw==1) && (stat < 500000)) { //check for fs wiz
 							rhwfs+=1;
 							rhw=rhw-1;
 						}
@@ -265,7 +283,7 @@ else if(command === "gstats" || command === "gs") {
 						rgem+=stat;
 					}
 					if (i==22) {						
-						if ((prof == 1) && (stat <500)) {
+						if ((prof == 1) && (stat <500)) { //check for dispel prof (shouldnt have more than 500 blue gems used)
 							dispel+=disp;
 							rprof+=1;
 							rdlp=rdlp-1;
@@ -290,8 +308,10 @@ else if(command === "gstats" || command === "gs") {
 					});
 				}); 
 			});
+//dmg per fas and dmg per ad
 var fas = sniperd/sarrow;
 var add = chemd/ad;
+//formatting stuff
 fas = Math.round(fas);
 add = Math.round(add);
 fas = fas.toLocaleString().split(',').join('.');
@@ -317,7 +337,7 @@ txt+="!kills:             ";
 txt+="deaths:             ";
 txt+="damage done:        ";
 txt+="received:           \n";
-offset = 20 - kills.length;
+offset = 20 - kills.length; //calculates spaces for text formatting
 gap=" ".repeat(offset);
 txt+=kills+gap;
 offset = 20 - deaths.length;
@@ -437,8 +457,8 @@ if (args[0] === "-w" && args[1] != "") {
   }
 if (args[0] === "-d" && args[1] != "") {
 	var dwoe = new Date(args[1]);
-	//dd.setHours(dd.getHours() - 3); //for local
-	dwoe.setHours(dd.getHours() - 1); // need to set 23:00
+	//dwoe.setHours(dwoe.getHours() - 3); //for local
+	dwoe.setHours(dwoe.getHours() - 1); // need to set 23:00
 	dwoe=dwoe/1000;
 	woedate=dwoe;
 	args=args.splice(2);
@@ -512,11 +532,11 @@ request(url, function (error, response, body) {
 	var j=1;
 	$("#ladder_div table.battlerank-table").each (function () {
 		i=1;
-		name=$(".battlerank-header td:nth-child(4) b > b",this).text();
+		name=$(".battlerank-header td:nth-child(4) b > b",this).text(); //need to check twice for name since longer names use singe b instead of 2
 		 if (name == "")
 			 name=$(".battlerank-header td:nth-child(4) b",this).text();
 		guild=$(".battlerank-header td:nth-child(3)",this).text().trim();
-		if ((parseInt($("div.row div.col-10 div.row div.col-7 tr:nth-child(2) td:nth-child(2) .text-primary", this).html().replace(/,/g, ''))) < 500000)
+		if ((parseInt($("div.row div.col-10 div.row div.col-7 tr:nth-child(2) td:nth-child(2) .text-primary", this).html().replace(/,/g, ''))) < 500000) //check for dd (dmg over 500k)
 			dd=0;
 		else
 			dd=1;
@@ -648,7 +668,8 @@ else if(command === "help" || command === "h") {
 	txt+="+You can use this command to get archive woe data aswell using -d and -w options. -w specifies how many weeks ago from current date woe occured and -d lets you provide exact date of woe\n"
 	txt+="---ex. '?gs -w 3 guildname' (pulls woe from 3 weeks ago for specified guildname), '?gs -d 2019-09-08 guildname' (woe from 08 september 2019 for guildname - format is RRRR/MM/DD) \n\n"
 	txt+=""+config.prefix+"compare (dd class) (alternative: "+config.prefix+"cmp)\n"
-	txt+="+Compares DD classes stats (use command with class name ***will be ready after first woe - pulls from ragnarok.life as for now***\n---ex. '?cmp chem', '?compare 'sniper', '?compare creo', '?cmp wiz' "
+	txt+="+Compares DD classes stats (use command with class name ***will be ready after first woe - pulls from ragnarok.life as for now***\n---ex. '?cmp chem', '?compare 'sniper', '?compare creo', '?cmp wiz' \n"
+	txt+="+You can use this command to get archive woe data aswell using -d and -w options (usage is the same as ?gstats)"
 	txt+="```"
 	message.author.send(txt);
 	txt="```diff\n"
@@ -697,14 +718,14 @@ doc.getInfo(function(err, info) {
 			var txt="```diff\n";
 			txt+="+PARTY LEADERS: \n\n";
 			txt+="-ingame name:           name:\n";
-			offset = 21 - cells[141].value.length;
+			offset = 21 - cells[ptl1+ingap].value.length; //party leader 1 ingame name
 			gap = " ".repeat(offset);
-			txt+="\n1. "+cells[141].value+gap;
-			txt+=cells[141-5].value;
-			offset = 21 - cells[143].value.length;
+			txt+="\n1. "+cells[ptl1+ingap].value+gap;
+			txt+=cells[ptl1].value; //party leader 1 name
+			offset = 21 - cells[ptl2+ingap].value.length;
 			gap = " ".repeat(offset);
-			txt+="\n2. "+cells[143].value+gap;
-			txt+=cells[143-5].value;
+			txt+="\n2. "+cells[ptl2+ingap].value+gap;
+			txt+=cells[ptl2].value;
 			txt+="\n\n-Check party setup with ?party command!";
 			txt+="```";
 			txt+="```diff\n";
@@ -714,10 +735,10 @@ doc.getInfo(function(err, info) {
 				for (i = 0; i < cells.length; i++) {
 					if (cells[i].value.substring(0, 7) == 'Paladin') {
 						k++;
-						offset = 21 - cells[i+141].value.length;
+						offset = 21 - cells[i+icgap].value.length; //ingame name
 						gap = " ".repeat(offset);
-						txt+="\n"+k+". "+cells[i+141].value+gap;
-						txt+=cells[i+141-5].value;
+						txt+="\n"+k+". "+cells[i+icgap].value+gap;
+						txt+=cells[i+cngap].value; //class name
 					}
 				}
 			txt+="\n\n-Check your devo targets with ?devo command!";
@@ -1142,7 +1163,7 @@ const m = await message.channel.send("Checking roster sheet...");
 doc.useServiceAccountAuth(creds, function (err) {
 doc.getInfo(function(err, info) {
 	sheet = info.worksheets[1];
-		sheet.getCells({
+		sheet.getCells({ //check for id in bot sheet
 			'min-row': 2,
 			'max-row': 40,
 			'min-col': 1,
@@ -1155,7 +1176,7 @@ doc.getInfo(function(err, info) {
 				{
 					name=cells[i-1].value;	
 					sheet = info.worksheets[0];
-						sheet.getCells({
+						sheet.getCells({ //get all 3 party tables (classes, names, in-game names)
 							'min-row': 5,
 							'max-row': 36,
 							'min-col': 15,
@@ -1163,7 +1184,7 @@ doc.getInfo(function(err, info) {
 							'return-empty': true
 						}, function(err, cells) {
 							for (i = 0; i < cells.length; i++) {
-								if ((cells[i].value == name) && (cells[i+1].value.substring(1, 2) == 'P'))
+								if ((cells[i].value == name) && (cells[i+1].value.substring(1, 2) == 'P')) //check for pallies (1P, 2P, 3P ...)
 								{
 										pal = cells[i+1].value;
 										pal = pal.substring(0, 1);
@@ -1177,15 +1198,15 @@ doc.getInfo(function(err, info) {
 							txt+="+DEVO TARGETS: \n\n";
 							txt+="-name:                  class:               priority:\n";
 							for (i = 0; i < cells.length; i++) {
-								if ((cells[i].value.substring(0, 1) == pal))
+								if ((cells[i].value.substring(0, 1) == pal)) //find devo targets (same number before P,T or X)
 								{ 
-									if ((cells[i].value.substring(1, 2) == 'X') || (cells[i].value.substring(1, 2) == 'T')){
-										var offset = 21 - cells[i+4].value.length;
+									if ((cells[i].value.substring(1, 2) == 'X') || (cells[i].value.substring(1, 2) == 'T')){ //devo symbol
+										var offset = 21 - cells[i+idgap].value.length;
 										gap = " ".repeat(offset);
-										txt+=k+'. '+cells[i+4].value+gap;
-										offset = 21 - cells[i-137].value.length;
+										txt+=k+'. '+cells[i+idgap].value+gap; //name
+										offset = 21 - cells[i-cdgap].value.length; //class
 										gap = " ".repeat(offset);
-										txt+=cells[i-137].value+gap;
+										txt+=cells[i-cdgap].value+gap;
 										if (cells[i].value.substring(1, 2) == 'X')
 											txt+="HIGH\n";
 										if (cells[i].value.substring(1, 2) == 'T')
@@ -1262,12 +1283,12 @@ doc.getInfo(function(err, info) {
 								if ((cells[i].value.substring(0, 1) == pal))
 								{ 
 									if ((cells[i].value.substring(1, 2) == 'X') || (cells[i].value.substring(1, 2) == 'T')){
-										var offset = 21 - cells[i+4].value.length;
+										var offset = 21 - cells[i+idgap].value.length;
 										gap = " ".repeat(offset);
-										txt+=k+'. '+cells[i+4].value+gap;
-										offset = 21 - cells[i-137].value.length;
+										txt+=k+'. '+cells[i+idgap].value+gap;
+										offset = 21 - cells[i-cdgap].value.length;
 										gap = " ".repeat(offset);
-										txt+=cells[i-137].value+gap;
+										txt+=cells[i-cdgap].value+gap;
 										if (cells[i].value.substring(1, 2) == 'X')
 											txt+="HIGH\n";
 										if (cells[i].value.substring(1, 2) == 'T')
@@ -1301,7 +1322,7 @@ const m = await message.channel.send("Checking roster sheet...");
 doc.useServiceAccountAuth(creds, function (err) {
 doc.getInfo(function(err, info) {
 	sheet = info.worksheets[1];
-		sheet.getCells({
+		sheet.getCells({ //check for id in bot sheet
 			'min-row': 2,
 			'max-row': 40,
 			'min-col': 1,
@@ -1314,14 +1335,14 @@ doc.getInfo(function(err, info) {
 				{
 					name=cells[i-1].value;	
 					sheet = info.worksheets[0];
-						sheet.getCells({
+						sheet.getCells({ //get all 3 party tables (classes, names, in-game names)
 							'min-row': 5,
 							'max-row': 36,
 							'min-col': 15,
 							'max-col': 22,
 							'return-empty': true
 						}, function(err, cells) {
-							if (((cells[136].value == name) || (cells[138].value == name))) //leader name cells
+							if (((cells[ptl1].value == name) || (cells[ptl2].value == name))) //leader name cells
 							{
 								pt=1;
 								var txt="```diff\n";
@@ -1331,14 +1352,14 @@ doc.getInfo(function(err, info) {
 								m.edit("Sending party setup. Check DM.");
 							for (i = 0; i < cells.length; i++) {
 								if (cells[i].value == name) {
-									i+=5;
-									for (i; i < cells.length; i+=8) {
+									i+=ingap; //sets cell on ingame name
+									for (i; i < cells.length; i+=8) { //ROWS LENGTH - IMPORTANT!!!
 										k++;
 										var offset = 21 - cells[i].value.length;
 										gap = " ".repeat(offset);
 										if (k < 10)
 											gap+=" ";
-										txt+=k+". "+cells[i].value+gap+cells[i-141].value+"\n";
+										txt+=k+". "+cells[i].value+gap+cells[i-icgap].value+"\n"; //class name
 									}
 								}
 							}
@@ -1382,9 +1403,9 @@ doc.getInfo(function(err, info) {
 		}, function(err, cells) {
 			var i;
 			if (p == 1)
-				name = cells[136].value;
+				name = cells[ptl1].value;
 			if (p == 2)
-				name = cells[138].value;
+				name = cells[ptl2].value;
 			var gap='';
 			var txt="```diff\n";
 			txt+="+PARTY SETUP: \n\n";
@@ -1393,14 +1414,14 @@ doc.getInfo(function(err, info) {
 			m.edit("Sending party setup. Check DM.");
 			for (i = 0; i < cells.length; i++) {
 				if (cells[i].value == name) {
-					i+=5;
-					for (i; i < cells.length; i+=8) {
+					i+=ingap;
+					for (i; i < cells.length; i+=8) { //ROWS LENGTH - IMPORTANT!!!
 						k++;
 						var offset = 21 - cells[i].value.length;
 						gap = " ".repeat(offset);
 						if (k < 10)
 							gap+=" ";
-						txt+=k+". "+cells[i].value+gap+cells[i-141].value+"\n";
+						txt+=k+". "+cells[i].value+gap+cells[i-icgap].value+"\n";
 					}
 				}
 			}
