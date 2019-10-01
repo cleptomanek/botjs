@@ -1336,7 +1336,7 @@ doc.getInfo(function(err, info) {
 			for (i = 0; i < cells.length; i++){
 				if (cells[i].value.substring(0, 7) == 'Paladin') {
 					pals.push(cells[i+cdgap].value); //get all devo symbols for pals
-					palsn.push(cells[i+icgap].value); //get all pallies names
+					palsn.push(cells[i+cngap].value); //get all pallies names
 					palsign.push(cells[i+icgap].value); //get all pallies ingame names
 				}
 			}
