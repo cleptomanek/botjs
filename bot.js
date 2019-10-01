@@ -1328,7 +1328,7 @@ doc.getInfo(function(err, info) {
 			var i;
 			var gap="";
 			var offset;
-			var k=0;
+			var k=1;
 			var pals = [];
 			var palsn = [];
 			var palsign = [];
@@ -1342,7 +1342,7 @@ doc.getInfo(function(err, info) {
 			}
 			for (var j = 0; j < pals.length; j++) {
 				txt+="```diff\n";
-				txt+="+DEVO TARGETS FOR: "+palsign[j]+" ("+palsn[j]+")+\n\n";
+				txt+="+DEVO TARGETS FOR: "+palsign[j]+" ("+palsn[j]+")\n\n";
 				txt+="-ingame name:           name:\n";
 				for (i = 0; i < cells.length; i++) {
 					if ((cells[i].value.substring(0, 1) == pals[j].substring(0, 1)))
@@ -1363,6 +1363,7 @@ doc.getInfo(function(err, info) {
 					}
 				}
 			txt+="```\n";
+			k=0;
 			}
 			if (k==1)
 				return m.edit("There are no devo targets? :thinking:");
