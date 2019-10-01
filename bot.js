@@ -1364,14 +1364,11 @@ doc.getInfo(function(err, info) {
 						}
 					}
 				}
-			txt+="```\n";
-			k=0;
+				txt+="```\n";
+				k=1;
 			}
-			if (k==1)
-				return m.edit("There are no devo targets? :thinking:");
-			else {
-				m.edit("Sending all devo targets. Check DM.");
-				return message.author.send(txt);
+			m.edit("Sending all devo targets. Check DM.");
+			return message.author.send(txt);
 			}
 		});
 });
