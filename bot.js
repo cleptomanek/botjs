@@ -1313,7 +1313,58 @@ doc.getInfo(function(err, info) {
 	});
 });
 }
-
+else if(command === "devoall" || command === "dall") {
+const m = await message.channel.send("Checking roster sheet...");
+doc.useServiceAccountAuth(creds, function (err) {
+doc.getInfo(function(err, info) {
+	sheet = info.worksheets[0];
+		sheet.getCells({
+			'min-row': 5,
+			'max-row': 36,
+			'min-col': 15,
+			'max-col': 22,
+			'return-empty': true
+		}, function(err, cells) {
+			var i;
+			var gap="";
+			var offset;
+			var k=0;
+			var pals = [];
+			var palsn = [];
+			for (i = 0; i < cells.length; i++){
+				if (cells[i].value.substring(0, 7) == 'Paladin') {
+					pals.push(cells[i+cdgap].value); //get all devo symbols for pals
+					palsn.push(cells[i+icgap].value); //get all pallies ingame names
+				}
+			}
+			for (var j = 0; j < pals.length; j++) {
+				var txt="```diff\n";
+				txt+="+DEVO TARGETS FOR: "+palsn[j]+"\n\n";
+				txt+="-ingame name:           name:\n";
+				for (i = 0; i < cells.length; i++) {
+					if ((cells[i].value.substring(0, 1) == pals[j]))
+					{ 
+						if ((cells[i].value.substring(1, 2) == 'X') || (cells[i].value.substring(1, 2) == 'T')){
+							var offset = 21 - cells[i+idgap].value.length;
+							gap = " ".repeat(offset);
+							txt+=k+'. '+cells[i+idgap].value+gap;
+							offset = 21 - cells[i-cdgap].value.length;
+							gap = " ".repeat(offset);
+							txt+=cells[i-cdgap].value+gap;
+							if (cells[i].value.substring(1, 2) == 'X')
+								txt+="HIGH\n";
+							if (cells[i].value.substring(1, 2) == 'T')
+								txt+="NORMAL\n";
+							k++;
+						}
+					}
+				}
+							var txt="```\n";
+			}
+		});
+});
+});
+}
 else if (command === "party" || command === "pt")
 {
 var name="";
