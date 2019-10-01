@@ -1336,6 +1336,7 @@ doc.getInfo(function(err, info) {
 					pals.push(cells[i+cdgap].value); //get all devo symbols for pals
 					palsn.push(cells[i+icgap].value); //get all pallies ingame names
 				}
+				console.log(pals);
 			}
 			for (var j = 0; j < pals.length; j++) {
 				var txt="```diff\n";
@@ -1365,7 +1366,6 @@ doc.getInfo(function(err, info) {
 				return m.edit("There are no devo targets? :thinking:");
 			else {
 				m.edit("Sending all devo targets. Check DM.");
-				txt+="```";
 				return message.author.send(txt);
 			}
 		});
