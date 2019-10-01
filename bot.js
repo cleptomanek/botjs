@@ -1369,7 +1369,6 @@ doc.getInfo(function(err, info) {
 			}
 			m.edit("Sending all devo targets. Check DM.");
 			return message.author.send(txt);
-			}
 		});
 });
 });
