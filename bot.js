@@ -1340,11 +1340,11 @@ doc.getInfo(function(err, info) {
 					palsign.push(cells[i+icgap].value); //get all pallies ingame names
 				}
 			}
-			/*for (var j = 0; j < pals.length; j++) {
+			for (var j = 0; j < pals.length; j++) {
 				txt+="```diff\n";
 				txt+="+DEVO TARGETS FOR: "+palsign[j]+" ("palsn[j]+")+\n\n";
 				txt+="-ingame name:           name:\n";
-				for (i = 0; i < cells.length; i++) {
+				/*for (i = 0; i < cells.length; i++) {
 					if ((cells[i].value.substring(0, 1) == pals[j].substring(0, 1)))
 					{ 
 						if ((cells[i].value.substring(1, 2) == 'X') || (cells[i].value.substring(1, 2) == 'T')){
@@ -1361,10 +1361,9 @@ doc.getInfo(function(err, info) {
 							k++;
 						}
 					}
-				}
+				}*/
 			txt+="```\n";
 			}
-			*/
 			if (k==1)
 				return m.edit("There are no devo targets? :thinking:");
 			else {
