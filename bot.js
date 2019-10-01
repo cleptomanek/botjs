@@ -1472,7 +1472,7 @@ doc.getInfo(function(err, info) {
 			for (var j = 0; j < name.length; j++) {
 				txt+="```diff\n";
 				if (j==0) txt+="+1ST PARTY SETUP: \n\n";
-				if (j==1) txt+="+2ND PARTY SETUP: \n\n";
+				if (j==1 || p==2) txt+="+2ND PARTY SETUP: \n\n";
 				txt+="-name:                   class:\n";
 				for (i = 0; i < cells.length; i++) {
 					if (cells[i].value == name[j]) {
