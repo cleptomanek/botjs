@@ -1216,7 +1216,7 @@ doc.getInfo(function(err, info) {
 								}
 							}
 							if (k==1)
-								return m.edit("<@"+message.author.id+">, There are no devo tragets for you? :thinking:");
+								return m.edit("<@"+message.author.id+">, There are no devo targets for you? :thinking:");
 							else {
 								m.edit("Sending devo targets. Check DM.");
 								txt+="```";
@@ -1298,7 +1298,7 @@ doc.getInfo(function(err, info) {
 								}
 							}
 							if (k==1)
-								return m.edit("There are no devo tragets for <@"+member.user.id+">? :thinking:");
+								return m.edit("There are no devo targets for <@"+member.user.id+">? :thinking:");
 							else {
 								m.edit("Sending devo targets of <@"+member.user.id+">. Check DM.");
 								txt+="```";
@@ -1359,7 +1359,14 @@ doc.getInfo(function(err, info) {
 						}
 					}
 				}
-							var txt="```\n";
+			txt+="```\n";
+			}
+			if (k==1)
+				return m.edit("There are no devo targets? :thinking:");
+			else {
+				m.edit("Sending all devo targets. Check DM.");
+				txt+="```";
+				return message.author.send(txt);
 			}
 		});
 });
