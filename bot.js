@@ -1445,10 +1445,10 @@ else if (command === "cparty" || command === "cpt")
 if (admin == 0)
 	return message.reply("Sorry, you are not allowed to use admin commands :clown: Ask clepto if you think you should have rights\n You can check available commands using: ```fix\n "+config.prefix+"help\n```");
 const p = parseInt(args[0], 10);
-if (!p || p < 1 || p >2)
+if (p < 1 || p >2)
 	return message.reply("Provide valid party number (1 or 2)");
 const m = await message.channel.send("Checking roster sheet...");
-var name="";
+var name=[];
 var pt=0;
 doc.useServiceAccountAuth(creds, function (err) {
 doc.getInfo(function(err, info) {
@@ -1461,30 +1461,33 @@ doc.getInfo(function(err, info) {
 			'return-empty': true
 		}, function(err, cells) {
 			var i;
-			if (p == 1)
-				name = cells[ptl1].value;
-			if (p == 2)
-				name = cells[ptl2].value;
+			if (p == 1 || !p)
+				name.push(cells[ptl1].value);
+			if (p == 2 || !p)
+				name.push(cells[ptl2].value);
 			var gap='';
-			var txt="```diff\n";
-			txt+="+PARTY SETUP: \n\n";
-			txt+="-name:                   class:\n";
+			var txt='';
 			var k=0;
 			m.edit("Sending party setup. Check DM.");
-			for (i = 0; i < cells.length; i++) {
-				if (cells[i].value == name) {
-					i+=ingap;
-					for (i; i < cells.length; i+=8) { //ROWS LENGTH - IMPORTANT!!!
-						k++;
-						var offset = 21 - cells[i].value.length;
-						gap = " ".repeat(offset);
-						if (k < 10)
-							gap+=" ";
-						txt+=k+". "+cells[i].value+gap+cells[i-icgap].value+"\n";
+			for (var j = 0; j < name.length; j++) {
+				txt+="```diff\n";
+				txt+="+PARTY SETUP: \n\n";
+				txt+="-name:                   class:\n";
+				for (i = 0; i < cells.length; i++) {
+					if (cells[i].value == name[j]) {
+						i+=ingap;
+						for (i; i < cells.length; i+=8) { //ROWS LENGTH - IMPORTANT!!!
+							k++;
+							var offset = 21 - cells[i].value.length;
+							gap = " ".repeat(offset);
+							if (k < 10)
+								gap+=" ";
+							txt+=k+". "+cells[i].value+gap+cells[i-icgap].value+"\n";
+						}
 					}
 				}
+				txt+="```";
 			}
-			txt+="```";
 			return message.author.send(txt);
 		});
 });
