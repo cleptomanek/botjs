@@ -686,9 +686,9 @@ else if(command === "help" || command === "h") {
 	txt+="+Forces attendance check on specified user. \n\n"
 	txt+=""+config.prefix+"cdevo @username \n"
 	txt+="+Checks devo targets of specified user. \n\n"
-	txt+=""+config.prefix+"devoall \n"
+	txt+=""+config.prefix+"devoall (alternative: "+config.prefix+"dall)\n"
 	txt+="+Checks all devo targets. \n\n"
-	txt+=""+config.prefix+"cparty (1-2) (alternative: "+config.prefix+"cpt)\n"
+	txt+=""+config.prefix+"cparty (1-2 or leave empy for both) (alternative: "+config.prefix+"cpt)\n"
 	txt+="+Checks party setup of specified party. \n\n"
 	txt+=""+config.prefix+"add @username \n"
 	txt+="+Adds specified user into roster sheet. \n\n"
@@ -1471,7 +1471,8 @@ doc.getInfo(function(err, info) {
 			m.edit("Sending party setup. Check DM.");
 			for (var j = 0; j < name.length; j++) {
 				txt+="```diff\n";
-				txt+="+PARTY SETUP: \n\n";
+				if (j==0) txt+="+1ST PARTY SETUP: \n\n";
+				if (j==1) txt+="+2ND PARTY SETUP: \n\n";
 				txt+="-name:                   class:\n";
 				for (i = 0; i < cells.length; i++) {
 					if (cells[i].value == name[j]) {
