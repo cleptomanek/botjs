@@ -242,30 +242,18 @@ else if(command === "gstats" || command === "gs") {
 						
 						recv+=stat;
 					}
-					/*if (i==6)
-						supc+=stat;
-					if (i==7)
-						supw+=stat;
-					if (i==8)
-						healc+=stat;
-					if (i==9)
-						healw+=stat;
-					if (i==10)
-						emp+=stat;
-					if (i==11)
-						bar+=stat;
-					if (i==12)
-						stone+=stat;
-					if (i==13)
-						guard+=stat;
-					if (i==14)
-						demp+=stat;
-					if (i==15)
-						dbar+=stat;
-					if (i==16)
-						dstone+=stat;
-					if (i==17)
-						dguard+=stat; */
+					/*if (i==6) supc+=stat;
+					if (i==7) supw+=stat;
+					if (i==8) healc+=stat;
+					if (i==9) healw+=stat;
+					if (i==10) emp+=stat;
+					if (i==11) bar+=stat;
+					if (i==12) stone+=stat;
+					if (i==13) guard+=stat;
+					if (i==14) demp+=stat;
+					if (i==15) dbar+=stat;
+					if (i==16) dstone+=stat;
+					if (i==17) dguard+=stat; */
 					if (i==18) {
 						hp+=stat;
 					}
@@ -298,12 +286,9 @@ else if(command === "gstats" || command === "gs") {
 					if (i==24) {
 						ad+=stat;
 					}
-					/*if (i==25)
-						poison+=stat;
-					if (i==26)
-						spirit+=stat;
-					if (i==27)
-						zeny+=stat; */
+					/*if (i==25) poison+=stat;
+					if (i==26) spirit+=stat;
+					if (i==27) zeny+=stat; */
 					i++;
 					});
 				}); 
@@ -385,48 +370,27 @@ txt+=dispel+gap;
 
 txt+="\n\n--- Roster composition:\n";
 txt+="+class:                        count:\n";
-if (rlk > 0)
-txt+="Lord Knight:                   "+rlk+"\n";
-if (rhp > 0)
-txt+="High Priest:                   "+rhp+"\n";
-if (rhw > 0)
-txt+="DD High Wizard:                "+rhw+"\n";
-if (rhwfs > 0)
-txt+="FS High Wizard:                "+rhwfs+"\n";
-if (rws > 0)
-txt+="Whitesmith:                    "+rws+"\n";
-if (rsnip > 0)
-txt+="Sniper:                        "+rsnip+"\n";
-if (rsin > 0)
-txt+="Assassin Cross:                "+rsin+"\n";
-if (rpal > 0)
-txt+="Paladin:                       "+rpal+"\n";
-if (rchamp > 0)
-txt+="Champion:                      "+rchamp+"\n";
-if (rprof > 0)
-txt+="Dispel Prof:                   "+rprof+"\n";
-if (rdlp > 0)
-txt+="DLP Prof:                      "+rdlp+"\n";
-if (rstalk> 0)
-txt+="Stalker:                       "+rstalk+"\n";
-if (rchem > 0)
-txt+="DD Chem:                       "+rchem+"\n";
-if (rspp > 0)
-txt+="SPP Chem:                      "+rspp+"\n";
-if (rclown > 0)
-txt+="Clown:                         "+rclown+"\n";
-if (rgyp > 0)
-txt+="Gypsy:                         "+rgyp+"\n";
-if (rslinger > 0)
-txt+="Gunslinger:                    "+rslinger+"\n";
-if (rninja > 0)
-txt+="Ninja:                         "+rninja+"\n";
-if (rtaek > 0)
-txt+="Taekwon:                       "+rtaek+"\n";
-if (rsg > 0)
-txt+="Star Gladiator:                "+rsg+"\n";
-if (rlinker > 0)
-txt+="Soul Linker:                   "+rlinker+"\n";
+if (rlk > 0)txt+="Lord Knight:                   "+rlk+"\n";
+if (rhp > 0)txt+="High Priest:                   "+rhp+"\n";
+if (rhw > 0)txt+="DD High Wizard:                "+rhw+"\n";
+if (rhwfs > 0)txt+="FS High Wizard:                "+rhwfs+"\n";
+if (rws > 0)txt+="Whitesmith:                    "+rws+"\n";
+if (rsnip > 0)txt+="Sniper:                        "+rsnip+"\n";
+if (rsin > 0)txt+="Assassin Cross:                "+rsin+"\n";
+if (rpal > 0)txt+="Paladin:                       "+rpal+"\n";
+if (rchamp > 0)txt+="Champion:                      "+rchamp+"\n";
+if (rprof > 0)txt+="Dispel Prof:                   "+rprof+"\n";
+if (rdlp > 0)txt+="DLP Prof:                      "+rdlp+"\n";
+if (rstalk> 0)txt+="Stalker:                       "+rstalk+"\n";
+if (rchem > 0)txt+="DD Chem:                       "+rchem+"\n";
+if (rspp > 0)txt+="SPP Chem:                      "+rspp+"\n";
+if (rclown > 0)txt+="Clown:                         "+rclown+"\n";
+if (rgyp > 0)txt+="Gypsy:                         "+rgyp+"\n";
+if (rslinger > 0)txt+="Gunslinger:                    "+rslinger+"\n";
+if (rninja > 0)txt+="Ninja:                         "+rninja+"\n";
+if (rtaek > 0)txt+="Taekwon:                       "+rtaek+"\n";
+if (rsg > 0)txt+="Star Gladiator:                "+rsg+"\n";
+if (rlinker > 0)txt+="Soul Linker:                   "+rlinker+"\n";
 var total = rlk+rhp+rhw+rhwfs+rws+rsnip+rsin+rpal+rchamp+rprof+rdlp+rstalk+rchem+rspp+rclown+rgyp+rslinger+rninja+rtaek+rsg+rlinker;
 txt+="+TOTAL:                        "+total+"\n";
 txt+="\n```";
@@ -511,19 +475,17 @@ txt+="!name:                   ";
 txt+="guild:                   ";
 txt+="K:   ";
 txt+="D:   ";
-if (job == 'wiz')
-txt+="top dmg:    ";
+if (job == 'wiz')txt+="top dmg:    ";
 txt+="dmg done:    ";
 txt+="received:    ";
-if (job == 'wiz')
-txt+="ganb used:\n";
+if (job == 'wiz')txt+="ganb used:\n";
 if (job == 'snip') {
-txt+="fas used:  ";
-txt+="dmg/fas:\n";
+	txt+="fas used:  ";
+	txt+="dmg/fas:\n";
 }
 if (job == 'chem') {
-txt+="ad used:  ";
-txt+="dmg/ad:\n";
+	txt+="ad used:  ";
+	txt+="dmg/ad:\n";
 }
 request(url, function (error, response, body) {
 	var section=0;
