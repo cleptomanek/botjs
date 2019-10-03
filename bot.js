@@ -147,15 +147,17 @@ else if(command === "gstats" || command === "gs") {
 			gnames.push($("#ladder_div table.battlerank-table:nth-child(1) tr.battlerank-header td:nth-child(3)").text().trim()); //get first guild name
 			if (gnames[0] == "") //if first is blank it means no guilds participated
 				return m.edit("No guilds participated in selected woe :frowning:");
-			$("#ladder_div table.battlerank-table:nth-child(1) tr.battlerank-header td:nth-child(3)").each (function () { //check rest of guild names
-				for (var i = 0; i < gnames.length; i++) { //check if guildname is already there
-					if ($(this).text().trim() == gnames[i]) //break out of loop if guild name is found
-						break;
-					if (i+1 == gnames.length) { //add new name if it wasnt found
-						gnames.push($(this).text().trim());
-						txt+=$(this).text().trim()+"\n";
+			$("#ladder_div table.battlerank-table").each (function () { //check rest of guild names
+				$("tr.battlerank-header td:nth-child(3)", this).each (function () {
+					for (var i = 0; i < gnames.length; i++) { //check if guildname is already there
+						if ($(this).text().trim() == gnames[i]) //break out of loop if guild name is found
+							break;
+						if (i+1 == gnames.length) { //add new name if it wasnt found
+							gnames.push($(this).text().trim());
+							txt+=$(this).text().trim()+"\n";
+						}
 					}
-				}
+				});
 			});		
 			txt+='```';
 			message.channel.send('Guild name was not provided - listed all guilds that participated in selected woe.');
