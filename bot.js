@@ -159,7 +159,7 @@ else if(command === "gstats" || command === "gs") {
 			});		
 			m.edit(txt);
 			return message.channel.send('Guild name was not provided - listed all guilds that participated in selected woe.');
-		}
+		});
 	}
 	gname = args.join("+");
 	url+=gname;
