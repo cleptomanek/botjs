@@ -121,8 +121,8 @@ else if(command === "gstats" || command === "gs") {
 		d=d.toString();
 		displaydate=1;
 	  }
-	if (!args[0])
-		return message.channel.send("Write part of a guild name you want stats of.");
+	//if (!args[0])
+		//return message.channel.send("Write part of a guild name you want stats of.");
 		/*
 		var firstwoe= new Date('2019-04-06 23:00').getTime();
 		today = new Date().getTime();
@@ -135,8 +135,33 @@ else if(command === "gstats" || command === "gs") {
 		today.setHours(today.getHours() - 3); //for time adjust if needed
 		FOR CURRENT WOE!!!!*/ 
 	var url = 'https://ragnarok.life/?module=ranking&action=woerank&woe_date='+woedate+'&opt=101&server=Ragnarok.Life&buscar=';
-	gname = args.join("+");
 	const m = await message.channel.send("Pulling data...");
+	if (!args[0]) { //list guild names when no args provided
+		var txt = "```diff\n"
+		if (displaydate!=0)
+			txt+="-ARCHIVE WOE DATE: "+d+"\n\n"
+		txt+="-GUILDS PARTICIPATED IN WOE:\n"
+		request(url, function (error, response, body) {
+			const $ = cheerio.load(body);
+			var gnames = [];
+			gnames.push($("#ladder_div table.battlerank-table:nth-child(1) tr.battlerank-header td:nth-child(3)").text().trim()); //get first guild name
+			if (gnames[0] == "") //if first is blank it means no guilds participated
+				return m.edit("No guilds participated in selected woe :frowning:");
+			$("#ladder_div table.battlerank-table:nth-child(1) tr.battlerank-header td:nth-child(3)").each() (function () { //check rest of guild names
+				for (var i = 0; i < gnames.length; i++) { //check if guildname is already there
+					if ($(this).text().trim() == gnames[i]) //break out of loop if guild name is found
+						break;
+					if (i+1 == gnames.length) { //add new name if it wasnt found
+						gnames.push($(this).text().trim());
+						txt+=$(this).text().trim()+"\n";
+					}
+				}
+			});		
+			m.edit(txt);
+			return message.channel.send('Guild name was not provided - listed all guilds that participated in selected woe.');
+		}
+	}
+	gname = args.join("+");
 	url+=gname;
 	var rlk=rhp=rhw=rhwfs=rws=rsnip=rsin=rpal=rchamp=rprof=rdlp=rstalk=rchem=rspp=rclown=rgyp=rslinger=rninja=rtaek=rsg=rlinker=0; //roster vars
 	var gypsy,hw,sniper,chem,prof; //class checks
