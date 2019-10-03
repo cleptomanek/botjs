@@ -159,10 +159,10 @@ else if(command === "gstats" || command === "gs") {
 					}
 				});
 			});		
-			txt+='```';
-			message.channel.send('Guild name was not provided - listed all guilds that participated in selected woe.');
-			return m.edit(txt);
 		});
+		txt+='```';
+		message.channel.send('Guild name was not provided - listed all guilds that participated in selected woe.');
+		return m.edit(txt);
 	}
 	gname = args.join("+");
 	url+=gname;
@@ -321,6 +321,7 @@ else if(command === "gstats" || command === "gs") {
 					});
 				}); 
 			});
+		});
 //dmg per fas and dmg per ad
 var fas = sniperd/sarrow;
 var add = chemd/ad;
@@ -423,8 +424,6 @@ var total = rlk+rhp+rhw+rhwfs+rws+rsnip+rsin+rpal+rchamp+rprof+rdlp+rstalk+rchem
 txt+="+TOTAL:                        "+total+"\n";
 txt+="\n```";
 return m.edit(txt);
-});
-return
 }
 
 else if (command === 'compare' || command === 'cmp')
@@ -625,13 +624,12 @@ request(url, function (error, response, body) {
 			});
 		}); 
 	});
+});
 txt+="```";
 if (section == 0)
 	m.edit(txt);
 else
 	return message.channel.send(txt);
-});
-return
 }
   
 else if(command === "help" || command === "h") {
