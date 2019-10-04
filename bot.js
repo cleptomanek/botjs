@@ -79,249 +79,251 @@ const week = 168; //helper numbers for date calculation
 const weeksec = 604800000;
 var displaydate=0;
 client.on("message", async message => {
-	if(message.author.bot) return; //dont respond do own messages
+	if(message.author.bot) return; //dont respond to own messages
 	if(message.content.indexOf(config.prefix) !== 0) return; //ignore messages without prefix
 	var args = message.content.slice(config.prefix.length).trim().split(/ +/g);
 	const command = args.shift().toLowerCase();
 	if ((message.author.id == 444) || (message.author.id == 177107237053923328) || (message.author.id == 184327765070315521) || (message.author.id == 162610908307259392)) //admin ids
-	admin=1;
+		admin=1;
 
-if (command === "bot-status")
-	return message.channel.send(`Bot is serving ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`); 
+if (command === "bot-status") {
+	client.user.setActivity(`${config.prefix}h for commands`);
+	return message.channel.send(`Bot is serving ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`);
+}
  
 //WOE GUILD STATS 
 else if(command === "gstats" || command === "gs") { 
-	var woedate=1554584400; //default for tests
-	  //var url = 'https://ragnarok.life/?server=Ragnarok.Life&module=ranking&action=woerank&woe_date=1554584400&opt=0&ser=0&ord=0';
-	if (args[0] === "-w" && args[1] != "") {
-		var firstwoe= new Date('2019-04-06 23:00').getTime();
-		today = new Date().getTime();
-		var diff = Math.abs(today - firstwoe);
-		diff = Math.trunc(diff/weeksec);
-		var wbehind = parseInt(args[1]);
-		diff = diff-wbehind;
-		diff=(diff*weeksec)+firstwoe;
-		diff=diff/1000;
-		woedate=diff;
-		args=args.splice(2);
-		var d = new Date(0);
-		d.setUTCSeconds(diff+3600); // fix date from 23:00 to 0:00
-		d=d.toString();
-		displaydate=1;
-	  }
-	if (args[0] === "-d" && args[1] != "") {
-		var dwoe = new Date(args[1]);
-		//dwoe.setHours(dwoe.getHours() - 3); //for local
-		dwoe.setHours(dwoe.getHours() - 1); // need to set 23:00
-		dwoe=dwoe/1000;
-		woedate=dwoe;
-		args=args.splice(2);
-		var d = new Date(0);
-		d.setUTCSeconds(dwoe+3600); // go back to 0:00
-		d=d.toString();
-		displaydate=1;
-	  }
-	//if (!args[0])
-		//return message.channel.send("Write part of a guild name you want stats of.");
-		/*
-		var firstwoe= new Date('2019-04-06 23:00').getTime();
-		today = new Date().getTime();
-		var diff = Math.abs(today - firstwoe);
-		diff = Math.trunc(diff/weeksec); // cut off to full weeks
-		diff=(diff*weeksec)+firstwoe;
-		diff=diff/1000;
-		woedate=diff;
+var woedate=1554584400; //default for tests
+  //var url = 'https://ragnarok.life/?server=Ragnarok.Life&module=ranking&action=woerank&woe_date=1554584400&opt=0&ser=0&ord=0';
+if (args[0] === "-w" && args[1] != "") {
+	var firstwoe= new Date('2019-04-06 23:00').getTime();
+	today = new Date().getTime();
+	var diff = Math.abs(today - firstwoe);
+	diff = Math.trunc(diff/weeksec);
+	var wbehind = parseInt(args[1]);
+	diff = diff-wbehind;
+	diff=(diff*weeksec)+firstwoe;
+	diff=diff/1000;
+	woedate=diff;
+	args=args.splice(2);
+	var d = new Date(0);
+	d.setUTCSeconds(diff+3600); // fix date from 23:00 to 0:00
+	d=d.toString();
+	displaydate=1;
+  }
+if (args[0] === "-d" && args[1] != "") {
+	var dwoe = new Date(args[1]);
+	//dwoe.setHours(dwoe.getHours() - 3); //for local
+	dwoe.setHours(dwoe.getHours() - 1); // need to set 23:00
+	dwoe=dwoe/1000;
+	woedate=dwoe;
+	args=args.splice(2);
+	var d = new Date(0);
+	d.setUTCSeconds(dwoe+3600); // go back to 0:00
+	d=d.toString();
+	displaydate=1;
+  }
+//if (!args[0])
+	//return message.channel.send("Write part of a guild name you want stats of.");
+	/*
+	var firstwoe= new Date('2019-04-06 23:00').getTime();
+	today = new Date().getTime();
+	var diff = Math.abs(today - firstwoe);
+	diff = Math.trunc(diff/weeksec); // cut off to full weeks
+	diff=(diff*weeksec)+firstwoe;
+	diff=diff/1000;
+	woedate=diff;
 
-		today.setHours(today.getHours() - 3); //for time adjust if needed
-		FOR CURRENT WOE!!!!*/ 
-	var url = 'https://ragnarok.life/?module=ranking&action=woerank&woe_date='+woedate+'&opt=101&server=Ragnarok.Life&buscar=';
-	const m = await message.channel.send("Pulling data...");
-	if (!args[0]) { //list guild names when no args provided
-		var txt = "```diff\n"
-		if (displaydate!=0)
-			txt+="-ARCHIVE WOE DATE: "+d+"\n\n"
-		txt+="-GUILDS PARTICIPATED IN WOE:\n"
-		request(url, function (error, response, body) {
-			const $ = cheerio.load(body);
-			var gnames = [];
-			gnames.push($("#ladder_div table.battlerank-table:nth-child(1) tr.battlerank-header td:nth-child(3)").text().trim()); //get first guild name
-			if (gnames[0] == "") //if first is blank it means no guilds participated
-				return m.edit("No guilds participated in selected woe :frowning:");
-			$("#ladder_div table.battlerank-table").each (function () { //check rest of guild names
-				$("tr.battlerank-header td:nth-child(3)", this).each (function () {
-					for (var i = 0; i < gnames.length; i++) { //check if guildname is already there
-						if ($(this).text().trim() == gnames[i]) //break out of loop if guild name is found
-							break;
-						if (i+1 == gnames.length) { //add new name if it wasnt found
-							gnames.push($(this).text().trim());
-							txt+=$(this).text().trim()+"\n";
-						}
+	today.setHours(today.getHours() - 3); //for time adjust if needed
+	FOR CURRENT WOE!!!!*/ 
+var url = 'https://ragnarok.life/?module=ranking&action=woerank&woe_date='+woedate+'&opt=101&server=Ragnarok.Life&buscar=';
+const m = await message.channel.send("Pulling data...");
+if (!args[0]) { //list guild names when no args provided
+	var txt = "```diff\n"
+	if (displaydate!=0)
+		txt+="-ARCHIVE WOE DATE: "+d+"\n\n"
+	txt+="-GUILDS PARTICIPATED IN WOE:\n"
+	request(url, function (error, response, body) {
+		const $ = cheerio.load(body);
+		var gnames = [];
+		gnames.push($("#ladder_div table.battlerank-table:nth-child(1) tr.battlerank-header td:nth-child(3)").text().trim()); //get first guild name
+		if (gnames[0] == "") //if first is blank it means no guilds participated
+			return m.edit("No guilds participated in selected woe :frowning:");
+		$("#ladder_div table.battlerank-table").each (function () { //check rest of guild names
+			$("tr.battlerank-header td:nth-child(3)", this).each (function () {
+				for (var i = 0; i < gnames.length; i++) { //check if guildname is already there
+					if ($(this).text().trim() == gnames[i]) //break out of loop if guild name is found
+						break;
+					if (i+1 == gnames.length) { //add new name if it wasnt found
+						gnames.push($(this).text().trim());
+						txt+=$(this).text().trim()+"\n";
 					}
-				});
-			});		
-			txt+='```';
-			message.channel.send('Guild name was not provided - listed all guilds that participated in selected woe.');
-			return m.edit(txt);
-		});
-		return
-	}
-	gname = args.join("+");
-	url+=gname;
-	var rlk=rhp=rhw=rhwfs=rws=rsnip=rsin=rpal=rchamp=rprof=rdlp=rstalk=rchem=rspp=rclown=rgyp=rslinger=rninja=rtaek=rsg=rlinker=0; //roster vars
-	var gypsy,hw,sniper,chem,prof; //class checks
-	var stat=kills=deaths=top=done=recv=supc=supw=healc=healw=emp=bar=stone=guard=demp=dbar=dstone=dguard=hp=sp=ygem=rgem=bgem=arrow=ad=poison=spirit=zeny=gypsyd=ganb=chemd=sniperd=sarrow=dispel=disp=0; //stat vars
-		request(url, function (error, response, body) {
-			const $ = cheerio.load(body);
-			fullname = $("#ladder_div table.battlerank-table:nth-child(1) tr.battlerank-header td:nth-child(3)").text().trim(); //guild full name
-			if (fullname == "")
-				return m.edit("No players found with guild name containing **"+gname+"** :frowning:");
-			var i;
-			$("#ladder_div table.battlerank-table").each (function () {
-				i=1;
-				//classname checks for roster composition and class-specific stats
-				if ($("tr.battlerank-header td:nth-child(5)", this).text().trim() === "Lord Knight")
-					rlk+=1;
-				if ($("tr.battlerank-header td:nth-child(5)", this).text().trim() === "High Priest")
-					rhp+=1;
-				if ($("tr.battlerank-header td:nth-child(5)", this).text().trim() === "High Wizard") {
-					hw = 1;
-					rhw+=1;
 				}
-				else
-					hw = 0;
-				if ($("tr.battlerank-header td:nth-child(5)", this).text().trim() === "Whitesmith")
-					rws+=1;
-				if ($("tr.battlerank-header td:nth-child(5)", this).text().trim() === "Sniper") {
-					sniper = 1;
-					rsnip+=1;
-				}
-				else
-					sniper = 0;
-				if ($("tr.battlerank-header td:nth-child(5)", this).text().trim() === "Assassin Cross")
-					rsin+=1;
-				if ($("tr.battlerank-header td:nth-child(5)", this).text().trim() === "Paladin")
-					rpal+=1;
-				if ($("tr.battlerank-header td:nth-child(5)", this).text().trim() === "Champion")
-					rchamp+=1;
-				if ($("tr.battlerank-header td:nth-child(5)", this).text().trim() === "Professor") {
-					rdlp+=1;
-					prof = 1;
-				}
-				else
-					prof = 0;
-				if ($("tr.battlerank-header td:nth-child(5)", this).text().trim() === "Stalker")
-					rstalk+=1;
-				if ($("tr.battlerank-header td:nth-child(5)", this).text().trim() === "Creator") {
-					chem = 1;
-					rspp+=1;
-				}
-				else
-					chem = 0;
-				if ($("tr.battlerank-header td:nth-child(5)", this).text().trim() === "Clown")
-					rclown+=1;
-				if ($("tr.battlerank-header td:nth-child(5)", this).text().trim() === "Gypsy") {
-					gypsy = 1;
-					rgyp+=1;
-				}
-				else
-					gypsy = 0;
-				if ($("tr.battlerank-header td:nth-child(5)", this).text().trim() === "Gunslinger")
-					rslinger+=1;
-				if ($("tr.battlerank-header td:nth-child(5)", this).text().trim() === "Ninja")
-					rninja+=1;
-				if ($("tr.battlerank-header td:nth-child(5)", this).text().trim() === "Taekwon")
-					rtaek+=1;
-				if ($("tr.battlerank-header td:nth-child(5)", this).text().trim() === "Star Gladiator")
-					rsg+=1;
-				if ($("tr.battlerank-header td:nth-child(5)", this).text().trim() === "Soul Linker")
-					rlinker+=1;
-				
-				//get stats	
-				$("table.stat-table", this).each (function () {
-					$(".text-primary", this).each (function () { 
-					if (i<6 || (i>17 && i<25)) //ignore not needed stats
-						stat = parseFloat($(this).html().replace(/,/g, ''));
-					if (i==1) {
-						kills+=stat;
-					}
-					if (i==2) {
-						if (gypsy==1)
-							gypsyd+=stat; //gypsy deaths
-						else
-							deaths+=stat;
-					}
-					if (i==3) {
-						top+=stat;
-					}
-					if (i==4) {
-						if ((chem==1) && (stat > 500000)) { //check for dd chem
-							chemd+=stat;
-							rchem+=1;
-							rspp=rspp-1;
-						}
-						if ((hw==1) && (stat < 500000)) { //check for fs wiz
-							rhwfs+=1;
-							rhw=rhw-1;
-						}
-						if (sniper==1)
-							sniperd+=stat;
-						done+=stat;
-					}
-					if (i==5) {
-						
-						recv+=stat;
-					}
-					/*if (i==6) supc+=stat;
-					if (i==7) supw+=stat;
-					if (i==8) healc+=stat;
-					if (i==9) healw+=stat;
-					if (i==10) emp+=stat;
-					if (i==11) bar+=stat;
-					if (i==12) stone+=stat;
-					if (i==13) guard+=stat;
-					if (i==14) demp+=stat;
-					if (i==15) dbar+=stat;
-					if (i==16) dstone+=stat;
-					if (i==17) dguard+=stat; */
-					if (i==18) {
-						hp+=stat;
-					}
-					if (i==19) {				
-						sp+=stat;
-					}
-					if (i==20) {						
-						if (hw == 1) 
-							ganb+=stat;
-						if (prof == 1)
-							disp=stat;
-						ygem+=stat;
-					}
-					if (i==21) {						
-						rgem+=stat;
-					}
-					if (i==22) {						
-						if ((prof == 1) && (stat <500)) { //check for dispel prof (shouldnt have more than 500 blue gems used)
-							dispel+=disp;
-							rprof+=1;
-							rdlp=rdlp-1;
-						}
-						bgem+=stat;
-					}
-					if (i==23) {						
-						if (sniper == 1)
-							sarrow+=stat;
-						arrow+=stat;
-					}
-					if (i==24) {
-						ad+=stat;
-					}
-					/*if (i==25) poison+=stat;
-					if (i==26) spirit+=stat;
-					if (i==27) zeny+=stat; */
-					i++;
-					});
-				}); 
 			});
+		});		
+		txt+='```';
+		message.channel.send('Guild name was not provided - listed all guilds that participated in selected woe.');
+		return m.edit(txt);
+	});
+	return
+}
+gname = args.join("+");
+url+=gname;
+var rlk=rhp=rhw=rhwfs=rws=rsnip=rsin=rpal=rchamp=rprof=rdlp=rstalk=rchem=rspp=rclown=rgyp=rslinger=rninja=rtaek=rsg=rlinker=0; //roster vars
+var gypsy,hw,sniper,chem,prof; //class checks
+var stat=kills=deaths=top=done=recv=supc=supw=healc=healw=emp=bar=stone=guard=demp=dbar=dstone=dguard=hp=sp=ygem=rgem=bgem=arrow=ad=poison=spirit=zeny=gypsyd=ganb=chemd=sniperd=sarrow=dispel=disp=0; //stat vars
+	request(url, function (error, response, body) {
+		const $ = cheerio.load(body);
+		fullname = $("#ladder_div table.battlerank-table:nth-child(1) tr.battlerank-header td:nth-child(3)").text().trim(); //guild full name
+		if (fullname == "")
+			return m.edit("No players found with guild name containing **"+gname+"** :frowning:");
+		var i;
+		$("#ladder_div table.battlerank-table").each (function () {
+			i=1;
+			//classname checks for roster composition and class-specific stats
+			if ($("tr.battlerank-header td:nth-child(5)", this).text().trim() === "Lord Knight")
+				rlk+=1;
+			if ($("tr.battlerank-header td:nth-child(5)", this).text().trim() === "High Priest")
+				rhp+=1;
+			if ($("tr.battlerank-header td:nth-child(5)", this).text().trim() === "High Wizard") {
+				hw = 1;
+				rhw+=1;
+			}
+			else
+				hw = 0;
+			if ($("tr.battlerank-header td:nth-child(5)", this).text().trim() === "Whitesmith")
+				rws+=1;
+			if ($("tr.battlerank-header td:nth-child(5)", this).text().trim() === "Sniper") {
+				sniper = 1;
+				rsnip+=1;
+			}
+			else
+				sniper = 0;
+			if ($("tr.battlerank-header td:nth-child(5)", this).text().trim() === "Assassin Cross")
+				rsin+=1;
+			if ($("tr.battlerank-header td:nth-child(5)", this).text().trim() === "Paladin")
+				rpal+=1;
+			if ($("tr.battlerank-header td:nth-child(5)", this).text().trim() === "Champion")
+				rchamp+=1;
+			if ($("tr.battlerank-header td:nth-child(5)", this).text().trim() === "Professor") {
+				rdlp+=1;
+				prof = 1;
+			}
+			else
+				prof = 0;
+			if ($("tr.battlerank-header td:nth-child(5)", this).text().trim() === "Stalker")
+				rstalk+=1;
+			if ($("tr.battlerank-header td:nth-child(5)", this).text().trim() === "Creator") {
+				chem = 1;
+				rspp+=1;
+			}
+			else
+				chem = 0;
+			if ($("tr.battlerank-header td:nth-child(5)", this).text().trim() === "Clown")
+				rclown+=1;
+			if ($("tr.battlerank-header td:nth-child(5)", this).text().trim() === "Gypsy") {
+				gypsy = 1;
+				rgyp+=1;
+			}
+			else
+				gypsy = 0;
+			if ($("tr.battlerank-header td:nth-child(5)", this).text().trim() === "Gunslinger")
+				rslinger+=1;
+			if ($("tr.battlerank-header td:nth-child(5)", this).text().trim() === "Ninja")
+				rninja+=1;
+			if ($("tr.battlerank-header td:nth-child(5)", this).text().trim() === "Taekwon")
+				rtaek+=1;
+			if ($("tr.battlerank-header td:nth-child(5)", this).text().trim() === "Star Gladiator")
+				rsg+=1;
+			if ($("tr.battlerank-header td:nth-child(5)", this).text().trim() === "Soul Linker")
+				rlinker+=1;
+			
+			//get stats	
+			$("table.stat-table", this).each (function () {
+				$(".text-primary", this).each (function () { 
+				if (i<6 || (i>17 && i<25)) //ignore not needed stats
+					stat = parseFloat($(this).html().replace(/,/g, ''));
+				if (i==1) {
+					kills+=stat;
+				}
+				if (i==2) {
+					if (gypsy==1)
+						gypsyd+=stat; //gypsy deaths
+					else
+						deaths+=stat;
+				}
+				if (i==3) {
+					top+=stat;
+				}
+				if (i==4) {
+					if ((chem==1) && (stat > 500000)) { //check for dd chem
+						chemd+=stat;
+						rchem+=1;
+						rspp=rspp-1;
+					}
+					if ((hw==1) && (stat < 500000)) { //check for fs wiz
+						rhwfs+=1;
+						rhw=rhw-1;
+					}
+					if (sniper==1)
+						sniperd+=stat;
+					done+=stat;
+				}
+				if (i==5) {
+					
+					recv+=stat;
+				}
+				/*if (i==6) supc+=stat;
+				if (i==7) supw+=stat;
+				if (i==8) healc+=stat;
+				if (i==9) healw+=stat;
+				if (i==10) emp+=stat;
+				if (i==11) bar+=stat;
+				if (i==12) stone+=stat;
+				if (i==13) guard+=stat;
+				if (i==14) demp+=stat;
+				if (i==15) dbar+=stat;
+				if (i==16) dstone+=stat;
+				if (i==17) dguard+=stat; */
+				if (i==18) {
+					hp+=stat;
+				}
+				if (i==19) {				
+					sp+=stat;
+				}
+				if (i==20) {						
+					if (hw == 1) 
+						ganb+=stat;
+					if (prof == 1)
+						disp=stat;
+					ygem+=stat;
+				}
+				if (i==21) {						
+					rgem+=stat;
+				}
+				if (i==22) {						
+					if ((prof == 1) && (stat <500)) { //check for dispel prof (shouldnt have more than 500 blue gems used)
+						dispel+=disp;
+						rprof+=1;
+						rdlp=rdlp-1;
+					}
+					bgem+=stat;
+				}
+				if (i==23) {						
+					if (sniper == 1)
+						sarrow+=stat;
+					arrow+=stat;
+				}
+				if (i==24) {
+					ad+=stat;
+				}
+				/*if (i==25) poison+=stat;
+				if (i==26) spirit+=stat;
+				if (i==27) zeny+=stat; */
+				i++;
+				});
+			}); 
+		});
 //dmg per fas and dmg per ad
 var fas = sniperd/sarrow;
 var add = chemd/ad;
