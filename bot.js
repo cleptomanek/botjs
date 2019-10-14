@@ -94,7 +94,7 @@ if (command === "bot-status") {
 else if(command === "bgranks" || command === "bg") { 
 if (!args[0])
 	return message.channel.send('Provide class name with this command');
-var job = args[0];
+var job = args[0].toLowerCase();
 var jobid, jobtext;
 if (job == 'gunslinger' || job == 'slinger') {
 	jobid = '24';
@@ -236,7 +236,8 @@ txt+="RECV:    \n";
 					txt+="```";
 					if (section>0)
 						message.channel.send(txt);
-					m.edit(txt);
+					else
+						m.edit(txt);
 					txt="";
 					j=1;
 					txt+="```diff\n"
