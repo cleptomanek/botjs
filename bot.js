@@ -90,7 +90,166 @@ if (command === "bot-status") {
 	client.user.setActivity(`${config.prefix}h for commands`);
 	return message.channel.send(`Bot is serving ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`);
 }
- 
+//BG RANKS 
+else if(command === "bgranks" || command === "bg") { 
+if (!args[0])
+	return message.channel.send('Provide class name with this command');
+var job = args[0];
+var jobid, jobtext;
+if (job == 'gunslinger' || job == 'slinger') {
+	jobid = '24';
+	jobtext = 'GUNSLINGERS';
+}
+else if (job == 'ninja') {
+	jobid = '25';
+	jobtext = 'NINJAS';
+}
+else if (job == 'lk' || job == 'lord') {
+	jobid = '4008';
+	jobtext = 'LORD KNIGHTS';
+}
+else if (job == 'hp' || job == 'priest') {
+	jobid = '4009';
+	jobtext = 'HIGH PRIESTS';
+}
+else if (job == 'wiz' || job == 'wizard'|| job == 'hw') {
+	jobid = '4010';
+	jobtext = 'WIZARDS';
+}
+else if (job == 'ws' || job == 'whitesmith'|| job == 'smith') {
+	jobid = '4011';
+	jobtext = 'WHITESMITHS';
+}
+else if (job == 'snip' || job == 'sniper') {
+	jobid = '4012';
+	jobtext = 'SNIPERS:';
+}
+else if (job == 'sinx' || job == 'assassin') {
+	jobid = '4013';
+	jobtext = 'ASSASSIN CROSSES:';
+}
+else if (job == 'pala' || job == 'paladin' || job == 'pal') {
+	jobid = '4015';
+	jobtext = 'PALADINS:';
+}
+else if (job == 'champ' || job == 'champion') {
+	jobid = '4016';
+	jobtext = 'CHAMPIONS:';
+}
+else if (job == 'prof' || job == 'professor') {
+	jobid = '4017';
+	jobtext = 'PROFESSORS:';
+}
+else if (job == 'stalker' || job == 'stalk') {
+	jobid = '4018';
+	jobtext = 'STALKERS:';
+}
+else if (job == 'chem' || job == 'creo' || job == 'creator' || job == 'biochem'){
+	jobid = '4019';
+	jobtext = 'CHEMS:';
+}
+else if (job == 'clown') {
+	jobid = '4020';
+	jobtext = 'CLOWNS:';
+}
+else if (job == 'gyp' || job == 'gypsy'){
+	jobid = '4021';
+	jobtext = 'GYPSIES:';
+}
+else if (job == 'sl' || job == 'linker'){
+	jobid = '4049';
+	jobtext = 'SOUL LINKERS:';
+}
+else
+	return message.channel.send('Provide valid class name (lk, hp, hw, ws, snip, sinx, pala, champ, prof, stalk, chem, clown, gypsy, sl)');
+const m = await message.channel.send("Pulling data...");
+var offset;
+var gap="";
+var name,guild,w,l,r,k,d,top,done,recv;
+var url = 'http://ragnaland.com/?module=ranking&action=bg&jobclass='+jobid;
+var txt = "```diff\n"
+var j=1;
+var section=0;
+txt+="-BG RANKS FOR: "+jobtext+"\n"
+txt+="!name:                   ";
+txt+="guild:                   ";
+txt+="W:   ";
+txt+="L:   ";
+txt+="W%:  ";
+txt+="K:     ";
+txt+="D:     ";
+txt+="TOP:     ";
+txt+="DONE:         ";
+txt+="RECV:    \n";
+		request(url, function (error, response, body) {
+			const $ = cheerio.load(body);
+			$("div.rankingbg > div > table").each (function () {
+				name=$("> tbody > tr:nth-child(1) > th:nth-child(2) > span", this).text().trim();
+				offset = 25 - name.length;
+				gap=" ".repeat(offset);
+				txt+=name+gap;	
+				guild=$("> tbody > tr:nth-child(2) > th", this).text().trim();
+				offset = 25 - guild.length;
+				gap=" ".repeat(offset);
+				txt+=guild+gap;
+				w = $("> tbody > tr:nth-child(3) table table tr:nth-child(1) td:nth-child(1) table tr:nth-child(2) td:nth-child(1)", this).text().trim().replace(/[^0-9]/gi, '');
+				offset = 5 - w.length;
+				w=parseFloat(w);
+				gap=" ".repeat(offset);
+				txt+=w+gap;	
+				l = $("> tbody > tr:nth-child(3) table table tr:nth-child(1) td:nth-child(1) table tr:nth-child(2) td:nth-child(3)", this).text().trim().replace(/[^0-9]/gi, '');
+				offset = 5 - l.length;
+				l=parseFloat(l);
+				gap=" ".repeat(offset);
+				txt+=l+gap;
+				r=w/(w+l)*100;
+				r=r.toFixed(0)
+				offset = 5 - r.length;
+				gap=" ".repeat(offset);
+				txt+=r+gap;		
+				k = $("> tbody > tr:nth-child(3) table table tr:nth-child(2) td:nth-child(1) table tr:nth-child(2) td:nth-child(1)", this).text().trim().replace(/[^0-9]/gi, '');
+				offset = 7 - k.length;
+				k=parseFloat(k);
+				gap=" ".repeat(offset);
+				txt+=k+gap;		
+				d = $("> tbody > tr:nth-child(3) table table tr:nth-child(2) td:nth-child(1) table tr:nth-child(2) td:nth-child(2)", this).text().trim().replace(/[^0-9]/gi, '');
+				offset = 7 - d.length;
+				d=parseFloat(d);
+				gap=" ".repeat(offset);
+				txt+=d+gap;			
+				top = parseFloat($("> tbody > tr:nth-child(3) table table tr:nth-child(2) td:nth-child(2) table tr:nth-child(2) td:nth-child(1)", this).text().trim().replace(/[^0-9]/gi, ''));
+				top = top.toLocaleString().split(',').join('.');
+				offset = 9 - top.length;
+				gap=" ".repeat(offset);
+				txt+=top+gap;
+				done = parseFloat($("> tbody > tr:nth-child(3) table table tr:nth-child(2) td:nth-child(2) table tr:nth-child(2) td:nth-child(2)", this).text().trim().replace(/[^0-9]/gi, ''));
+				done = done.toLocaleString().split(',').join('.');
+				offset = 14 - done.length;
+				gap=" ".repeat(offset);
+				txt+=done+gap;				
+				recv = parseFloat($("> tbody > tr:nth-child(3) table table tr:nth-child(2) td:nth-child(2) table tr:nth-child(2) td:nth-child(3)", this).text().trim().replace(/[^0-9]/gi, ''));
+				recv = recv.toLocaleString().split(',').join('.');
+				txt+=recv;
+				txt+='\n';	
+				j++;
+				if (j>10) {
+					txt+="```";
+					if (section>0)
+						message.channel.send(txt);
+					m.edit(txt);
+					txt="";
+					j=1;
+					txt+="```diff\n"
+					section++;
+				}
+			});
+			txt+="```";
+			if (section == 0)
+				m.edit(txt);
+			else
+				return message.channel.send(txt);
+		});	
+}
 //WOE GUILD STATS 
 else if(command === "gstats" || command === "gs") { 
 var woedate=1554584400; //default for tests
@@ -488,7 +647,7 @@ if (job == 'snip' || job == 'sniper') {
 	jobid = '4012';
 	jobtext = 'SNIPERS:';
 }
-if (job == 'wiz' || job == 'wizard') {
+if (job == 'wiz' || job == 'wizard' || job == 'hw') {
 	job = 'wiz';
 	jobid = '4010';
 	jobtext = 'DD WIZARDS:';
