@@ -248,7 +248,8 @@ txt+="RECV:    \n";
 				m.edit(txt);
 			else
 				return message.channel.send(txt);
-		});	
+		});
+return
 }
 //WOE GUILD STATS 
 else if(command === "gstats" || command === "gs") { 
