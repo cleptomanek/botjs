@@ -237,7 +237,7 @@ txt+="RECV:    \n";
 					if (section>0)
 						message.channel.send(txt);
 					else
-						m.edit(txt);
+						 m.edit(txt);
 					txt="";
 					j=1;
 					txt+="```diff\n"
@@ -245,9 +245,9 @@ txt+="RECV:    \n";
 				}
 			});
 			txt+="```";
-			if (section == 0)
+			if (section == 0 && j!=1)
 				m.edit(txt);
-			else
+			else if (j!=1)
 				return message.channel.send(txt);
 		});
 return
