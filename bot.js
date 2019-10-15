@@ -1138,7 +1138,7 @@ doc.getInfo(function(err, info) {
 					var reply = "I've set your attendance to **'yes'**. Use following commands to get more info:";
 					reply+="```fix\n"+config.prefix+"build - used to get you a build for woe (if someone bothered to make it :clown:)\n";
 					reply+=config.prefix+"devo - check your devo targets (only for pallies)\n";
-					reply+=onfig.prefix+"party - check your party setup (only for party leaders)\n";
+					reply+=config.prefix+"party - check your party setup (only for party leaders)\n";
 					reply+=config.prefix+"check - check your attendance status\n";
 					reply+=config.prefix+"comment - put your comment on the roster sheet\n";
 					reply+=config.prefix+"no - sets your attendance status on no (not recommended :smile:)\n```";
