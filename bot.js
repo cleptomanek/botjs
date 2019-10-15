@@ -824,7 +824,7 @@ else if(command === "help" || command === "h") {
 	txt+="---ex. '?gs -w 3 guildname' (pulls woe from 3 weeks ago for specified guildname), '?gs -d 2019-09-08 guildname' (woe from 08 september 2019 for guildname - format is RRRR-MM-DD) \n\n"
 	txt+=""+config.prefix+"compare (dd class) (alternative: "+config.prefix+"cmp)\n"
 	txt+="+Compares DD classes stats (use command with class name ***will be ready after first woe - pulls from ragnarok.life as for now***\n---ex. '?cmp chem', '?compare sniper', '?compare creo', '?cmp wiz' \n"
-	txt+="+You can use this command to get archive woe data aswell using -d and -w options (usage is the same as ?gstats)"
+	txt+="+You can use this command to get archive woe data aswell using -d and -w options (usage is the same as ?gstats)\n"
 	txt+=""+config.prefix+"bgranks (class) (alternative: "+config.prefix+"bg)\n"
 	txt+="+Pulls data from BG rankings\n---ex. '?bg chem', '?bgranks sniper', '?bgranka creo', '?bg wiz' \n"
 	txt+="```"
