@@ -94,7 +94,7 @@ if (command === "bot-status") {
 else if(command === "bgranks" || command === "bg") { 
 if (!args[0])
 	return message.channel.send('Provide class name with this command');
-var job = args[0];
+var job = args[0].toLowerCase();
 var jobid, jobtext;
 if (job == 'gunslinger' || job == 'slinger') {
 	jobid = '24';
@@ -236,7 +236,8 @@ txt+="RECV:    \n";
 					txt+="```";
 					if (section>0)
 						message.channel.send(txt);
-					m.edit(txt);
+					else
+						 m.edit(txt);
 					txt="";
 					j=1;
 					txt+="```diff\n"
@@ -244,9 +245,9 @@ txt+="RECV:    \n";
 				}
 			});
 			txt+="```";
-			if (section == 0)
+			if (section == 0 && j!=1)
 				m.edit(txt);
-			else
+			else if (j!=1)
 				return message.channel.send(txt);
 		});
 return
@@ -633,7 +634,7 @@ if (args[0] === "-d" && args[1] != "") {
 
 	today.setHours(today.getHours() - 3); //for time adjust if needed
 	FOR CURRENT WOE!!!!*/ 
-var job = args[0];
+var job = args[0].toLowerCase();
 if (!(job == 'chem' || job == 'creo' || job == 'creator' || job == 'biochem' || job == 'wiz'|| job == 'wizard' || job == 'snip'|| job == 'sniper'))
 	return message.channel.send('Provide a valid DD class ("Creator", "Wizard" or "Sniper")');
 const m = await message.channel.send("Pulling data...");
@@ -776,7 +777,8 @@ request(url, function (error, response, body) {
 						txt+="```";
 						if (section>0)
 							message.channel.send(txt);
-						m.edit(txt);
+						else
+							m.edit(txt);
 						txt="";
 						j=1;
 						txt+="```diff\n"
@@ -789,9 +791,9 @@ request(url, function (error, response, body) {
 		}); 
 	});
 txt+="```";
-if (section == 0)
+if (section == 0 && j!=1)
 	m.edit(txt);
-else
+else if (j!=1)
 	return message.channel.send(txt);
 });
 return
