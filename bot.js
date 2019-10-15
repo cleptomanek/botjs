@@ -3,7 +3,7 @@ const async = require('async');
 const request = require('request');
 const cheerio = require('cheerio');
 const fs = require('fs');
-const doc = new GoogleSpreadsheet('1WPD5PPkaL-gbSuho0gxZttJQTuW8fMfJ2uN4dHulG4g');
+const doc = new GoogleSpreadsheet('1xmcvAWDdlpyb2WA19s3L2aXt5guEmMV6fG_KYQbVhWU');
 //const doc = new GoogleSpreadsheet('1Q47r52ICYGl2QQo5x45N3pzKOdO9lz9hGCb5hF6aeWc'); //test sheet
 var sheet;
 const Discord = require("discord.js");
