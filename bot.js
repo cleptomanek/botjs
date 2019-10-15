@@ -122,43 +122,43 @@ else if (job == 'ws' || job == 'whitesmith'|| job == 'smith') {
 }
 else if (job == 'snip' || job == 'sniper') {
 	jobid = '4012';
-	jobtext = 'SNIPERS:';
+	jobtext = 'SNIPERS';
 }
 else if (job == 'sinx' || job == 'assassin') {
 	jobid = '4013';
-	jobtext = 'ASSASSIN CROSSES:';
+	jobtext = 'ASSASSIN CROSSES';
 }
 else if (job == 'pala' || job == 'paladin' || job == 'pal') {
 	jobid = '4015';
-	jobtext = 'PALADINS:';
+	jobtext = 'PALADINS';
 }
 else if (job == 'champ' || job == 'champion') {
 	jobid = '4016';
-	jobtext = 'CHAMPIONS:';
+	jobtext = 'CHAMPIONS';
 }
 else if (job == 'prof' || job == 'professor') {
 	jobid = '4017';
-	jobtext = 'PROFESSORS:';
+	jobtext = 'PROFESSORS';
 }
 else if (job == 'stalker' || job == 'stalk') {
 	jobid = '4018';
-	jobtext = 'STALKERS:';
+	jobtext = 'STALKERS';
 }
 else if (job == 'chem' || job == 'creo' || job == 'creator' || job == 'biochem'){
 	jobid = '4019';
-	jobtext = 'CHEMS:';
+	jobtext = 'CHEMS';
 }
 else if (job == 'clown') {
 	jobid = '4020';
-	jobtext = 'CLOWNS:';
+	jobtext = 'CLOWNS';
 }
 else if (job == 'gyp' || job == 'gypsy'){
 	jobid = '4021';
-	jobtext = 'GYPSIES:';
+	jobtext = 'GYPSIES';
 }
 else if (job == 'sl' || job == 'linker'){
 	jobid = '4049';
-	jobtext = 'SOUL LINKERS:';
+	jobtext = 'SOUL LINKERS';
 }
 else
 	return message.channel.send('Provide valid class name (ninja, gunslinger, lk, hp, hw, ws, snip, sinx, pala, champ, prof, stalk, chem, clown, gypsy, sl)');
