@@ -55,7 +55,7 @@ const creds = {
 const config = {
 "token": process.env.token,
 "prefix": "?"
-}
+} 
 
 //STUFF 
 client.on("ready", () => {
@@ -74,16 +74,16 @@ client.on("guildDelete", guild => {
  // client.user.setActivity(`Serving ${client.guilds.size} servers`);
 });
 
-var admin = 0;
 const week = 168; //helper numbers for date calculation
 const weeksec = 604800000;
-var displaydate=0;
 client.on("message", async message => {
+	var admin = 0;
+	var displaydate=0;
 	if(message.author.bot) return; //dont respond to own messages
 	if(message.content.indexOf(config.prefix) !== 0) return; //ignore messages without prefix
 	var args = message.content.slice(config.prefix.length).trim().split(/ +/g);
 	const command = args.shift().toLowerCase();
-	if ((message.author.id == 444) || (message.author.id == 1771072370v53923328) || (message.author.id == 184327765070315521) || (message.author.id == 162610908307259392)) //admin ids
+	if ((message.author.id == 444) || (message.author.id == 177107237053923328) || (message.author.id == 184327765070315521) || (message.author.id == 162610908307259392)) //admin ids
 		admin=1;
 
 if (command === "bot-status") {
