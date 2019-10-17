@@ -860,7 +860,7 @@ else if(command === "help" || command === "h") {
 	return message.author.send(txt);
 }
 
-/*if(command === "woeinfo" || command === "wi") {
+if(command === "woeinfo" || command === "wi") {
 	const m = await message.channel.send("Checking roster sheet...");
 doc.useServiceAccountAuth(creds, function (err) {
 doc.getInfo(function(err, info) {
@@ -901,7 +901,7 @@ doc.getInfo(function(err, info) {
 			var i;
 			var gap="";
 			var offset;
-			var txt="```diff\n";
+			//var txt="```diff\n";
 			txt+="+PARTY LEADERS: \n\n";
 			txt+="-ingame name:           name:\n";
 			offset = 21 - cells[ptl1+ingap].value.length; //party leader 1 ingame name
@@ -933,7 +933,7 @@ doc.getInfo(function(err, info) {
 		});
 });
 });
-} */
+} 
 
 else if(command === "getusers" || command === "gusers") {
 if (admin == 0)
