@@ -860,12 +860,12 @@ else if(command === "help" || command === "h") {
 	return message.author.send(txt);
 }
 
-if(command === "woeinfo" || command === "wi") {
+/*if(command === "woeinfo" || command === "wi") {
 	const m = await message.channel.send("Checking roster sheet...");
 doc.useServiceAccountAuth(creds, function (err) {
 doc.getInfo(function(err, info) {
 	sheet = info.worksheets[0];
-		/*sheet.getCells({
+		sheet.getCells({
 			'min-row': 5,
 			'max-row': 5,
 			'min-col': 20,
@@ -890,7 +890,7 @@ doc.getInfo(function(err, info) {
 			txt+=woetime.toString();
 			txt+="\n\n";
 			//return m.edit(txt);
-		}); */
+		}); 
 		sheet.getCells({
 			'min-row': 5,
 			'max-row': 36,
@@ -933,7 +933,7 @@ doc.getInfo(function(err, info) {
 		});
 });
 });
-}
+} */
 
 else if(command === "getusers" || command === "gusers") {
 if (admin == 0)
