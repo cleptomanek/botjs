@@ -859,6 +859,22 @@ else if(command === "help" || command === "h") {
 	message.reply("Sending commands info. Check your DM.");
 	return message.author.send(txt);
 }
+if(command === "ctime") {
+	doc.useServiceAccountAuth(creds, function (err) {
+	doc.getInfo(function(err, info) {
+	sheet = info.worksheets[0];
+		sheet.getCells({
+			'min-row': 5,
+			'max-row': 5,
+			'min-col': 20,
+			'max-col': 20,
+			'return-empty': true
+		}, function(err, cells) {
+			message.channel.send(cells[0].value);
+		});
+	});
+	});
+}
 
 /*if(command === "woeinfo" || command === "wi") {
 	const m = await message.channel.send("Checking roster sheet...");
