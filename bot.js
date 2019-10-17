@@ -876,7 +876,7 @@ if(command === "ctime") {
 	});
 }
 
-/*if(command === "woeinfo" || command === "wi") {
+if(command === "woeinfo" || command === "wi") {
 	const m = await message.channel.send("Checking roster sheet...");
 doc.useServiceAccountAuth(creds, function (err) {
 doc.getInfo(function(err, info) {
@@ -949,7 +949,7 @@ doc.getInfo(function(err, info) {
 		});
 });
 });
-} */
+} 
 
 else if(command === "getusers" || command === "gusers") {
 if (admin == 0)
