@@ -881,7 +881,7 @@ if(command === "woeinfo" || command === "wi") {
 doc.useServiceAccountAuth(creds, function (err) {
 doc.getInfo(function(err, info) {
 	sheet = info.worksheets[0];
-		sheet.getCells({
+	/*	sheet.getCells({
 			'min-row': 5,
 			'max-row': 5,
 			'min-col': 20,
@@ -906,7 +906,7 @@ doc.getInfo(function(err, info) {
 			txt+=woetime.toString();
 			txt+="\n\n";
 			//return m.edit(txt);
-		}); 
+		}); */
 		sheet.getCells({
 			'min-row': 5,
 			'max-row': 36,
@@ -917,7 +917,7 @@ doc.getInfo(function(err, info) {
 			var i;
 			var gap="";
 			var offset;
-			//var txt="```diff\n";
+			var txt="```diff\n";
 			txt+="+PARTY LEADERS: \n\n";
 			txt+="-ingame name:           name:\n";
 			offset = 21 - cells[ptl1+ingap].value.length; //party leader 1 ingame name
