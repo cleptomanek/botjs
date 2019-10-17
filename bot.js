@@ -869,7 +869,7 @@ doc.getInfo(function(err, info) {
 			'min-row': 5,
 			'max-row': 5,
 			'min-col': 20,
-			'max-col': 20
+			'max-col': 20,
 			'return-empty': true
 		}, function(err, cells) {
 			var gap="";
