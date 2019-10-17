@@ -8,6 +8,7 @@ const doc = new GoogleSpreadsheet('1xmcvAWDdlpyb2WA19s3L2aXt5guEmMV6fG_KYQbVhWU'
 var sheet;
 const Discord = require("discord.js");
 const client = new Discord.Client();
+const moment = require('moment');
 
 
 //!!! IMPORTANT STUFF !!!
@@ -866,6 +867,32 @@ doc.getInfo(function(err, info) {
 	sheet = info.worksheets[0];
 		sheet.getCells({
 			'min-row': 5,
+			'max-row': 5,
+			'min-col': 20,
+			'max-col': 20
+			'return-empty': true
+		}, function(err, cells) {
+			var gap="";
+			var offset;
+			var txt="```diff\n";
+			var woetime = moment(cells[0].value);
+			woetime.utcOffset(1);
+			txt+='Central Europe\n';
+			txt+=woetime.toString();
+			woetime.utcOffset(2);
+			txt+='Moscow\n';
+			txt+=woetime.toString();
+			woetime.utcOffset(-4);
+			txt+='São Paulo\n';
+			txt+=woetime.toString();
+			woetime.utcOffset(-5);
+			txt+='New York\n';
+			txt+=woetime.toString();
+			txt+="\n\n";
+			//return m.edit(txt);
+		});
+		sheet.getCells({
+			'min-row': 5,
 			'max-row': 36,
 			'min-col': 15,
 			'max-col': 22,
@@ -874,7 +901,7 @@ doc.getInfo(function(err, info) {
 			var i;
 			var gap="";
 			var offset;
-			var txt="```diff\n";
+			//var txt="```diff\n";
 			txt+="+PARTY LEADERS: \n\n";
 			txt+="-ingame name:           name:\n";
 			offset = 21 - cells[ptl1+ingap].value.length; //party leader 1 ingame name
