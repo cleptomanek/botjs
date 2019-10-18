@@ -1727,6 +1727,14 @@ else if(command === "purge") {
 	.catch(error => message.reply(`Couldn't delete messages because of: ${error}`));
 	}
 
+else if (command === "ec") {
+	if (!args[0])
+		return message.channel.send('Provide name of setup/mvp you want to check');
+	const ec = require('./ec.json');
+	if (args[0] == 'wm')
+		return message.channel.send(ec.wm);
+}
+
   else {
 	  message.reply(" you are doing something wrong :slight_smile: use ```fix\n "+config.prefix+"help\n``` command for info!");
 	}
