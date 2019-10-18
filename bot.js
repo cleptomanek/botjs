@@ -1784,7 +1784,7 @@ else if (command === "vidlist"){
 		offset = 15 - vidl[i].server.length;
 		gap=" ".repeat(offset);
 		txt+=vidl[i].server+gap;
-		txt+=vidl[i].date+gap+"\n";
+		txt+=vidl[i].date+"\n";
 	}
 	txt+="```";
 	return message.channel.send(txt);
