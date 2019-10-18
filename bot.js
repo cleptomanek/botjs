@@ -1741,7 +1741,7 @@ else if (command === "vids" || command === "videos") {
 		return message.channel.send('Provide guildname');
 	var gn = args[0].toLowerCase();
 	if (gn == 'po' || gn == 'pokeflute') {
-		var vid = vids.po[Math.floor(Math.random()*vids.po.length)];
+		var vid = vids.po[Math.floor(Math.random()*vids.po.length)].link;
 		return message.channel.send(vid);
 	}
 	if (gn == 'peach') {
@@ -1752,6 +1752,42 @@ else if (command === "vids" || command === "videos") {
 		var vid = vids.tmw[Math.floor(Math.random()*vids.tmw.length)];
 		return message.channel.send(vid);
 	}
+}
+else if (command === "vidlist"){
+	if (!args[0])
+		return message.channel.send('Provide guildname');
+	var gn = args[0].toLowerCase();
+	var txt = '';
+	var offset;
+	var gap="";
+	if (gn == 'po' || gn == 'pokeflute') {
+		var vidl = vids.po;
+		var gname = vids.gn[0];
+	}
+	txt+="```diff\n";
+	txt+="-VID LIST FOR: "+gname+"\n\n\n";
+	txt+="!link:                                              ";
+	txt+="name:          ";
+	txt+="class:         ";
+	txt+="server:        ";
+	txt+="date:           \n";
+	for (var i = 0; i < vidl.length; i++) {
+		offset = 52 - vidl[i].link.length;
+		gap=" ".repeat(offset);
+		txt+=vidl[i].link+gap;
+		offset = 15 - vidl[i].name.length;
+		gap=" ".repeat(offset);
+		txt+=vidl[i].name+gap;
+		offset = 15 - vidl[i].class.length;
+		gap=" ".repeat(offset);
+		txt+=vidl[i].class+gap;
+		offset = 15 - vidl[i].server.length;
+		gap=" ".repeat(offset);
+		txt+=vidl[i].server+gap;
+		txt+=vidl[i].date+gap+"\n";
+	}
+	txt+="```";
+	return message.channel.send(txt);
 }
 
   else {

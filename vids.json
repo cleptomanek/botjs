@@ -1,18 +1,19 @@
 {
+  "gn": ["Pokeflute Orchestra", "Peach", "This Means War"],
   "po": [
-    "https://www.youtube.com/watch?v=daiuy6MufpM",
-    "https://www.youtube.com/watch?v=n1T6exS3YnA",
-	"https://www.youtube.com/watch?v=C9WIWjAtGzw",
-	"https://www.youtube.com/watch?v=XJzGUeqtUB8",
-	"https://www.youtube.com/watch?v=CReYLfjBfcE",
-	"https://www.youtube.com/watch?v=I03XME_S43I",
-	"https://www.youtube.com/watch?v=wjFk5e63hR0",
-	"https://www.youtube.com/watch?v=_vZjDosxpT8",
-	"https://www.youtube.com/watch?v=nXAuDjFHYAM",
-	"https://www.youtube.com/watch?v=lYZE-BmpUxk",
-	"https://www.youtube.com/watch?v=Uk1KK8em_Xw",
-	"https://www.youtube.com/watch?v=h6oVVkVQGvs",
-	"https://www.youtube.com/watch?v=xexG6bvzSKc"
+	{"link": "https://www.youtube.com/watch?v=nXAuDjFHYAM", "name": "Proxy", "class": "Gypsy", "server": "Estland", "date": "08.11.2015"},
+	{"link": "https://www.youtube.com/watch?v=Uk1KK8em_Xw", "name": "Proxy", "class": "DD HWiz", "server": "Estland", "date": "15.11.2015"},
+	{"link": "https://www.youtube.com/watch?v=lYZE-BmpUxk", "name": "Proxy", "class": "DD HWiz", "server": "Estland", "date": "22.11.2015"},
+	{"link": "https://www.youtube.com/watch?v=h6oVVkVQGvs", "name": "Proxy", "class": "DD HWiz", "server": "Estland", "date": "29.11.2015"},
+	{"link": "https://www.youtube.com/watch?v=CReYLfjBfcE", "name": "Proxy", "class": "DD Hwiz", "server": "RagnaChan", "date": "22.05.2016"},
+	{"link": "https://www.youtube.com/watch?v=I03XME_S43I", "name": "Proxy", "class": "DD Hwiz", "server": "RagnaChan", "date": "29.05.2016"},
+	{"link": "https://www.youtube.com/watch?v=_vZjDosxpT8", "name": "Proxy", "class": "DD Hwiz", "server": "RagnaChan", "date": "12.06.2016"},
+	{"link": "https://www.youtube.com/watch?v=C9WIWjAtGzw", "name": "Brainshaker", "class": "DD Chem", "server": "Aesir", "date": "16.10.2016"},
+	{"link": "https://www.youtube.com/watch?v=XJzGUeqtUB8", "name": "Proxy", "class": "Gypsy", "server": "Aesir", "date": "16.10.2016"},
+	{"link": "https://www.youtube.com/watch?v=daiuy6MufpM", "name": "norsk", "class": "Professor", "server": "Atlas", "date": "18.12.2016"},
+	{"link": "https://www.youtube.com/watch?v=n1T6exS3YnA", "name": "AllRight", "class": "Professor", "server": "Atlas", "date": "25.12.2016"},
+	{"link": "https://www.youtube.com/watch?v=wjFk5e63hR0", "name": "Proxy", "class": "DD Hwiz", "server": "Reload", "date": "18.03.2018"},
+	{"link": "https://www.youtube.com/watch?v=xexG6bvzSKc", "name": "AllRight", "class": "Professor", "server": "Reload", "date": "03.04.2018"}
   ],
   "peach": [
 	"https://www.youtube.com/watch?v=rBzel2dKag8",
@@ -49,4 +50,5 @@
 	"https://www.youtube.com/watch?v=kKh5RTqv5x8",
 	"https://www.youtube.com/watch?v=5XhqojYmH18"
   ]
+ 
 }
