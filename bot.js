@@ -9,6 +9,8 @@ var sheet;
 const Discord = require("discord.js");
 const client = new Discord.Client();
 const moment = require('moment');
+const ec = require('./ec.json');
+const vids = require('./vids.json');
 
 
 //!!! IMPORTANT STUFF !!!
@@ -1730,17 +1732,18 @@ else if(command === "purge") {
 else if (command === "ec") {
 	if (!args[0])
 		return message.channel.send('Provide name of setup/mvp you want to check');
-	const ec = require('./ec.json');
 	if (args[0] == 'wm')
 		return message.channel.send(ec.wm);
 }
 
 else if (command === "vids" || command === "videos") {
 	if (!args[0])
-		return message.channel.send('Provide name of a guild');
-	const ec = require('./ec.json');
-	if (args[0] == 'wm')
-		return message.channel.send(ec.wm);
+		return message.channel.send('Provide guildname');
+	var gn = args[0].toLowerCase();
+	if (gn == 'po' || gn == 'pokeflute') {
+		var vid = vids.po[Math.floor(Math.random()*vids.po.length)];
+		return message.channel.send(vid);
+	}
 }
 
   else {
