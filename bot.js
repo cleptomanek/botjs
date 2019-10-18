@@ -905,7 +905,7 @@ doc.getInfo(function(err, info) {
 			woetime.utcOffset(-5);
 			txt+='\n-New York\n';
 			txt+=woetime.toString();
-			txt+="\nBe sure to show up early for party setup!";
+			txt+="\n\n-Be sure to show up early for party setup!";
 			txt+="```";
 			m.edit(txt);
 		}); 
