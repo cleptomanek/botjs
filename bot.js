@@ -183,7 +183,7 @@ txt+="K:     ";
 txt+="D:     ";
 txt+="TOP:     ";
 txt+="DONE:         ";
-txt+="RECV:    \n";
+txt+="RECV:\n";
 		request(url, function (error, response, body) {
 			const $ = cheerio.load(body);
 			$("div.rankingbg > div > table").each (function () {
@@ -516,7 +516,7 @@ txt+="--- Basic info:\n";
 txt+="!kills:             ";
 txt+="deaths:             ";
 txt+="damage done:        ";
-txt+="received:           \n";
+txt+="received:\n";
 offset = 20 - kills.length; //calculates spaces for text formatting
 gap=" ".repeat(offset);
 txt+=kills+gap;
@@ -528,12 +528,12 @@ gap=" ".repeat(offset);
 txt+=done+gap;
 offset = 20 - recv.length;
 gap=" ".repeat(offset);
-txt+=recv+gap;
+txt+=recv;
 txt+="\n\n--- Additional stuff:\n";
 txt+="!ad used:           ";
 txt+="hp potions:         ";
 txt+="sp potions:         ";
-txt+="gypsy deaths:       \n";
+txt+="gypsy deaths:\n";
 offset = 20 - ad.length;
 gap=" ".repeat(offset);
 txt+=ad+gap;
@@ -545,11 +545,11 @@ gap=" ".repeat(offset);
 txt+=sp+gap;
 offset = 20 - gypsyd.length;
 gap=" ".repeat(offset);
-txt+=gypsyd+gap;
+txt+=gypsyd;
 txt+="\n\n!dmg per ad:        ";
 txt+="dmg per fas:        ";
 txt+="ganb used:          ";
-txt+="dispel used:        \n";
+txt+="dispel used:\n";
 offset = 20 - add.length;
 gap=" ".repeat(offset);
 txt+=add+gap;
@@ -561,7 +561,7 @@ gap=" ".repeat(offset);
 txt+=ganb+gap;
 offset = 20 - dispel.length;
 gap=" ".repeat(offset);
-txt+=dispel+gap;
+txt+=dispel;
 
 txt+="\n\n--- Roster composition:\n";
 txt+="+class:                        count:\n";
@@ -758,8 +758,7 @@ request(url, function (error, response, body) {
 					offset = 11 - arrow.length;
 					gap=" ".repeat(offset);
 					txt+=arrow+gap;
-					txt+=fas;
-					txt+="\n";
+					txt+=fas+"\n";
 					j++;
 				}
 				if (i==24 && job == 'chem'){
@@ -771,8 +770,7 @@ request(url, function (error, response, body) {
 					offset = 10 - ad.length;
 					gap=" ".repeat(offset);
 					txt+=ad+gap;
-					txt+=add;
-					txt+="\n";
+					txt+=add+"\n";
 					j++;
 				}
 				if (i==25) {
@@ -890,8 +888,6 @@ doc.getInfo(function(err, info) {
 			'max-col': 20,
 			'return-empty': true
 		}, function(err, cells) {
-			var gap="";
-			var offset;
 			var txt="```diff\n";
 			txt+="+WOE TIME: \n\n";
 			var woetime = moment(cells[0].value);
@@ -1770,7 +1766,7 @@ else if (command === "vidlist"){
 	txt+="name:          ";
 	txt+="class:         ";
 	txt+="server:        ";
-	txt+="date:           \n";
+	txt+="date:\n";
 	for (var i = 0; i < vidl.length; i++) {
 		offset = 52 - vidl[i].link.length;
 		gap=" ".repeat(offset);
