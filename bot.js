@@ -1744,6 +1744,14 @@ else if (command === "vids" || command === "videos") {
 		var vid = vids.po[Math.floor(Math.random()*vids.po.length)];
 		return message.channel.send(vid);
 	}
+	if (gn == 'peach') {
+		var vid = vids.peach[Math.floor(Math.random()*vids.peach.length)];
+		return message.channel.send(vid);
+	}
+	if (gn == 'tmw') {
+		var vid = vids.tmw[Math.floor(Math.random()*vids.tmw.length)];
+		return message.channel.send(vid);
+	}
 }
 
   else {
