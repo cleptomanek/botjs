@@ -1760,7 +1760,7 @@ else if (command === "vidlist"){
 		var vidl = vids.po;
 		var gname = vids.gn[0];
 	}
-	txt+="```diff\n";
+	//txt+="```diff\n";
 	txt+="-VID LIST FOR: "+gname+"\n\n\n";
 	txt+="!link:                                              ";
 	txt+="name:          ";
@@ -1782,7 +1782,7 @@ else if (command === "vidlist"){
 		txt+=vidl[i].server+gap;
 		txt+=vidl[i].date+"\n";
 	}
-	txt+="```";
+	//txt+="```";
 	return message.channel.send(txt);
 }
 
