@@ -1735,6 +1735,14 @@ else if (command === "ec") {
 		return message.channel.send(ec.wm);
 }
 
+else if (command === "vids" || command === "videos") {
+	if (!args[0])
+		return message.channel.send('Provide name of a guild');
+	const ec = require('./ec.json');
+	if (args[0] == 'wm')
+		return message.channel.send(ec.wm);
+}
+
   else {
 	  message.reply(" you are doing something wrong :slight_smile: use ```fix\n "+config.prefix+"help\n``` command for info!");
 	}
