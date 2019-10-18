@@ -881,7 +881,7 @@ if(command === "woeinfo" || command === "wi") {
 doc.useServiceAccountAuth(creds, function (err) {
 doc.getInfo(function(err, info) {
 	sheet = info.worksheets[0];
-	/*	sheet.getCells({
+		sheet.getCells({
 			'min-row': 5,
 			'max-row': 5,
 			'min-col': 20,
@@ -904,9 +904,9 @@ doc.getInfo(function(err, info) {
 			woetime.utcOffset(-5);
 			txt+='New York\n';
 			txt+=woetime.toString();
-			txt+="\n\n";
-			//return m.edit(txt);
-		}); */
+			txt+="```";
+			message.channel.send(txt);
+		}); 
 		sheet.getCells({
 			'min-row': 5,
 			'max-row': 36,
