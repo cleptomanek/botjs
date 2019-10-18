@@ -876,7 +876,7 @@ if(command === "ctime") {
 	});
 }
 
-if(command === "woeinfo" || command === "wi") {
+if(command === "woeinfo" || command === "wi" || command === "woe") {
 	const m = await message.channel.send("Checking roster sheet...");
 doc.useServiceAccountAuth(creds, function (err) {
 doc.getInfo(function(err, info) {
@@ -894,7 +894,7 @@ doc.getInfo(function(err, info) {
 			txt+="+WOE TIME: \n\n";
 			var woetime = moment(cells[0].value);
 			woetime.utcOffset(1);
-			txt+='Central Europe\n';
+			txt+='-Central Europe\n';
 			txt+=woetime.toString();
 			woetime.utcOffset(2);
 			txt+='\n-Moscow\n';
@@ -905,8 +905,9 @@ doc.getInfo(function(err, info) {
 			woetime.utcOffset(-5);
 			txt+='\n-New York\n';
 			txt+=woetime.toString();
+			txt+="\nBe sure to show up early for party setup!";
 			txt+="```";
-			message.channel.send(txt);
+			m.edit(txt);
 		}); 
 		sheet.getCells({
 			'min-row': 5,
@@ -946,7 +947,7 @@ doc.getInfo(function(err, info) {
 				}
 			txt+="\n\n-Check your devo targets with ?devo command!";
 			txt+="```";
-			return m.edit(txt);
+			return message.channel.send(txt);
 		});
 });
 });
