@@ -285,13 +285,13 @@ if (args[0] === "-w" && args[1] != "") {
 	d=d.toString();
 	displaydate=1;
   }
-if (args[0] === "-d" && args[1] != "") {
+else if (args[0] === "-d" && args[1] != "") {
 	var d = args[1];
 	woedate = args[1];
 	args=args.splice(2);
 	displaydate=1;
   }
-if (!args[0]) {
+else {
 	var firstwoe= new Date('2019-10-27').getTime();
 	today = new Date().getTime();
 	var diff = Math.abs(today - firstwoe);
@@ -608,210 +608,6 @@ return
 
 else if (command === 'compare' || command === 'cmp')
 {
-var woedate=1554584400; //default for tests
-  //var url = 'https://ragnarok.life/?server=Ragnarok.Life&module=ranking&action=woerank&woe_date=1554584400&opt=0&ser=0&ord=0';
-if (args[0] === "-w" && args[1] != "") {
-	var firstwoe= new Date('2019-04-06 23:00').getTime();
-	today = new Date().getTime();
-	var diff = Math.abs(today - firstwoe);
-	diff = Math.trunc(diff/weeksec);
-	var wbehind = parseInt(args[1]);
-	diff = diff-wbehind;
-	diff=(diff*weeksec)+firstwoe;
-	diff=diff/1000;
-	woedate=diff;
-	args=args.splice(2);
-	var d = new Date(0);
-	d.setUTCSeconds(diff+3600); // fix date from 23:00
-	d=d.toString();
-	displaydate=1;
-  }
-if (args[0] === "-d" && args[1] != "") {
-	var dwoe = new Date(args[1]);
-	//dwoe.setHours(dwoe.getHours() - 3); //for local
-	dwoe.setHours(dwoe.getHours() - 1); // need to set 23:00
-	dwoe=dwoe/1000;
-	woedate=dwoe;
-	args=args.splice(2);
-	var d = new Date(0);
-	d.setUTCSeconds(dwoe+3600); // go back to 0:00
-	d=d.toString();
-	displaydate=1;
-  }
-	/*
-	var firstwoe= new Date('2019-04-06 23:00').getTime();
-	today = new Date().getTime();
-	var diff = Math.abs(today - firstwoe);
-	diff = Math.trunc(diff/weeksec); // cut off to full weeks
-	diff=(diff*weeksec)+firstwoe;
-	diff=diff/1000;
-	woedate=diff;
-
-	today.setHours(today.getHours() - 3); //for time adjust if needed
-	FOR CURRENT WOE!!!!*/ 
-var job = args[0].toLowerCase();
-if (!(job == 'chem' || job == 'creo' || job == 'creator' || job == 'biochem' || job == 'wiz'|| job == 'wizard' || job == 'snip'|| job == 'sniper'))
-	return message.channel.send('Provide a valid DD class ("Creator", "Wizard" or "Sniper")');
-const m = await message.channel.send("Pulling data...");
-var jobid, jobtext;
-if (job == 'chem' || job == 'creo' || job == 'creator' || job == 'biochem'){
-	job = 'chem';
-	jobid = '4019';
-	jobtext = 'DD CHEMS:';
-}
-if (job == 'snip' || job == 'sniper') {
-	job = 'snip';
-	jobid = '4012';
-	jobtext = 'SNIPERS:';
-}
-if (job == 'wiz' || job == 'wizard' || job == 'hw') {
-	job = 'wiz';
-	jobid = '4010';
-	jobtext = 'DD WIZARDS:';
-}
-var url = 'https://ragnarok.life/?module=ranking&action=woerank&woe_date='+woedate+'&opt='+jobid+'&server=Ragnarok.Life';
-var name,dd,guild;
-kills=deaths=top=done=recv=hp=sp=ygem=bgem=arrow=add=ad=donef=0;
-var offset;
-var gap="";
-var txt="```diff\n";
-if (displaydate!=0)
-	txt+="-ARCHIVE WOE DATE: "+d+"\n\n"
-txt+="-COMPARING "+jobtext+"\n\n"
-txt+="!name:                   ";
-txt+="guild:                   ";
-txt+="K:   ";
-txt+="D:   ";
-if (job == 'wiz')txt+="top dmg:    ";
-txt+="dmg done:    ";
-txt+="received:    ";
-if (job == 'wiz')txt+="ganb used:\n";
-if (job == 'snip') {
-	txt+="fas used:  ";
-	txt+="dmg/fas:\n";
-}
-if (job == 'chem') {
-	txt+="ad used:  ";
-	txt+="dmg/ad:\n";
-}
-request(url, function (error, response, body) {
-	var section=0;
-	const $ = cheerio.load(body);
-	var i;
-	var j=1;
-	$("#ladder_div table.battlerank-table").each (function () {
-		i=1;
-		name=$(".battlerank-header td:nth-child(4) b > b",this).text(); //need to check twice for name since longer names use singe b instead of 2
-		 if (name == "")
-			 name=$(".battlerank-header td:nth-child(4) b",this).text();
-		guild=$(".battlerank-header td:nth-child(3)",this).text().trim();
-		if ((parseInt($("div.row div.col-10 div.row div.col-7 tr:nth-child(2) td:nth-child(2) .text-primary", this).html().replace(/,/g, ''))) < 500000) //check for dd (dmg over 500k)
-			dd=0;
-		else
-			dd=1;
-		if (dd == 1) {
-			offset = 25 - name.length;
-			gap=" ".repeat(offset);
-			txt+=name+gap;
-			offset = 25 - guild.length;
-			gap=" ".repeat(offset);
-			txt+=guild+gap;
-		}
-		$("table.stat-table", this).each (function () {
-			$(".text-primary", this).each (function () { 
-			if (dd == 1) {
-				if (i==1) {
-					kills=parseInt($(this).html());
-					kills = kills.toLocaleString().split(',').join('.');
-					offset = 5 - kills.length;
-					gap=" ".repeat(offset);
-					txt+=kills+gap;
-				}
-				if (i==2) {
-					deaths=parseInt($(this).html());
-					deaths = deaths.toLocaleString().split(',').join('.');
-					offset = 5 - deaths.length;
-					gap=" ".repeat(offset);
-					txt+=deaths+gap;
-				}
-				if (i==3 && job == 'wiz') {
-					top=parseInt($(this).html().replace(/,/g, ''));
-					top = top.toLocaleString().split(',').join('.');
-					offset = 12 - top.length;
-					gap=" ".repeat(offset);
-					txt+=top+gap;
-				}
-				if (i==4) {
-					donef=parseFloat($(this).html().replace(/,/g, ''));
-					done = donef.toLocaleString().split(',').join('.');
-					offset = 13 - done.length;
-					gap=" ".repeat(offset);
-					txt+=done+gap;
-				}
-				if (i==5) {
-					recv=parseInt($(this).html().replace(/,/g, ''));
-					recv = recv.toLocaleString().split(',').join('.');
-					offset = 13 - recv.length;
-					gap=" ".repeat(offset);
-					txt+=recv+gap;
-				}
-				if (i==20 && job == 'wiz') {
-					ygem=parseInt($(this).html().replace(/,/g, ''));
-					ygem = ygem.toLocaleString().split(',').join('.');
-					txt+=ygem+'\n';
-					j++;
-				}
-				if (i==23 && job == 'snip') {
-					arrow=parseFloat($(this).html().replace(/,/g, ''));
-					fas=donef/arrow;
-					arrow = arrow.toLocaleString().split(',').join('.');
-					fas = Math.round(fas);
-					fas = fas.toLocaleString().split(',').join('.');
-					offset = 11 - arrow.length;
-					gap=" ".repeat(offset);
-					txt+=arrow+gap;
-					txt+=fas+"\n";
-					j++;
-				}
-				if (i==24 && job == 'chem'){
-					ad=parseFloat($(this).html().replace(/,/g, ''));
-					add=donef/ad;
-					ad = ad.toLocaleString().split(',').join('.');
-					add = Math.round(add);
-					add = add.toLocaleString().split(',').join('.');
-					offset = 10 - ad.length;
-					gap=" ".repeat(offset);
-					txt+=ad+gap;
-					txt+=add+"\n";
-					j++;
-				}
-				if (i==25) {
-					if (j>10) {
-						txt+="```";
-						if (section>0)
-							message.channel.send(txt);
-						else
-							m.edit(txt);
-						txt="";
-						j=1;
-						txt+="```diff\n"
-						section++;
-					}
-				}
-			}
-			i++;
-			});
-		}); 
-	});
-txt+="```";
-if (section == 0 && j!=1)
-	m.edit(txt);
-else if (j!=1)
-	return message.channel.send(txt);
-});
-return
-}
-else if(command === "ccm") {
 	var woedate='2019-10-27'; //default for tests
 const request = require('request');
 const cheerio = require('cheerio');
@@ -832,13 +628,13 @@ if (args[0] === "-w" && args[1] != "") {
 	d=d.toString();
 	displaydate=1;
   }
-if (args[0] === "-d" && args[1] != "") {
+else if (args[0] === "-d" && args[1] != "") {
 	var d = args[1];
 	woedate = args[1];
 	args=args.splice(2);
 	displaydate=1;
   }
-if (!args[0]) {
+else {
 	var firstwoe= new Date('2019-10-27').getTime();
 	today = new Date().getTime();
 	var diff = Math.abs(today - firstwoe);
