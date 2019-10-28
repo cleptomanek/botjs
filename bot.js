@@ -350,9 +350,10 @@ url+=gname;
 var rlk=rhp=rhw=rhwfs=rws=rsnip=rsin=rpal=rchamp=rprof=rdlp=rstalk=rchem=rspp=rclown=rgyp=rslinger=rninja=rtaek=rsg=rlinker=0; //roster vars
 var gypsy,hw,sniper,chem,prof; //class checks
 var stat=kills=deaths=top=done=recv=supc=supw=healc=healw=emp=bar=stone=guard=demp=dbar=dstone=dguard=hp=sp=ygem=rgem=bgem=arrow=ad=poison=spirit=zeny=gypsyd=ganb=chemd=sniperd=sarrow=dispel=disp=0; //stat vars
+for (var page = 1; page < 3; page++)
 request.post({
   headers: {'content-type' : 'application/x-www-form-urlencoded'},
-  url:     url,
+  url:     url+="&p="+page,
   body:    "view=Blocks"
 }, 
 function (error, response, body) {
@@ -497,6 +498,8 @@ function (error, response, body) {
 				k++;
 			});
 		});
+});
+setTimeout(function(){
 //dmg per fas and dmg per ad
 var fas = sniperd/sarrow;
 var add = chemd/ad;
@@ -599,8 +602,7 @@ var total = rlk+rhp+rhw+rhwfs+rws+rsnip+rsin+rpal+rchamp+rprof+rdlp+rstalk+rchem
 txt+="+TOTAL:                        "+total+"\n";
 txt+="\n```";
 return m.edit(txt);
-});
-return
+}, 2000);
 }
 
 else if (command === 'compare' || command === 'cmp')
