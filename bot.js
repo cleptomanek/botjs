@@ -353,7 +353,7 @@ var stat=kills=deaths=top=done=recv=supc=supw=healc=healw=emp=bar=stone=guard=de
 for (var i = 1; i < 3; i++)
 request.post({
   headers: {'content-type' : 'application/x-www-form-urlencoded'},
-  url:     url+="&p="+i;,
+  url:     url+="&p="+i,
   body:    "view=Blocks"
 }, 
 function (error, response, body) {
