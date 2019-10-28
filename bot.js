@@ -667,10 +667,11 @@ if (!args[0]) { //list guild names when no args provided
 						if (gn == gnames[i]) //break out of loop if guild name is found
 							break;
 						if (i+1 == gnames.length) { //add new name if it wasnt found
-							if (gn == '');
-								gn = 'none';
 							gnames.push(gn);
-							txt+=gn+"\n";
+							if (gn == '')
+								txt+="-none-\n";
+							else
+								txt+=gn+"\n";
 						}
 					}
 				});
