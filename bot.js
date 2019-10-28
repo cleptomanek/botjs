@@ -163,6 +163,14 @@ else if (job == 'sl' || job == 'linker'){
 	jobid = '4049';
 	jobtext = 'SOUL LINKERS';
 }
+else if (job == 'taek' || job == 'taekwon'){
+	jobid = '4046';
+	jobtext = 'TAEKWONS';
+}
+else if (job == 'sg' || job == 'stargladiator'){
+	jobid = '4047';
+	jobtext = 'STAR GLADIATORS';
+}
 else
 	return message.channel.send('Provide valid class name (ninja, gunslinger, lk, hp, hw, ws, snip, sinx, pala, champ, prof, stalk, chem, clown, gypsy, sl)');
 const m = await message.channel.send("Pulling data...");
@@ -511,6 +519,343 @@ var gap="";
 var txt = "```diff\n"
 if (displaydate!=0)
 	txt+="-ARCHIVE WOE DATE: "+d+"\n\n"
+txt+="-GUILD STATS FOR: "+fullname+"\n\n\n"
+txt+="--- Basic info:\n";
+txt+="!kills:             ";
+txt+="deaths:             ";
+txt+="damage done:        ";
+txt+="received:\n";
+offset = 20 - kills.length; //calculates spaces for text formatting
+gap=" ".repeat(offset);
+txt+=kills+gap;
+offset = 20 - deaths.length;
+gap=" ".repeat(offset);
+txt+=deaths+gap;
+offset = 20 - done.length;
+gap=" ".repeat(offset);
+txt+=done+gap;
+offset = 20 - recv.length;
+gap=" ".repeat(offset);
+txt+=recv;
+txt+="\n\n--- Additional stuff:\n";
+txt+="!ad used:           ";
+txt+="hp potions:         ";
+txt+="sp potions:         ";
+txt+="gypsy deaths:\n";
+offset = 20 - ad.length;
+gap=" ".repeat(offset);
+txt+=ad+gap;
+offset = 20 - hp.length;
+gap=" ".repeat(offset);
+txt+=hp+gap;
+offset = 20 - sp.length;
+gap=" ".repeat(offset);
+txt+=sp+gap;
+offset = 20 - gypsyd.length;
+gap=" ".repeat(offset);
+txt+=gypsyd;
+txt+="\n\n!dmg per ad:        ";
+txt+="dmg per fas:        ";
+txt+="ganb used:          ";
+txt+="dispel used:\n";
+offset = 20 - add.length;
+gap=" ".repeat(offset);
+txt+=add+gap;
+offset = 20 - fas.length;
+gap=" ".repeat(offset);
+txt+=fas+gap;
+offset = 20 - ganb.length;
+gap=" ".repeat(offset);
+txt+=ganb+gap;
+offset = 20 - dispel.length;
+gap=" ".repeat(offset);
+txt+=dispel;
+
+txt+="\n\n--- Roster composition:\n";
+txt+="+class:                        count:\n";
+if (rlk > 0)txt+="Lord Knight:                   "+rlk+"\n";
+if (rhp > 0)txt+="High Priest:                   "+rhp+"\n";
+if (rhw > 0)txt+="DD High Wizard:                "+rhw+"\n";
+if (rhwfs > 0)txt+="FS High Wizard:                "+rhwfs+"\n";
+if (rws > 0)txt+="Whitesmith:                    "+rws+"\n";
+if (rsnip > 0)txt+="Sniper:                        "+rsnip+"\n";
+if (rsin > 0)txt+="Assassin Cross:                "+rsin+"\n";
+if (rpal > 0)txt+="Paladin:                       "+rpal+"\n";
+if (rchamp > 0)txt+="Champion:                      "+rchamp+"\n";
+if (rprof > 0)txt+="Dispel Prof:                   "+rprof+"\n";
+if (rdlp > 0)txt+="DLP Prof:                      "+rdlp+"\n";
+if (rstalk> 0)txt+="Stalker:                       "+rstalk+"\n";
+if (rchem > 0)txt+="DD Chem:                       "+rchem+"\n";
+if (rspp > 0)txt+="SPP Chem:                      "+rspp+"\n";
+if (rclown > 0)txt+="Clown:                         "+rclown+"\n";
+if (rgyp > 0)txt+="Gypsy:                         "+rgyp+"\n";
+if (rslinger > 0)txt+="Gunslinger:                    "+rslinger+"\n";
+if (rninja > 0)txt+="Ninja:                         "+rninja+"\n";
+if (rtaek > 0)txt+="Taekwon:                       "+rtaek+"\n";
+if (rsg > 0)txt+="Star Gladiator:                "+rsg+"\n";
+if (rlinker > 0)txt+="Soul Linker:                   "+rlinker+"\n";
+var total = rlk+rhp+rhw+rhwfs+rws+rsnip+rsin+rpal+rchamp+rprof+rdlp+rstalk+rchem+rspp+rclown+rgyp+rslinger+rninja+rtaek+rsg+rlinker;
+txt+="+TOTAL:                        "+total+"\n";
+txt+="\n```";
+return m.edit(txt);
+});
+return
+}
+
+else if(command === "gstatst" || command === "gst") { 
+var woedate='2019-10-27'; //default for tests
+if (args[0] === "-w" && args[1] != "") {
+  //var url = 'http://ragnaland.com/?module=woe_stats&action=index&woe_date=2019-10-27&char_name=&guild_name=;
+	var firstwoe= new Date('2019-10-27').getTime();
+	today = new Date().getTime();
+	var diff = Math.abs(today - firstwoe);
+	diff = Math.trunc(diff/weeksec);
+	var wbehind = parseInt(args[1]);
+	diff = diff-wbehind;
+	diff=(diff*weeksec)+firstwoe;
+	diff=diff/1000;
+	woedate=diff;
+	args=args.splice(2);
+	var d = new Date(0);
+	d.setUTCSeconds(diff);
+	woedate= d.getFullYear() + '-' + ((d.getMonth() > 8) ? (d.getMonth() + 1) : ('0' + (d.getMonth() + 1)))+ '-'+ ((d.getDate() > 9) ? d.getDate() : ('0' + d.getDate())) ;
+	d=d.toString();
+	displaydate=1;
+  }
+if (args[0] === "-d" && args[1] != "") {
+	var d = args[1];
+	woedate = args[1];
+	args=args.splice(2);
+	displaydate=1;
+  }
+if (!args[0]) {
+	var firstwoe= new Date('2019-10-27').getTime();
+	today = new Date().getTime();
+	var diff = Math.abs(today - firstwoe);
+	diff = Math.trunc(diff/weeksec); // cut off to full weeks
+	diff=(diff*weeksec)+firstwoe;
+	diff=diff/1000;
+	woedate=diff;
+	var d = new Date(0);
+	d.setUTCSeconds(diff);
+	woedate= d.getFullYear() + '-' + ((d.getMonth() > 8) ? (d.getMonth() + 1) : ('0' + (d.getMonth() + 1)))+ '-'+ ((d.getDate() > 9) ? d.getDate() : ('0' + d.getDate())) ;
+}
+var url = 'http://ragnaland.com/?module=woe_stats&action=index&woe_date='+woedate+'&guild_name=';
+const m = await message.channel.send("Pulling data...");
+if (!args[0]) { //list guild names when no args provided
+	var txt = "```diff\n"
+	if (displaydate!=0)
+		txt+="-ARCHIVE WOE DATE: "+d+"\n\n"
+	txt+="-GUILDS PARTICIPATED IN WOE:\n"
+	request.post({
+	  headers: {'content-type' : 'application/x-www-form-urlencoded'},
+	  url:     url,
+	  body:    "view=Blocks"
+	},
+	function (error, response, body) {
+			const $ = cheerio.load(body);
+			var gnames = [];
+			var gn = ($(".woe_statsindex table.horizontal-table tr:nth-child(1) >td >p>a").attr('title')).substring(22); //get first guild name
+			gnames.push(gn);
+			if (gnames[0] == "") //if first is blank it means no guilds participated
+				return m.edit("No guilds participated in selected woe :frowning:");
+			txt+=gn+"\n";
+			$(".woe_statsindex table.horizontal-table").each (function () { //check rest of guild names
+				$("tr:nth-child(1) >td >p>a", this).each (function () {
+					for (var i = 0; i < gnames.length; i++) { //check if guildname is already there
+						gn = $(this).attr('title').substring(22);
+						if (gn == gnames[i]) //break out of loop if guild name is found
+							break;
+						if (i+1 == gnames.length) { //add new name if it wasnt found
+							if (gn == '');
+								gn = 'none';
+							gnames.push(gn);
+							txt+=gn+"\n";
+						}
+					}
+				});
+			});		
+			txt+='```';
+			message.channel.send('Guild name was not provided - listed all guilds that participated in selected woe.');
+			return m.edit(txt);
+	});
+	return
+}
+gname = args.join("+");
+url+=gname;
+var rlk=rhp=rhw=rhwfs=rws=rsnip=rsin=rpal=rchamp=rprof=rdlp=rstalk=rchem=rspp=rclown=rgyp=rslinger=rninja=rtaek=rsg=rlinker=0; //roster vars
+var gypsy,hw,sniper,chem,prof; //class checks
+var stat=kills=deaths=top=done=recv=supc=supw=healc=healw=emp=bar=stone=guard=demp=dbar=dstone=dguard=hp=sp=ygem=rgem=bgem=arrow=ad=poison=spirit=zeny=gypsyd=ganb=chemd=sniperd=sarrow=dispel=disp=0; //stat vars
+request.post({
+  headers: {'content-type' : 'application/x-www-form-urlencoded'},
+  url:     url,
+  body:    "view=Blocks"
+}, 
+function (error, response, body) {
+		const $ = cheerio.load(body);
+		fullname = ($(".woe_statsindex table.horizontal-table tr:nth-child(1) >td >p>a").attr('title')).substring(22); //guild full name
+		if (fullname == "")
+			//return m.edit("No players found with guild name containing **"+gname+"** :frowning:");
+		var i;
+		$(".woe_statsindex table.horizontal-table").each (function () {
+			i=1;
+			var clink = $("tr:nth-child(1) >td >img", this).attr('src');
+			//classname checks for roster composition and class-specific stats
+			if (clink.includes("4008"))
+				rlk+=1;
+			if (clink.includes("4009"))
+				rhp+=1;
+			if (clink.includes("4010")) {
+				hw = 1;
+				rhw+=1;
+			}
+			else
+				hw = 0;
+			if (clink.includes("4011"))
+				rws+=1;
+			if (clink.includes("4012")) {
+				sniper = 1;
+				rsnip+=1;
+			}
+			else
+				sniper = 0;
+			if (clink.includes("4013"))
+				rsin+=1;
+			if (clink.includes("4015"))
+				rpal+=1;
+			if (clink.includes("4016"))
+				rchamp+=1;
+			if (clink.includes("4017")) {
+				rdlp+=1;
+				prof = 1;
+			}
+			else
+				prof = 0;
+			if (clink.includes("4018"))
+				rstalk+=1;
+			if (clink.includes("4019")) {
+				chem = 1;
+				rspp+=1;
+			}
+			else
+				chem = 0;
+			if (clink.includes("4020"))
+				rclown+=1;
+			if (clink.includes("4021")) {
+				gypsy = 1;
+				rgyp+=1;
+			}
+			else
+				gypsy = 0;
+			if (clink.includes("job=24"))
+				rslinger+=1;
+			if (clink.includes("job=25"))
+				rninja+=1;
+			if (clink.includes("4046"))
+				rtaek+=1;
+			if (clink.includes("4047"))
+				rsg+=1;
+			if (clink.includes("4049"))
+				rlinker+=1;
+			
+			//get stats	
+			var k = 1;
+			$("tr", this).each (function () {
+				if (k == 2 || k == 4 || k==6 || k==8 || k==9)
+				$("td p:nth-child(2)", this).each (function () { 
+						if (i<7 || (i>16 && i<29)) //ignore not needed stats
+						stat = parseFloat($(this).html());
+						//stat = parseFloat($(this).html().replace(/,/g, ''));
+					if (i==2) {
+						kills+=stat;
+					}
+					if (i==3) {
+						if (gypsy==1)
+							gypsyd+=stat; //gypsy deaths
+						else
+							deaths+=stat;
+					}
+					if (i==4) {
+						top+=stat;
+					}
+					if (i==5) {
+						if ((chem==1) && (stat > 500000)) { //check for dd chem
+							chemd+=stat;
+							rchem+=1;
+							rspp=rspp-1;
+						}
+						if ((hw==1) && (stat < 500000)) { //check for fs wiz
+							rhwfs+=1;
+							rhw=rhw-1;
+						}
+						if (sniper==1)
+							sniperd+=stat;
+						done+=stat;
+					}
+					if (i==6) {
+						
+						recv+=stat;
+					}
+					if (i==17) {
+						hp+=stat;
+					}
+					if (i==18) {				
+						sp+=stat;
+					}
+					if (i==22) {						
+						if (hw == 1) 
+							ganb+=stat;
+						if (prof == 1)
+							disp=stat;
+						ygem+=stat;
+					}
+					if (i==20) {						
+						rgem+=stat;
+					}
+					if (i==21) {						
+						if ((prof == 1) && (stat <500)) { //check for dispel prof (shouldnt have more than 500 blue gems used)
+							dispel+=disp;
+							rprof+=1;
+							rdlp=rdlp-1;
+						}
+						bgem+=stat;
+					}
+					if (i==28) {						
+						if (sniper == 1)
+							sarrow+=stat;
+						arrow+=stat;
+					}
+					if (i==23) {
+						ad+=stat;
+					}
+					i++;
+				});
+				k++;
+			});
+		});
+//dmg per fas and dmg per ad
+var fas = sniperd/sarrow;
+var add = chemd/ad;
+//formatting stuff
+fas = Math.round(fas);
+add = Math.round(add);
+fas = fas.toLocaleString().split(',').join('.');
+add = add.toLocaleString().split(',').join('.');
+kills = kills.toLocaleString().split(',').join('.');
+deaths = deaths.toLocaleString().split(',').join('.');
+done = done.toLocaleString().split(',').join('.');
+recv = recv.toLocaleString().split(',').join('.');
+ad = ad.toLocaleString().split(',').join('.');
+hp = hp.toLocaleString().split(',').join('.');
+sp = sp.toLocaleString().split(',').join('.');
+ganb = ganb.toLocaleString().split(',').join('.');
+gypsyd = gypsyd.toLocaleString().split(',').join('.');
+dispel = dispel.toLocaleString().split(',').join('.');
+var offset;
+var gap="";
+var txt = "```diff\n"
+//if (displaydate!=0)
+	//txt+="-ARCHIVE WOE DATE: "+d+"\n\n"
 txt+="-GUILD STATS FOR: "+fullname+"\n\n\n"
 txt+="--- Basic info:\n";
 txt+="!kills:             ";
