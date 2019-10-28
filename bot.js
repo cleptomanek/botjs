@@ -811,6 +811,212 @@ else if (j!=1)
 });
 return
 }
+else if(command === "ccm") {
+	var woedate='2019-10-27'; //default for tests
+const request = require('request');
+const cheerio = require('cheerio');
+if (args[0] === "-w" && args[1] != "") {
+	var firstwoe= new Date('2019-10-27').getTime();
+	today = new Date().getTime();
+	var diff = Math.abs(today - firstwoe);
+	diff = Math.trunc(diff/weeksec);
+	var wbehind = parseInt(args[1]);
+	diff = diff-wbehind;
+	diff=(diff*weeksec)+firstwoe;
+	diff=diff/1000;
+	woedate=diff;
+	args=args.splice(2);
+	var d = new Date(0);
+	d.setUTCSeconds(diff);
+	woedate= d.getFullYear() + '-' + ((d.getMonth() > 8) ? (d.getMonth() + 1) : ('0' + (d.getMonth() + 1)))+ '-'+ ((d.getDate() > 9) ? d.getDate() : ('0' + d.getDate())) ;
+	d=d.toString();
+	displaydate=1;
+  }
+if (args[0] === "-d" && args[1] != "") {
+	var d = args[1];
+	woedate = args[1];
+	args=args.splice(2);
+	displaydate=1;
+  }
+if (!args[0]) {
+	var firstwoe= new Date('2019-10-27').getTime();
+	today = new Date().getTime();
+	var diff = Math.abs(today - firstwoe);
+	diff = Math.trunc(diff/weeksec); // cut off to full weeks
+	diff=(diff*weeksec)+firstwoe;
+	diff=diff/1000;
+	woedate=diff;
+	var d = new Date(0);
+	d.setUTCSeconds(diff);
+	woedate= d.getFullYear() + '-' + ((d.getMonth() > 8) ? (d.getMonth() + 1) : ('0' + (d.getMonth() + 1)))+ '-'+ ((d.getDate() > 9) ? d.getDate() : ('0' + d.getDate())) ;
+}
+var job = args[0].toLowerCase();
+if (!(job == 'chem' || job == 'creo' || job == 'creator' || job == 'biochem' || job == 'wiz'|| job == 'wizard' || job == 'snip'|| job == 'sniper'))
+	return message.channel.send('Provide a valid DD class ("Creator", "Wizard" or "Sniper")');
+const m = await message.channel.send("Pulling data...");
+var jobid, jobtext;
+if (job == 'chem' || job == 'creo' || job == 'creator' || job == 'biochem'){
+	job = 'chem';
+	jobid = 'job=4019';
+	jobtext = 'DD CHEMS:';
+}
+if (job == 'snip' || job == 'sniper') {
+	job = 'snip';
+	jobid = 'job=4012';
+	jobtext = 'SNIPERS:';
+}
+if (job == 'wiz' || job == 'wizard' || job == 'hw') {
+	job = 'wiz';
+	jobid = 'job=4010';
+	jobtext = 'DD WIZARDS:';
+}
+var url = 'http://ragnaland.com/?module=woe_stats&action=index&woe_date='+woedate;
+var name,dd,guild;
+kills=deaths=top=done=recv=hp=sp=ygem=bgem=arrow=add=ad=donef=0;
+var offset;
+var gap="";
+var txt="```diff\n";
+if (displaydate!=0)
+	txt+="-ARCHIVE WOE DATE: "+d+"\n\n"
+txt+="-COMPARING "+jobtext+"\n\n"
+txt+="!name:                   ";
+txt+="guild:                   ";
+txt+="K:   ";
+txt+="D:   ";
+if (job == 'wiz')txt+="top dmg:    ";
+txt+="dmg done:    ";
+txt+="received:    ";
+if (job == 'wiz')txt+="ganb used:\n";
+if (job == 'snip') {
+	txt+="fas used:  ";
+	txt+="dmg/fas:\n";
+}
+if (job == 'chem') {
+	txt+="ad used:  ";
+	txt+="dmg/ad:\n";
+}
+request.post({
+  headers: {'content-type' : 'application/x-www-form-urlencoded'},
+  url:     url,
+  body:    "view=Blocks"
+}, 
+function (error, response, body) {
+		var section=0;
+		const $ = cheerio.load(body);
+		var i;
+		var j=1;
+		$(".woe_statsindex table.horizontal-table").each (function () {
+			i=1;
+			var clink = $("tr:nth-child(1) >td >img", this).attr('src');
+			if (clink.includes(jobid) && parseInt($("tr:nth-child(2) td:nth-child(5) p:nth-child(2)", this).text()) > 500000) {
+			guild = ($("tr:nth-child(1) >td >p>a", this).attr('title')); //guild full name
+			if (guild) guild=guild.substring(22);
+			name = ($("tr:nth-child(1) >td >h2>a", this).text());
+			offset = 25 - name.length;
+			gap=" ".repeat(offset);
+			txt+=name+gap;
+			offset = 25 - guild.length;
+			gap=" ".repeat(offset);
+			txt+=guild+gap;
+			var k = 1;
+			$("tr", this).each (function () {
+				if (k == 2 || k == 4 || k==6 || k==8 || k==9)
+				$("td p:nth-child(2)", this).each (function () { 
+						if (i<7 || (i>16 && i<29)) //ignore not needed stats
+						stat = parseFloat($(this).html());
+						//stat = parseFloat($(this).html().replace(/,/g, ''));
+					if (i==2) {
+						kills=stat;
+						kills = kills.toLocaleString().split(',').join('.');
+						offset = 5 - kills.length;
+						gap=" ".repeat(offset);
+						txt+=kills+gap;
+					}
+					if (i==3) {
+						deaths=stat;
+						deaths = deaths.toLocaleString().split(',').join('.');
+						offset = 5 - deaths.length;
+						gap=" ".repeat(offset);
+						txt+=deaths+gap;
+					}
+					if (i==4 && job=='wiz') {
+						top=stat;
+						top = top.toLocaleString().split(',').join('.');
+						offset = 12 - top.length;
+						gap=" ".repeat(offset);
+						txt+=top+gap;
+					}
+					if (i==5) {
+						donef=stat;
+						done = donef.toLocaleString().split(',').join('.');
+						offset = 13 - done.length;
+						gap=" ".repeat(offset);
+						txt+=done+gap;
+					}
+					if (i==6) {
+						recv=stat;
+						recv = recv.toLocaleString().split(',').join('.');
+						offset = 13 - recv.length;
+						gap=" ".repeat(offset);
+						txt+=recv+gap;
+					}
+					if (i==22 && job=='wiz') {						
+						ygem=stat;
+						ygem = ygem.toLocaleString().split(',').join('.');
+						txt+=ygem+'\n';
+						j++;
+					}
+					if (i==28 && job=='snip') {						
+						arrow=stat;
+						fas=donef/arrow;
+						arrow = arrow.toLocaleString().split(',').join('.');
+						fas = Math.round(fas);
+						fas = fas.toLocaleString().split(',').join('.');
+						offset = 11 - arrow.length;
+						gap=" ".repeat(offset);
+						txt+=arrow+gap;
+						txt+=fas+"\n";
+						j++;
+					}
+					if (i==23 && job=='chem') {
+						ad=stat;
+						add=donef/ad;
+						ad = ad.toLocaleString().split(',').join('.');
+						add = Math.round(add);
+						add = add.toLocaleString().split(',').join('.');
+						offset = 10 - ad.length;
+						gap=" ".repeat(offset);
+						txt+=ad+gap;
+						txt+=add+"\n";
+						j++;
+					}
+					if (i==28) {
+						if (j>10) {
+						txt+="```";
+						if (section>0)
+							message.channel.send(txt);
+						else
+							m.edit(txt);
+						txt="";
+						j=1;
+						txt+="```diff\n"
+						section++;
+						}
+					}
+					i++;
+				});
+				k++;
+			});
+			}
+		});
+		txt+="```";
+		if (section == 0 && j!=1)
+			m.edit(txt);
+		else if (j!=1)
+			return message.channel.send(txt);
+		});
+	return
+}
   
 else if(command === "help" || command === "h") {
 	var txt="```diff\n";
