@@ -645,6 +645,7 @@ else {
 	var d = new Date(0);
 	d.setUTCSeconds(diff);
 	woedate= d.getFullYear() + '-' + ((d.getMonth() > 8) ? (d.getMonth() + 1) : ('0' + (d.getMonth() + 1)))+ '-'+ ((d.getDate() > 9) ? d.getDate() : ('0' + d.getDate())) ;
+	message.channel.send('ok');
 }
 var job = args[0].toLowerCase();
 if (!(job == 'chem' || job == 'creo' || job == 'creator' || job == 'biochem' || job == 'wiz'|| job == 'wizard' || job == 'snip'|| job == 'sniper'))
@@ -667,6 +668,7 @@ if (job == 'wiz' || job == 'wizard' || job == 'hw') {
 	jobtext = 'DD WIZARDS:';
 }
 var url = 'http://ragnaland.com/?module=woe_stats&action=index&woe_date='+woedate;
+message.channel.send(url);
 var name,dd,guild;
 kills=deaths=top=done=recv=hp=sp=ygem=bgem=arrow=add=ad=donef=0;
 var offset;
