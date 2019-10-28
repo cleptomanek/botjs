@@ -358,9 +358,9 @@ request.post({
 }, 
 function (error, response, body) {
 		const $ = cheerio.load(body);
-		fullname = ($(".woe_statsindex table.horizontal-table tr:nth-child(1) >td >p>a").attr('title')).substring(22); //guild full name
-		if (fullname == "")
-			return m.edit("No players found with guild name containing **"+gname+"** :frowning:");
+		fullname = ($(".woe_statsindex table.horizontal-table tr:nth-child(1) >td >p>a").attr('title')); //guild full name
+		if (fullname)
+			fullname=fullname.substring(22);
 		var i;
 		$(".woe_statsindex table.horizontal-table").each (function () {
 			i=1;
@@ -603,6 +603,7 @@ txt+="+TOTAL:                        "+total+"\n";
 txt+="\n```";
 return m.edit(txt);
 }, 2000);
+return
 }
 
 else if (command === 'compare' || command === 'cmp')
