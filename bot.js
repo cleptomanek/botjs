@@ -332,7 +332,7 @@ if (!args[0]) { //list guild names when no args provided
 						if (i+1 == gnames.length) { //add new name if it wasnt found
 							gnames.push(gn);
 							if (gn == '')
-								txt+="-none-\n";
+								txt+="--no Guild--\n";
 							else
 								txt+=gn+"\n";
 						}
