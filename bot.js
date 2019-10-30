@@ -348,7 +348,7 @@ if (!args[0]) { //list guild names when no args provided
 gname = args.join("+");
 url+=gname;
 var rlk=rhp=rhw=rhwfs=rws=rsnip=rsin=rpal=rchamp=rprof=rdlp=rstalk=rchem=rspp=rclown=rgyp=rslinger=rninja=rtaek=rsg=rlinker=0; //roster vars
-var gypsy,hw,sniper,chem,prof;  //class checks
+var gypsy,hw,sniper,chem,prof,fullname;  //class checks
 var stat=kills=deaths=top=done=recv=supc=supw=healc=healw=emp=bar=stone=guard=demp=dbar=dstone=dguard=hp=sp=ygem=rgem=bgem=arrow=ad=poison=spirit=zeny=gypsyd=ganb=chemd=sniperd=sarrow=dispel=disp=0; //stat vars
 for (var page = 1; page < 3; page++)
 request.post({
@@ -358,9 +358,10 @@ request.post({
 }, 
 function (error, response, body) {
 		const $ = cheerio.load(body);
-		fullname = ($(".woe_statsindex table.horizontal-table tr:nth-child(1) >td >p>a").attr('title')); //guild full name
-		if (fullname)
+		if ($(".woe_statsindex table.horizontal-table tr:nth-child(1) >td >p>a").attr('title')) {
+			fullname = ($(".woe_statsindex table.horizontal-table tr:nth-child(1) >td >p>a").attr('title')); //guild full name
 			fullname=fullname.substring(22);
+		}
 		var i;
 		$(".woe_statsindex table.horizontal-table").each (function () {
 			i=1;
@@ -501,6 +502,8 @@ function (error, response, body) {
 });
 setTimeout(function(){
 //dmg per fas and dmg per ad
+if (!fullname)
+	return m.edit("No players found for provided guild name :(");
 var fas = sniperd/sarrow;
 var add = chemd/ad;
 //formatting stuff
