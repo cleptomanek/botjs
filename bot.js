@@ -332,7 +332,7 @@ if (!args[0]) { //list guild names when no args provided
 						if (i+1 == gnames.length) { //add new name if it wasnt found
 							gnames.push(gn);
 							if (gn == '')
-								txt+="--no Guild--\n";
+								txt+="/no Guild/\n";
 							else
 								txt+=gn+"\n";
 						}
@@ -673,6 +673,7 @@ if (job == 'wiz' || job == 'wizard' || job == 'hw') {
 }
 var url = 'http://ragnaland.com/?module=woe_stats&action=index&woe_date='+woedate;
 var name,dd,guild;
+var jcount=0;
 kills=deaths=top=done=recv=hp=sp=ygem=bgem=arrow=add=ad=donef=0;
 var offset;
 var gap="";
@@ -711,6 +712,7 @@ function (error, response, body) {
 			i=1;
 			var clink = $("tr:nth-child(1) >td >img", this).attr('src');
 			if (clink.includes(jobid) && parseInt($("tr:nth-child(2) td:nth-child(5) p:nth-child(2)", this).text()) > 500000) {
+			jcount++;
 			guild = ($("tr:nth-child(1) >td >p>a", this).attr('title')); //guild full name
 			if (guild) guild=guild.substring(22);
 			name = ($("tr:nth-child(1) >td >h2>a", this).text());
@@ -811,7 +813,10 @@ function (error, response, body) {
 			});
 			}
 		});
-		txt+="```";
+		if (jcount > 0) {
+			txt+="```";
+			jcount=0;
+		}
 		if (section == 0 && j!=1)
 			m.edit(txt);
 		else if (j!=1)
