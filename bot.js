@@ -86,7 +86,7 @@ client.on("message", async message => {
 	if(message.content.indexOf(config.prefix) !== 0) return; //ignore messages without prefix
 	var args = message.content.slice(config.prefix.length).trim().split(/ +/g);
 	const command = args.shift().toLowerCase();
-	if ((message.author.id == 444) || (message.author.id == 177107237053923328) || (message.author.id == 184327765070315521) || (message.author.id == 162610908307259392)) //admin ids
+	if ((message.author.id == 444) || (message.author.id == 177107237053923328) || (message.author.id == 184327765070315521) || (message.author.id == 162610908307259392) || (message.author.id == 293057517578354688)) //admin ids
 		admin=1;
 
 if (command === "bot-status") {
@@ -985,7 +985,7 @@ doc.getInfo(function(err, info) {
 	sheet = info.worksheets[1];
 		sheet.getCells({
 			'min-row': 2,
-			'max-row': 40,
+			'max-row': 60,
 			'min-col': 2,
 			'max-col': 3,
 			'return-empty': true
@@ -1016,7 +1016,7 @@ doc.getInfo(function(err, info) {
 	sheet = info.worksheets[1];
 		sheet.getCells({
 			'min-row': 2,
-			'max-row': 40,
+			'max-row': 60,
 			'min-col': 2,
 			'max-col': 4,
 			'return-empty': true
@@ -1041,7 +1041,7 @@ doc.getInfo(function(err, info) {
 	sheet = info.worksheets[1];
 		sheet.getCells({
 			'min-row': 2,
-			'max-row': 40,
+			'max-row': 60,
 			'min-col': 4,
 			'max-col': 4,
 			'return-empty': true
@@ -1063,7 +1063,7 @@ doc.getInfo(function(err, info) {
 	sheet = info.worksheets[1];
 		sheet.getCells({
 			'min-row': 2,
-			'max-row': 40,
+			'max-row': 60,
 			'min-col': 2,
 			'max-col': 4,
 			'return-empty': true
@@ -1106,7 +1106,7 @@ doc.getInfo(function(err, info) {
 	sheet = info.worksheets[1];
 		sheet.getCells({
 			'min-row': 2,
-			'max-row': 40,
+			'max-row': 60,
 			'min-col': 2,
 			'max-col': 4,
 			'return-empty': true
@@ -1136,7 +1136,7 @@ doc.getInfo(function(err, info) {
 	sheet = info.worksheets[1];
 		sheet.getCells({
 			'min-row': 2,
-			'max-row': 40,
+			'max-row': 60,
 			'min-col': 2,
 			'max-col': 6,
 			'return-empty': true
@@ -1162,7 +1162,7 @@ doc.getInfo(function(err, info) {
 	sheet = info.worksheets[1];
 		sheet.getCells({
 			'min-row': 2,
-			'max-row': 40,
+			'max-row': 60,
 			'min-col': 2,
 			'max-col': 5,
 			'return-empty': true
@@ -1192,7 +1192,7 @@ doc.getInfo(function(err, info) {
 	sheet = info.worksheets[1];
 		sheet.getCells({
 			'min-row': 2,
-			'max-row': 40,
+			'max-row': 60,
 			'min-col': 2,
 			'max-col': 4,
 			'return-empty': true
@@ -1226,7 +1226,7 @@ doc.getInfo(function(err, info) {
 	sheet = info.worksheets[1];
 		sheet.getCells({
 			'min-row': 2,
-			'max-row': 40,
+			'max-row': 60,
 			'min-col': 2,
 			'max-col': 4,
 			'return-empty': true
@@ -1257,7 +1257,7 @@ doc.getInfo(function(err, info) {
 	sheet = info.worksheets[1];
 		sheet.getCells({
 			'min-row': 2,
-			'max-row': 40,
+			'max-row': 60,
 			'min-col': 2,
 			'max-col': 4,
 			'return-empty': true
@@ -1288,7 +1288,7 @@ doc.getInfo(function(err, info) {
 	sheet = info.worksheets[1];
 		sheet.getCells({
 			'min-row': 2,
-			'max-row': 40,
+			'max-row': 60,
 			'min-col': 2,
 			'max-col': 4,
 			'return-empty': true
@@ -1319,7 +1319,7 @@ doc.getInfo(function(err, info) {
 	sheet = info.worksheets[1];
 		sheet.getCells({
 			'min-row': 2,
-			'max-row': 40,
+			'max-row': 60,
 			'min-col': 2,
 			'max-col': 3,
 			'return-empty': true
@@ -1356,7 +1356,7 @@ doc.getInfo(function(err, info) {
 	sheet = info.worksheets[1];
 		sheet.getCells({
 			'min-row': 2,
-			'max-row': 40,
+			'max-row': 60,
 			'min-col': 2,
 			'max-col': 4,
 			'return-empty': true
@@ -1392,7 +1392,7 @@ doc.getInfo(function(err, info) {
 	sheet = info.worksheets[1];
 		sheet.getCells({ //check for id in bot sheet
 			'min-row': 2,
-			'max-row': 40,
+			'max-row': 60,
 			'min-col': 1,
 			'max-col': 2,
 			'return-empty': true
@@ -1474,7 +1474,7 @@ doc.getInfo(function(err, info) {
 	sheet = info.worksheets[1];
 		sheet.getCells({
 			'min-row': 2,
-			'max-row': 40,
+			'max-row': 60,
 			'min-col': 1,
 			'max-col': 2,
 			'return-empty': true
@@ -1608,7 +1608,7 @@ doc.getInfo(function(err, info) {
 	sheet = info.worksheets[1];
 		sheet.getCells({ //check for id in bot sheet
 			'min-row': 2,
-			'max-row': 40,
+			'max-row': 60,
 			'min-col': 1,
 			'max-col': 2,
 			'return-empty': true
