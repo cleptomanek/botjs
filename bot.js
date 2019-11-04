@@ -1749,6 +1749,10 @@ else if(command === "purge") {
 	message.channel.bulkDelete(fetched)
 	.catch(error => message.reply(`Couldn't delete messages because of: ${error}`));
 	}
+	
+else if(command === "leave") {
+	message.guild.leave();
+	}	
 
 else if (command === "ec") {
 	if (!args[0])
