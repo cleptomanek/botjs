@@ -468,24 +468,23 @@ function (error, response, body) {
 					if (i==18) {				
 						sp+=stat;
 					}
+					if (i==22) {						
+						if (hw == 1) 
+							ganb+=stat;
+						if (prof == 1)
+							disp=stat;
+						ygem+=stat;
+					}
+					if (i==20) {						
+						rgem+=stat;
+					}
 					if (i==21) {						
 						if ((prof == 1) && (stat <500)) { //check for dispel prof (shouldnt have more than 500 blue gems used)
-							disp=1;
+							dispel+=disp;
 							rprof+=1;
 							rdlp=rdlp-1;
 						}
 						bgem+=stat;
-					}
-					if (i==22) {						
-						if (hw == 1) 
-							ganb+=stat;
-						if (prof == 1 && disp == 1)
-							dispel+=stat;
-						ygem+=stat;
-						disp=0;
-					}
-					if (i==20) {						
-						rgem+=stat;
 					}
 					if (i==28) {						
 						if (sniper == 1)
