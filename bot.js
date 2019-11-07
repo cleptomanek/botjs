@@ -777,7 +777,7 @@ function (error, response, body) {
 						txt+=ygem+'\n';
 						j++;
 					}
-					if (i==22 && job=='prof' && disp == 1) {						
+					if (i==22 && job=='prof') {						
 						ygem=stat;
 						ygem = ygem.toLocaleString().split(',').join('.');
 						txt+=ygem+'\n';
