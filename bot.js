@@ -653,8 +653,8 @@ else {
 	woedate= d.getFullYear() + '-' + ((d.getMonth() > 8) ? (d.getMonth() + 1) : ('0' + (d.getMonth() + 1)))+ '-'+ ((d.getDate() > 9) ? d.getDate() : ('0' + d.getDate())) ;
 }
 var job = args[0].toLowerCase();
-if (!(job == 'chem' || job == 'creo' || job == 'creator' || job == 'biochem' || job == 'wiz'|| job == 'wizard' || job == 'snip'|| job == 'sniper' || job == 'prof' || job == 'professor'))
-	return message.channel.send('Provide a valid class ("Creator", "Wizard", "Sniper" or "Professor")');
+if (!(job == 'chem' || job == 'creo' || job == 'creator' || job == 'biochem' || job == 'wiz'|| job == 'wizard' || job == 'snip'|| job == 'sniper'))
+	return message.channel.send('Provide a valid DD class ("Creator", "Wizard" or "Sniper")');
 const m = await message.channel.send("Pulling data...");
 var jobid, jobtext;
 if (job == 'chem' || job == 'creo' || job == 'creator' || job == 'biochem'){
@@ -671,11 +671,6 @@ if (job == 'wiz' || job == 'wizard' || job == 'hw') {
 	job = 'wiz';
 	jobid = 'job=4010';
 	jobtext = 'DD WIZARDS:';
-}
-if (job == 'prof' || job == 'professor') {
-	job = 'prof';
-	jobid = 'job=4017';
-	jobtext = 'DISPEL PROFESSORS:';
 }
 var url = 'http://ragnaland.com/?module=woe_stats&action=index&woe_date='+woedate;
 var name,dd,guild;
@@ -695,7 +690,6 @@ if (job == 'wiz')txt+="top dmg:    ";
 txt+="dmg done:    ";
 txt+="received:    ";
 if (job == 'wiz')txt+="ganb used:\n";
-if (job == 'prof')txt+="dispel used:\n";
 if (job == 'snip') {
 	txt+="fas used:  ";
 	txt+="dmg/fas:\n";
@@ -718,7 +712,7 @@ function (error, response, body) {
 		$(".woe_statsindex table.horizontal-table").each (function () {
 			i=1;
 			var clink = $("tr:nth-child(1) >td >img", this).attr('src');
-			if ((clink.includes(jobid) && parseInt($("tr:nth-child(2) td:nth-child(5) p:nth-child(2)", this).text()) > 500000) || (job == 'prof' && clink.includes(jobid) && parseInt($("tr:nth-child(2) td:nth-child(21) p:nth-child(2)", this).text()) < 500)){
+			if (clink.includes(jobid) && parseInt($("tr:nth-child(2) td:nth-child(5) p:nth-child(2)", this).text()) > 500000) {
 			jcount++;
 			guild = ($("tr:nth-child(1) >td >p>a", this).attr('title')); //guild full name
 			if (guild) guild=guild.substring(22);
@@ -772,12 +766,6 @@ function (error, response, body) {
 						txt+=recv+gap;
 					}
 					if (i==22 && job=='wiz') {						
-						ygem=stat;
-						ygem = ygem.toLocaleString().split(',').join('.');
-						txt+=ygem+'\n';
-						j++;
-					}
-					if (i==22 && job=='prof') {						
 						ygem=stat;
 						ygem = ygem.toLocaleString().split(',').join('.');
 						txt+=ygem+'\n';
@@ -862,7 +850,7 @@ else if(command === "help" || command === "h") {
 	txt+="+You can use this command to get archive woe data aswell using -d and -w options. -w specifies how many weeks ago from current date woe occured and -d lets you provide exact date of woe\n"
 	txt+="---ex. '?gs -w 3 guildname' (pulls woe from 3 weeks ago for specified guildname), '?gs -d 2019-09-08 guildname' (woe from 08 september 2019 for guildname - format is RRRR-MM-DD) \n\n"
 	txt+=""+config.prefix+"compare (dd class) (alternative: "+config.prefix+"cmp)\n"
-	txt+="+Compares classes stats (use command with class name \n---ex. '?cmp chem', '?compare sniper', '?compare creo', '?cmp wiz' \n"
+	txt+="+Compares DD classes stats (use command with class name \n---ex. '?cmp chem', '?compare sniper', '?compare creo', '?cmp wiz' \n"
 	txt+="+You can use this command to get archive woe data aswell using -d and -w options (usage is the same as ?gstats)\n\n"
 	txt+=""+config.prefix+"bgranks (class) (alternative: "+config.prefix+"bg)\n"
 	txt+="+Pulls data from BG rankings\n---ex. '?bg chem', '?bgranks sniper', '?bgranka creo', '?bg wiz' \n"
