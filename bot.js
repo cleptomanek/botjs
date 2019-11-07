@@ -1542,6 +1542,8 @@ doc.getInfo(function(err, info) {
 });
 }
 else if(command === "devoall" || command === "dall") {
+if (admin == 0)
+	return message.reply("Sorry, you are not allowed to use admin commands :clown: Ask clepto if you think you should have rights\n You can check available commands using: ```fix\n "+config.prefix+"help\n```");
 const m = await message.channel.send("Checking roster sheet...");
 doc.useServiceAccountAuth(creds, function (err) {
 doc.getInfo(function(err, info) {
@@ -1752,6 +1754,8 @@ else if(command === "purge") {
 	}
 	
 else if(command === "leave") {
+	if (admin == 0)
+		return message.reply("Sorry, you are not allowed to use admin commands :clown: Ask clepto if you think you should have rights\n You can check available commands using: ```fix\n "+config.prefix+"help\n```");
 	message.guild.leave();
 	}	
 
