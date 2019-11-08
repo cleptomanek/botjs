@@ -813,9 +813,9 @@ function (error, response, body) {
 			if (j>10*statsnum) {
 				txt+="```";
 				if (section>0)
-					message.channel.send(txt+'```');
+					message.channel.send(txt);
 				else
-					m.edit(txt+'```');
+					m.edit(txt);
 				txt="";
 				j=1;
 				txt+="```diff\n"
