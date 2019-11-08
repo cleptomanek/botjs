@@ -702,7 +702,7 @@ if (job == 'chem') {
 	txt+="ad used:  ";
 	txt+="dmg/ad:\n";
 }
-for (var page = 1; page < 3; page++)
+for (var page = 1; page < 5; page++)
 request.post({
   headers: {'content-type' : 'application/x-www-form-urlencoded'},
   url:     url+="&p="+page,
