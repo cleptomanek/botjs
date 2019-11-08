@@ -681,6 +681,7 @@ var url = 'http://ragnaland.com/?module=woe_stats&action=index&woe_date='+woedat
 var name,dd,guild;
 kills=deaths=top=done=recv=hp=sp=ygem=bgem=arrow=add=ad=donef=0;
 var offset;
+var results = [];
 var gap="";
 var txt="```diff\n";
 if (displaydate!=0)
