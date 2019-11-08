@@ -653,7 +653,7 @@ else {
 	woedate= d.getFullYear() + '-' + ((d.getMonth() > 8) ? (d.getMonth() + 1) : ('0' + (d.getMonth() + 1)))+ '-'+ ((d.getDate() > 9) ? d.getDate() : ('0' + d.getDate())) ;
 }
 var job = args[0].toLowerCase();
-if (!(job == 'chem' || job == 'creo' || job == 'creator' || job == 'biochem' || job == 'wiz'|| job == 'wizard' || job == 'snip'|| job == 'sniper') || job == 'prof' || job == 'professor')
+if (!(job == 'chem' || job == 'creo' || job == 'creator' || job == 'biochem' || job == 'wiz'|| job == 'wizard' || job == 'snip'|| job == 'sniper' || job == 'prof' || job == 'professor'))
 	return message.channel.send('Provide a valid class ("Creator", "Wizard", "Sniper" or "Professor")');
 const m = await message.channel.send("Pulling data...");
 var jobid, jobtext;
@@ -852,8 +852,8 @@ else if(command === "help" || command === "h") {
 	txt+="+Gets you woe stats of specified guild \n---ex. '?gstats worst', '?gs 'pique', '?gs worst players', '?gstats love' \n"
 	txt+="+You can use this command to get archive woe data aswell using -d and -w options. -w specifies how many weeks ago from current date woe occured and -d lets you provide exact date of woe\n"
 	txt+="---ex. '?gs -w 3 guildname' (pulls woe from 3 weeks ago for specified guildname), '?gs -d 2019-09-08 guildname' (woe from 08 september 2019 for guildname - format is RRRR-MM-DD) \n\n"
-	txt+=""+config.prefix+"compare (dd class) (alternative: "+config.prefix+"cmp)\n"
-	txt+="+Compares DD classes stats (use command with class name \n---ex. '?cmp chem', '?compare sniper', '?compare creo', '?cmp wiz' \n"
+	txt+=""+config.prefix+"compare (class) (alternative: "+config.prefix+"cmp)\n"
+	txt+="+Compares classes stats (use command with class name \n---ex. '?cmp chem', '?compare sniper', '?compare creo', '?cmp wiz', '?cmp prof' \n"
 	txt+="+You can use this command to get archive woe data aswell using -d and -w options (usage is the same as ?gstats)\n\n"
 	txt+=""+config.prefix+"bgranks (class) (alternative: "+config.prefix+"bg)\n"
 	txt+="+Pulls data from BG rankings\n---ex. '?bg chem', '?bgranks sniper', '?bgranka creo', '?bg wiz' \n"
