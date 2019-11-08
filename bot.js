@@ -715,7 +715,6 @@ function (error, response, body) {
 			i=1;
 			var clink = $("tr:nth-child(1) >td >img", this).attr('src');
 			if ((clink.includes(jobid) && parseInt($("tr:nth-child(2) td:nth-child(5) p:nth-child(2)", this).text()) > 500000) || (job == 'prof' && clink.includes(jobid) && parseInt($("tr:nth-child(8) td:nth-child(5) p:nth-child(2)", this).text()) < 500)){
-			jcount++;
 			guild = ($("tr:nth-child(1) >td >p>a", this).attr('title')); //guild full name
 			if (guild) guild=guild.substring(22);
 			name = ($("tr:nth-child(1) >td >h2>a", this).text());
