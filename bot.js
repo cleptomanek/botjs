@@ -692,9 +692,10 @@ txt+="guild:                   ";
 txt+="K:   ";
 txt+="D:   ";
 if (job == 'wiz')txt+="top dmg:    ";
-txt+="dmg done:    ";
+if (job != 'prof')txt+="dmg done:    ";
 txt+="received:    ";
 if (job == 'wiz')txt+="ganb used:\n";
+if (job == 'prof')txt+="dispel used:\n";
 if (job == 'snip') {
 	txt+="fas used:  ";
 	txt+="dmg/fas:\n";
