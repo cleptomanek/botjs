@@ -616,7 +616,7 @@ var woedate='2019-10-27'; //default for tests
 const request = require('request');
 const cheerio = require('cheerio');
 if (!args[0])
-	return message.channel.send('Provide a valid DD class ("Creator", "Wizard" or "Sniper")');
+	return message.channel.send('Provide a valid class ("Creator", "Wizard", "Sniper" or "Professor")');
 if (args[0] === "-w" && args[1] != "") {
 	var firstwoe= new Date('2019-10-27').getTime();
 	today = new Date().getTime();
@@ -653,8 +653,8 @@ else {
 	woedate= d.getFullYear() + '-' + ((d.getMonth() > 8) ? (d.getMonth() + 1) : ('0' + (d.getMonth() + 1)))+ '-'+ ((d.getDate() > 9) ? d.getDate() : ('0' + d.getDate())) ;
 }
 var job = args[0].toLowerCase();
-if (!(job == 'chem' || job == 'creo' || job == 'creator' || job == 'biochem' || job == 'wiz'|| job == 'wizard' || job == 'snip'|| job == 'sniper'))
-	return message.channel.send('Provide a valid DD class ("Creator", "Wizard" or "Sniper")');
+if (!(job == 'chem' || job == 'creo' || job == 'creator' || job == 'biochem' || job == 'wiz'|| job == 'wizard' || job == 'snip'|| job == 'sniper') || job == 'prof' || job == 'professor')
+	return message.channel.send('Provide a valid class ("Creator", "Wizard", "Sniper" or "Professor")');
 const m = await message.channel.send("Pulling data...");
 var jobid, jobtext;
 if (job == 'chem' || job == 'creo' || job == 'creator' || job == 'biochem'){
@@ -672,9 +672,13 @@ if (job == 'wiz' || job == 'wizard' || job == 'hw') {
 	jobid = 'job=4010';
 	jobtext = 'DD WIZARDS:';
 }
+if (job == 'prof' || job == 'professor') {
+	job = 'prof';
+	jobid = 'job=4017';
+	jobtext = 'DISPEL PROFESSORS:';
+}
 var url = 'http://ragnaland.com/?module=woe_stats&action=index&woe_date='+woedate;
 var name,dd,guild;
-var jcount=0;
 kills=deaths=top=done=recv=hp=sp=ygem=bgem=arrow=add=ad=donef=0;
 var offset;
 var gap="";
@@ -705,24 +709,22 @@ request.post({
   body:    "view=Blocks"
 }, 
 function (error, response, body) {
-		var section=0;
 		const $ = cheerio.load(body);
 		var i;
-		var j=1;
 		$(".woe_statsindex table.horizontal-table").each (function () {
 			i=1;
 			var clink = $("tr:nth-child(1) >td >img", this).attr('src');
-			if (clink.includes(jobid) && parseInt($("tr:nth-child(2) td:nth-child(5) p:nth-child(2)", this).text()) > 500000) {
+			if ((clink.includes(jobid) && parseInt($("tr:nth-child(2) td:nth-child(5) p:nth-child(2)", this).text()) > 500000) || (job == 'prof' && clink.includes(jobid) && parseInt($("tr:nth-child(8) td:nth-child(5) p:nth-child(2)", this).text()) < 500)){
 			jcount++;
 			guild = ($("tr:nth-child(1) >td >p>a", this).attr('title')); //guild full name
 			if (guild) guild=guild.substring(22);
 			name = ($("tr:nth-child(1) >td >h2>a", this).text());
 			offset = 25 - name.length;
 			gap=" ".repeat(offset);
-			txt+=name+gap;
+			results.push(name+gap);
 			offset = 25 - guild.length;
 			gap=" ".repeat(offset);
-			txt+=guild+gap;
+			results.push(guild+gap);
 			var k = 1;
 			$("tr", this).each (function () {
 				if (k == 2 || k == 4 || k==6 || k==8 || k==9)
@@ -735,41 +737,40 @@ function (error, response, body) {
 						kills = kills.toLocaleString().split(',').join('.');
 						offset = 5 - kills.length;
 						gap=" ".repeat(offset);
-						txt+=kills+gap;
+						results.push(kills+gap);
 					}
 					if (i==3) {
 						deaths=stat;
 						deaths = deaths.toLocaleString().split(',').join('.');
 						offset = 5 - deaths.length;
 						gap=" ".repeat(offset);
-						txt+=deaths+gap;
+						results.push(deaths+gap);
 					}
 					if (i==4 && job=='wiz') {
 						top=stat;
 						top = top.toLocaleString().split(',').join('.');
 						offset = 12 - top.length;
 						gap=" ".repeat(offset);
-						txt+=top+gap;
+						results.push(top+gap);
 					}
-					if (i==5) {
+					if (i==5 && job!='prof') {
 						donef=stat;
 						done = donef.toLocaleString().split(',').join('.');
 						offset = 13 - done.length;
 						gap=" ".repeat(offset);
-						txt+=done+gap;
+						results.push(done+gap);
 					}
 					if (i==6) {
 						recv=stat;
 						recv = recv.toLocaleString().split(',').join('.');
 						offset = 13 - recv.length;
 						gap=" ".repeat(offset);
-						txt+=recv+gap;
+						results.push(recv+gap);
 					}
-					if (i==22 && job=='wiz') {						
+					if (i==22 && (job=='wiz' || job=='prof')) {						
 						ygem=stat;
 						ygem = ygem.toLocaleString().split(',').join('.');
-						txt+=ygem+'\n';
-						j++;
+						results.push(ygem+'\n');
 					}
 					if (i==28 && job=='snip') {						
 						arrow=stat;
@@ -779,9 +780,8 @@ function (error, response, body) {
 						fas = fas.toLocaleString().split(',').join('.');
 						offset = 11 - arrow.length;
 						gap=" ".repeat(offset);
-						txt+=arrow+gap;
-						txt+=fas+"\n";
-						j++;
+						results.push(arrow+gap);
+						results.push(fas+"\n");
 					}
 					if (i==23 && job=='chem') {
 						ad=stat;
@@ -791,38 +791,41 @@ function (error, response, body) {
 						add = add.toLocaleString().split(',').join('.');
 						offset = 10 - ad.length;
 						gap=" ".repeat(offset);
-						txt+=ad+gap;
-						txt+=add+"\n";
-						j++;
-					}
-					if (i==28) {
-						if (j>10) {
-						txt+="```";
-						if (section>0)
-							message.channel.send(txt);
-						else
-							m.edit(txt);
-						txt="";
-						j=1;
-						txt+="```diff\n"
-						section++;
-						}
+						results.push(ad+gap);
+						results.push(add+"\n");
 					}
 					i++;
 				});
 				k++;
 			});
 			}
+		});	
 		});
-		if (jcount > 0) {
-			txt+="```";
-			jcount=0;
+		setTimeout(function(){
+		var section=0;
+		var statsnum = 8;
+		if (job=='prof') statsnum=6;
+		var j = 1;
+		for (i = 0; i < results.length; i++){
+			txt+=results[i];
+			j++;
+			if (j>10*statsnum) {
+				txt+="```";
+				if (section>0)
+					message.channel.send(txt);
+				else
+					m.edit(txt);
+				txt="";
+				j=1;
+				txt+="```diff\n"
+				section++;
+			}
 		}
 		if (section == 0 && j!=1)
 			m.edit(txt);
 		else if (j!=1)
-			return message.channel.send(txt);
-		});
+			message.channel.send(txt);
+		}, 2000);
 	return
 }
   
