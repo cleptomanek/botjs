@@ -1831,8 +1831,8 @@ const embed = {
   "color": 2889697,
   "description": txt
 };
-channel.send({ embed });
-	return message.channel.send(txt);
+return message.channel.send({ embed });
+	//return message.channel.send(txt);
 }
 
   else {
