@@ -1824,11 +1824,7 @@ else if (command === "vidlist"){
 		txt+=vidl[i].date+"\n";
 	}
 	txt+="```";
-	const exampleEmbed = new Discord.MessageEmbed()
-	.setColor('#0099ff')
-	.setTitle('Some title')
-	.addField('Regular field title', txt);
-	return message.channel.send(exampleEmbed);
+	return message.channel.send(txt);
 }
 
   else {
