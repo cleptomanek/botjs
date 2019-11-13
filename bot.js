@@ -1827,7 +1827,7 @@ else if (command === "vidlist"){
 	const exampleEmbed = new Discord.RichEmbed()
 	.setColor('#0099ff')
 	.setTitle('Some title')
-	.addField('Regular field title', txt)
+	.addField('Regular field title', txt);
 	return message.channel.send(exampleEmbed);
 }
 
