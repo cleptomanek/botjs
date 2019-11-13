@@ -1802,7 +1802,7 @@ else if (command === "vidlist"){
 	var j = 1;
 	for (var i = 0; i < vidl.length; i++) {
 		txt+="["+vidl[i].name+" | "+vidl[i].class+" | "+vidl[i].server+" | "+vidl[i].date+"]("+vidl[i].link+")\n";
-		if (j>4) {
+		if (j==20) {
 			var embed = {
 			  "title": "VIDEOS LIST",
 			  "color": 2889697,
