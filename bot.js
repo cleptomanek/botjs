@@ -1773,8 +1773,10 @@ else if (command === "ec") {
 
 else if (command === "vids" || command === "videos") {
 	if (!args[0])
-		return message.channel.send('Provide guildname');
-	var gn = args[0].toLowerCase();
+		var gn = vids.gshort[Math.floor(Math.random()*vids.gshort.length)]
+		//return message.channel.send('Provide guildname');
+	if (args[0])
+		var gn = args[0].toLowerCase();
 	if (gn == 'po' || gn == 'pokeflute') {
 		var vid = vids.po[Math.floor(Math.random()*vids.po.length)].link;
 		return message.channel.send(vid);
