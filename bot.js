@@ -1801,10 +1801,10 @@ else if (command === "vidlist"){
 	}
 	txt+="```diff\n";
 	txt+="-VID LIST FOR: "+gname+"\n\n\n";
-	txt+="!link:                                              ";
-	txt+="name:          ";
-	txt+="class:         ";
-	txt+="server:        ";
+	txt+="!link:"+nbs.repeat(46);
+	txt+="name:"+nbs.repeat(10);
+	txt+="class:"+nbs.repeat(9);
+	txt+="server:"+nbs.repeat(8);
 	txt+="date:\n";
 	for (var i = 0; i < vidl.length; i++) {
 		offset = 52 - vidl[i].link.length;
