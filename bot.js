@@ -832,7 +832,8 @@ function (error, response, body) {
 }
   
 else if(command === "help" || command === "h") {
-	var txt="```diff\n";
+	var txt ='';
+	//txt+="```diff\n";
 	txt+="-USER COMMANDS: \n\n\n"
 	txt+=""+config.prefix+"woeinfo (alternative: "+config.prefix+"wi)\n"
 	txt+="+Displays basic woe info \n\n"
@@ -859,9 +860,9 @@ else if(command === "help" || command === "h") {
 	txt+="+You can use this command to get archive woe data aswell using -d and -w options (usage is the same as ?gstats)\n\n"
 	txt+=""+config.prefix+"bgranks (class) (alternative: "+config.prefix+"bg)\n"
 	txt+="+Pulls data from BG rankings\n---ex. '?bg chem', '?bgranks sniper', '?bgranka creo', '?bg wiz' \n"
-	txt+="```"
-	message.author.send(txt);
-	txt="```diff\n"
+	//txt+="```"
+	//message.author.send(txt);
+	//txt="```diff\n"
 	txt+="-ADMIN COMMANDS: \n\n\n"
 	txt+=""+config.prefix+"getusers (alternative: "+config.prefix+"gusers)\n"
 	txt+="+Gets all users from server into roster sheet. Use ONLY when creating attendance from scratch. \n\n"
@@ -885,10 +886,16 @@ else if(command === "help" || command === "h") {
 	txt+="+Removes specified user from roster sheet. \n\n"
 	txt+=""+config.prefix+"purge (1-100) \n"
 	txt+="+Purges from 1 to 100 messages on channel. \n\n\n\n"
-	txt+="```"
+	//txt+="```"
 	txt+="If you want some new commands or something doesnt work - DM clepto"
 	message.reply("Sending commands info. Check your DM.");
-	return message.author.send(txt);
+	var embed = {
+  "title": "HELP INFO",
+  "color": 2889697,
+  "description": txt
+};
+	//return message.author.send(txt);
+	return message.author.send({embed});
 }
 if(command === "ctime") {
 	doc.useServiceAccountAuth(creds, function (err) {
@@ -1209,13 +1216,6 @@ doc.getInfo(function(err, info) {
 				{
 					cells[i+2].value = 'yes';
 					cells[i+2].save();
-					var reply = "I've set your attendance to **'yes'**. Use following commands to get more info:";
-					reply+="```fix\n"+config.prefix+"build - used to get you a build for woe (if someone bothered to make it :clown:)\n";
-					reply+=config.prefix+"devo - check your devo targets (only for pallies)\n";
-					reply+=config.prefix+"party - check your party setup (only for party leaders)\n";
-					reply+=config.prefix+"check - check your attendance status\n";
-					reply+=config.prefix+"comment - put your comment on the roster sheet\n";
-					reply+=config.prefix+"no - sets your attendance status on no (not recommended :smile:)\n```";
 					const embed = {
 					  "title": "ATTENDANCE",
 					  "description": "I've set your attendance to **'yes'**. Use following commands to get more info:",
@@ -1251,8 +1251,6 @@ doc.getInfo(function(err, info) {
 						}
 					  ]
 					};
-					//channel.send({ embed });
-				
 					return message.reply({ embed });
 				}
 			}
