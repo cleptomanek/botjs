@@ -1939,7 +1939,7 @@ return message.channel.send({ embed });
 	  "description": "<@"+message.author.id+"> you are doing something wrong :slight_smile:",
 	  "fields": [
 	      {
-			  "name": "**"+config.prefix+"help ("+config.prefix+"h)",
+			  "name": "**"+config.prefix+"help (alternative: "+config.prefix+"h)**",
 			  "value": "Use this command to get more info."
 		  }
 		  ]
