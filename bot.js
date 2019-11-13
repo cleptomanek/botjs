@@ -184,14 +184,14 @@ var j=1;
 var section=0;
 txt+="-BG RANKS FOR: "+jobtext+"\n"
 txt+="!name:"+nbs.repeat(19);
-txt+="guild:                   ";
-txt+="W:   ";
-txt+="L:   ";
-txt+="W%:  ";
-txt+="K:     ";
-txt+="D:     ";
-txt+="TOP:     ";
-txt+="DONE:         ";
+txt+="guild:"+nbs.repeat(19);
+txt+="W:"+nbs.repeat(3);
+txt+="L:"+nbs.repeat(3);
+txt+="W%:"+nbs.repeat(2);
+txt+="K:"+nbs.repeat(5);
+txt+="D:"+nbs.repeat(5);
+txt+="TOP:"+nbs.repeat(5);
+txt+="DONE:"+nbs.repeat(9);
 txt+="RECV:\n";
 		request(url, function (error, response, body) {
 			const $ = cheerio.load(body);
@@ -530,81 +530,81 @@ if (displaydate!=0)
 	txt+="-ARCHIVE WOE DATE: "+d+"\n\n"
 txt+="-GUILD STATS FOR: "+fullname+"\n\n\n"
 txt+="--- Basic info:\n";
-txt+="!kills:             ";
-txt+="deaths:             ";
-txt+="damage done:        ";
+txt+="!kills:"+nbs.repeat(13);
+txt+="deaths:"+nbs.repeat(13);
+txt+="damage done:"+nbs.repeat(8);
 txt+="received:\n";
 offset = 20 - kills.length; //calculates spaces for text formatting
-gap=" ".repeat(offset);
+gap=nbs.repeat(offset);
 txt+=kills+gap;
 offset = 20 - deaths.length;
-gap=" ".repeat(offset);
+gap=nbs.repeat(offset);
 txt+=deaths+gap;
 offset = 20 - done.length;
-gap=" ".repeat(offset);
+gap=nbs.repeat(offset);
 txt+=done+gap;
 offset = 20 - recv.length;
-gap=" ".repeat(offset);
+gap=nbs.repeat(offset);
 txt+=recv;
 txt+="\n\n--- Additional stuff:\n";
-txt+="!ad used:           ";
-txt+="hp potions:         ";
-txt+="sp potions:         ";
+txt+="!ad used:"+nbs.repeat(11);
+txt+="hp potions:"+nbs.repeat(9);
+txt+="sp potions:"+nbs.repeat(9);
 txt+="gypsy deaths:\n";
 offset = 20 - ad.length;
-gap=" ".repeat(offset);
+gap=nbs.repeat(offset);
 txt+=ad+gap;
 offset = 20 - hp.length;
-gap=" ".repeat(offset);
+gap=nbs.repeat(offset);
 txt+=hp+gap;
 offset = 20 - sp.length;
-gap=" ".repeat(offset);
+gap=nbs.repeat(offset);
 txt+=sp+gap;
 offset = 20 - gypsyd.length;
-gap=" ".repeat(offset);
+gap=nbs.repeat(offset);
 txt+=gypsyd;
-txt+="\n\n!dmg per ad:        ";
-txt+="dmg per fas:        ";
-txt+="ganb used:          ";
+txt+="\n\n!dmg per ad:"+nbs.repeat(8);
+txt+="dmg per fas:"+nbs.repeat(8);
+txt+="ganb used:"+nbs.repeat(10);
 txt+="dispel used:\n";
 offset = 20 - add.length;
-gap=" ".repeat(offset);
+gap=nbs.repeat(offset);
 txt+=add+gap;
 offset = 20 - fas.length;
-gap=" ".repeat(offset);
+gap=nbs.repeat(offset);
 txt+=fas+gap;
 offset = 20 - ganb.length;
-gap=" ".repeat(offset);
+gap=nbs.repeat(offset);
 txt+=ganb+gap;
 offset = 20 - dispel.length;
-gap=" ".repeat(offset);
+gap=nbs.repeat(offset);
 txt+=dispel;
 
 txt+="\n\n--- Roster composition:\n";
 txt+="+class:                        count:\n";
-if (rlk > 0)txt+="Lord Knight:                   "+rlk+"\n";
-if (rhp > 0)txt+="High Priest:                   "+rhp+"\n";
-if (rhw > 0)txt+="DD High Wizard:                "+rhw+"\n";
-if (rhwfs > 0)txt+="FS High Wizard:                "+rhwfs+"\n";
-if (rws > 0)txt+="Whitesmith:                    "+rws+"\n";
-if (rsnip > 0)txt+="Sniper:                        "+rsnip+"\n";
-if (rsin > 0)txt+="Assassin Cross:                "+rsin+"\n";
-if (rpal > 0)txt+="Paladin:                       "+rpal+"\n";
-if (rchamp > 0)txt+="Champion:                      "+rchamp+"\n";
-if (rprof > 0)txt+="Dispel Prof:                   "+rprof+"\n";
-if (rdlp > 0)txt+="DLP Prof:                      "+rdlp+"\n";
-if (rstalk> 0)txt+="Stalker:                       "+rstalk+"\n";
-if (rchem > 0)txt+="DD Chem:                       "+rchem+"\n";
-if (rspp > 0)txt+="SPP Chem:                      "+rspp+"\n";
-if (rclown > 0)txt+="Clown:                         "+rclown+"\n";
-if (rgyp > 0)txt+="Gypsy:                         "+rgyp+"\n";
-if (rslinger > 0)txt+="Gunslinger:                    "+rslinger+"\n";
-if (rninja > 0)txt+="Ninja:                         "+rninja+"\n";
-if (rtaek > 0)txt+="Taekwon:                       "+rtaek+"\n";
-if (rsg > 0)txt+="Star Gladiator:                "+rsg+"\n";
-if (rlinker > 0)txt+="Soul Linker:                   "+rlinker+"\n";
+if (rlk > 0)txt+="Lord Knight:"+nbs.repeat(19)+rlk+"\n";
+if (rhp > 0)txt+="High Priest:"+nbs.repeat(19)+rhp+"\n";
+if (rhw > 0)txt+="DD High Wizard:"+nbs.repeat(16)+rhw+"\n";
+if (rhwfs > 0)txt+="FS High Wizard:"+nbs.repeat(16)+rhwfs+"\n";
+if (rws > 0)txt+="Whitesmith:"+nbs.repeat(20)+rws+"\n";
+if (rsnip > 0)txt+="Sniper:"+nbs.repeat(24)+rsnip+"\n";
+if (rsin > 0)txt+="Assassin Cross:"+nbs.repeat(16)+rsin+"\n";
+if (rpal > 0)txt+="Paladin:"+nbs.repeat(23)+rpal+"\n";
+if (rchamp > 0)txt+="Champion:"+nbs.repeat(22)+rchamp+"\n";
+if (rprof > 0)txt+="Dispel Prof:"+nbs.repeat(19)+rprof+"\n";
+if (rdlp > 0)txt+="DLP Prof:"+nbs.repeat(22)+rdlp+"\n";
+if (rstalk> 0)txt+="Stalker:"+nbs.repeat(23)+rstalk+"\n";
+if (rchem > 0)txt+="DD Chem:"+nbs.repeat(23)+rchem+"\n";
+if (rspp > 0)txt+="SPP Chem:"+nbs.repeat(22)+rspp+"\n";
+if (rclown > 0)txt+="Clown:"+nbs.repeat(25)+rclown+"\n";
+if (rgyp > 0)txt+="Gypsy:"+nbs.repeat(25)+rgyp+"\n";
+if (rslinger > 0)txt+="Gunslinger:"+nbs.repeat(20)+rslinger+"\n";
+if (rninja > 0)txt+="Ninja:"+nbs.repeat(25)+rninja+"\n";
+if (rtaek > 0)txt+="Taekwon:"+nbs.repeat(23)+rtaek+"\n";
+if (rsg > 0)txt+="Star Gladiator:"+nbs.repeat(16)+rsg+"\n";
+if (rlinker > 0)txt+="Soul Linker:"+nbs.repeat(19)+rlinker+"\n";
 var total = rlk+rhp+rhw+rhwfs+rws+rsnip+rsin+rpal+rchamp+rprof+rdlp+rstalk+rchem+rspp+rclown+rgyp+rslinger+rninja+rtaek+rsg+rlinker;
-txt+="+TOTAL:                        "+total+"\n";
+txt+="+TOTAL:"+nbs.repeat(24)+total+"\n";
 txt+="\n```";
 return m.edit(txt);
 }, 2000);
@@ -688,21 +688,21 @@ var txt="```diff\n";
 if (displaydate!=0)
 	txt+="-ARCHIVE WOE DATE: "+d+"\n\n"
 txt+="-COMPARING "+jobtext+"\n\n"
-txt+="!name:                   ";
-txt+="guild:                   ";
-txt+="K:   ";
-txt+="D:   ";
-if (job == 'wiz')txt+="top dmg:    ";
-if (job != 'prof')txt+="dmg done:    ";
-txt+="received:    ";
+txt+="!name:"+nbs.repeat(19);
+txt+="guild:"+nbs.repeat(19);
+txt+="K:"+nbs.repeat(3);
+txt+="D:"+nbs.repeat(3);
+if (job == 'wiz')txt+="top dmg:"+nbs.repeat(4);
+if (job != 'prof')txt+="dmg done:"+nbs.repeat(4);
+txt+="received:"+nbs.repeat(4);
 if (job == 'wiz')txt+="ganb used:\n";
 if (job == 'prof')txt+="dispel used:\n";
 if (job == 'snip') {
-	txt+="fas used:  ";
+	txt+="fas used:"+nbs.repeat(2);
 	txt+="dmg/fas:\n";
 }
 if (job == 'chem') {
-	txt+="ad used:  ";
+	txt+="ad used:"+nbs.repeat(2);
 	txt+="dmg/ad:\n";
 }
 for (var page = 1; page < 7; page++)
@@ -722,10 +722,10 @@ function (error, response, body) {
 			if (guild) guild=guild.substring(22);
 			name = ($("tr:nth-child(1) >td >h2>a", this).text());
 			offset = 25 - name.length;
-			gap=" ".repeat(offset);
+			gap=nbs.repeat(offset);
 			results.push(name+gap);
 			offset = 25 - guild.length;
-			gap=" ".repeat(offset);
+			gap=nbs.repeat(offset);
 			results.push(guild+gap);
 			var k = 1;
 			$("tr", this).each (function () {
@@ -738,35 +738,35 @@ function (error, response, body) {
 						kills=stat;
 						kills = kills.toLocaleString().split(',').join('.');
 						offset = 5 - kills.length;
-						gap=" ".repeat(offset);
+						gap=nbs.repeat(offset);
 						results.push(kills+gap);
 					}
 					if (i==3) {
 						deaths=stat;
 						deaths = deaths.toLocaleString().split(',').join('.');
 						offset = 5 - deaths.length;
-						gap=" ".repeat(offset);
+						gap=nbs.repeat(offset);
 						results.push(deaths+gap);
 					}
 					if (i==4 && job=='wiz') {
 						top=stat;
 						top = top.toLocaleString().split(',').join('.');
 						offset = 12 - top.length;
-						gap=" ".repeat(offset);
+						gap=nbs.repeat(offset);
 						results.push(top+gap);
 					}
 					if (i==5 && job!='prof') {
 						donef=stat;
 						done = donef.toLocaleString().split(',').join('.');
 						offset = 13 - done.length;
-						gap=" ".repeat(offset);
+						gap=nbs.repeat(offset);
 						results.push(done+gap);
 					}
 					if (i==6) {
 						recv=stat;
 						recv = recv.toLocaleString().split(',').join('.');
 						offset = 13 - recv.length;
-						gap=" ".repeat(offset);
+						gap=nbs.repeat(offset);
 						results.push(recv+gap);
 					}
 					if (i==22 && (job=='wiz' || job=='prof')) {						
@@ -781,7 +781,7 @@ function (error, response, body) {
 						fas = Math.round(fas);
 						fas = fas.toLocaleString().split(',').join('.');
 						offset = 11 - arrow.length;
-						gap=" ".repeat(offset);
+						gap=nbs.repeat(offset);
 						results.push(arrow+gap);
 						results.push(fas+"\n");
 					}
@@ -792,7 +792,7 @@ function (error, response, body) {
 						add = Math.round(add);
 						add = add.toLocaleString().split(',').join('.');
 						offset = 10 - ad.length;
-						gap=" ".repeat(offset);
+						gap=nbs.repeat(offset);
 						results.push(ad+gap);
 						results.push(add+"\n");
 					}
@@ -950,26 +950,26 @@ doc.getInfo(function(err, info) {
 			var offset;
 			var txt="```diff\n";
 			txt+="+PARTY LEADERS: \n\n";
-			txt+="-ingame name:           name:\n";
+			txt+="-ingame name:"+nbs.repeat(11)+"name:\n";
 			offset = 21 - cells[ptl1+ingap].value.length; //party leader 1 ingame name
-			gap = " ".repeat(offset);
+			gap = nbs.repeat(offset);;
 			txt+="\n1. "+cells[ptl1+ingap].value+gap;
 			txt+=cells[ptl1].value; //party leader 1 name
 			offset = 21 - cells[ptl2+ingap].value.length;
-			gap = " ".repeat(offset);
+			gap = nbs.repeat(offset);;
 			txt+="\n2. "+cells[ptl2+ingap].value+gap;
 			txt+=cells[ptl2].value;
 			txt+="\n\n-Check party setup with ?party command!";
 			txt+="```";
 			txt+="```diff\n";
 			txt+="+PALADINS: \n\n";
-			txt+="-ingame name:           name:\n";
+			txt+="-ingame name:"+nbs.repeat(11)+"name:\n";
 			var k=0;
 				for (i = 0; i < cells.length; i++) {
 					if (cells[i].value.substring(0, 7) == 'Paladin') {
 						k++;
 						offset = 21 - cells[i+icgap].value.length; //ingame name
-						gap = " ".repeat(offset);
+						gap = nbs.repeat(offset);;
 						txt+="\n"+k+". "+cells[i+icgap].value+gap;
 						txt+=cells[i+cngap].value; //class name
 					}
@@ -1429,16 +1429,16 @@ doc.getInfo(function(err, info) {
 							var gap = "";
 							var txt="```diff\n";
 							txt+="+DEVO TARGETS: \n\n";
-							txt+="-name:                  class:               priority:\n";
+							txt+="-name:"+nbs.repeat(18)+"class:"+nbs.repeat(15)+"priority:\n";
 							for (i = 0; i < cells.length; i++) {
 								if ((cells[i].value.substring(0, 1) == pal)) //find devo targets (same number before P,T or X)
 								{ 
 									if ((cells[i].value.substring(1, 2) == 'X') || (cells[i].value.substring(1, 2) == 'T')){ //devo symbol
 										var offset = 21 - cells[i+idgap].value.length;
-										gap = " ".repeat(offset);
+										gap = nbs.repeat(offset);;
 										txt+=k+'. '+cells[i+idgap].value+gap; //name
 										offset = 21 - cells[i-cdgap].value.length; //class
-										gap = " ".repeat(offset);
+										gap = nbs.repeat(offset);;
 										txt+=cells[i-cdgap].value+gap;
 										if (cells[i].value.substring(1, 2) == 'X')
 											txt+="HIGH\n";
@@ -1511,16 +1511,16 @@ doc.getInfo(function(err, info) {
 							var gap='';
 							var txt="```diff\n";
 							txt+="+DEVO TARGETS: \n\n";
-							txt+="-name:                  class:               priority:\n";
+							txt+="-name:"+nbs.repeat(18)+"class:"+nbs.repeat(15)+"priority:\n";
 							for (i = 0; i < cells.length; i++) {
 								if ((cells[i].value.substring(0, 1) == pal))
 								{ 
 									if ((cells[i].value.substring(1, 2) == 'X') || (cells[i].value.substring(1, 2) == 'T')){
 										var offset = 21 - cells[i+idgap].value.length;
-										gap = " ".repeat(offset);
+										gap = nbs.repeat(offset);;
 										txt+=k+'. '+cells[i+idgap].value+gap;
 										offset = 21 - cells[i-cdgap].value.length;
-										gap = " ".repeat(offset);
+										gap = nbs.repeat(offset);;
 										txt+=cells[i-cdgap].value+gap;
 										if (cells[i].value.substring(1, 2) == 'X')
 											txt+="HIGH\n";
@@ -1578,16 +1578,16 @@ doc.getInfo(function(err, info) {
 			for (var j = 0; j < pals.length; j++) {
 				txt+="```diff\n";
 				txt+="+DEVO TARGETS FOR: "+palsign[j]+" ("+palsn[j]+")\n\n";
-				txt+="-name:                  class:               priority:\n";
+				txt+="-name:"+nbs.repeat(18)+"class:"+nbs.repeat(15)+"priority:\n";
 				for (i = 0; i < cells.length; i++) {
 					if ((cells[i].value.substring(0, 1) == pals[j].substring(0, 1)))
 					{ 
 						if ((cells[i].value.substring(1, 2) == 'X') || (cells[i].value.substring(1, 2) == 'T')){
 							var offset = 21 - cells[i+idgap].value.length;
-							gap = " ".repeat(offset);
+							gap = nbs.repeat(offset);;
 							txt+=k+'. '+cells[i+idgap].value+gap;
 							offset = 21 - cells[i-cdgap].value.length;
-							gap = " ".repeat(offset);
+							gap = nbs.repeat(offset);;
 							txt+=cells[i-cdgap].value+gap;
 							if (cells[i].value.substring(1, 2) == 'X')
 								txt+="HIGH\n";
@@ -1639,7 +1639,7 @@ doc.getInfo(function(err, info) {
 								pt=1;
 								var txt="```diff\n";
 								txt+="+PARTY SETUP: \n\n";
-								txt+="-name:                   class:\n";
+								txt+="-name:"+nbs.repeat(19)+"class:\n";
 								var k=0;
 								m.edit("Sending party setup. Check DM.");
 							for (i = 0; i < cells.length; i++) {
@@ -1648,7 +1648,7 @@ doc.getInfo(function(err, info) {
 									for (i; i < cells.length; i+=8) { //ROWS LENGTH - IMPORTANT!!!
 										k++;
 										var offset = 21 - cells[i].value.length;
-										gap = " ".repeat(offset);
+										gap = nbs.repeat(offset);;
 										if (k < 10)
 											gap+=" ";
 										txt+=k+". "+cells[i].value+gap+cells[i-icgap].value+"\n"; //class name
@@ -1706,14 +1706,14 @@ doc.getInfo(function(err, info) {
 				txt+="```diff\n";
 				if (j==0 && p!=2) txt+="+1ST PARTY SETUP: \n\n";
 				if (j==1 || p==2) txt+="+2ND PARTY SETUP: \n\n";
-				txt+="-name:                   class:\n";
+				txt+="-name:"+nbs.repeat(19)+"class:\n";
 				for (i = 0; i < cells.length; i++) {
 					if (cells[i].value == name[j]) {
 						i+=ingap;
 						for (i; i < cells.length; i+=8) { //ROWS LENGTH - IMPORTANT!!!
 							k++;
 							var offset = 21 - cells[i].value.length;
-							gap = " ".repeat(offset);
+							gap = nbs.repeat(offset);;
 							if (k < 10)
 								gap+=" ";
 							txt+=k+". "+cells[i].value+gap+cells[i-icgap].value+"\n";
@@ -1808,16 +1808,16 @@ else if (command === "vidlist"){
 	txt+="date:\n";
 	for (var i = 0; i < vidl.length; i++) {
 		offset = 52 - vidl[i].link.length;
-		gap=" ".repeat(offset);
+		gap=nbs.repeat(offset);
 		txt+=vidl[i].link+gap;
 		offset = 15 - vidl[i].name.length;
-		gap=" ".repeat(offset);
+		gap=nbs.repeat(offset);
 		txt+=vidl[i].name+gap;
 		offset = 15 - vidl[i].class.length;
-		gap=" ".repeat(offset);
+		gap=nbs.repeat(offset);
 		txt+=vidl[i].class+gap;
 		offset = 15 - vidl[i].server.length;
-		gap=" ".repeat(offset);
+		gap=nbs.repeat(offset);
 		txt+=vidl[i].server+gap;
 		txt+=vidl[i].date+"\n";
 	}
