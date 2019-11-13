@@ -832,75 +832,118 @@ function (error, response, body) {
 }
   
 else if(command === "help" || command === "h") {
-	var txt ='';
-	//txt+="```diff\n";
-	txt+="-USER COMMANDS: \n\n\n"
-	txt+=""+config.prefix+"woeinfo (alternative: "+config.prefix+"wi)\n"
-	txt+="+Displays basic woe info \n\n"
-	txt+=""+config.prefix+"yes \n"
-	txt+="+Put your attendance on 'yes' for next woe \n\n"
-	txt+=""+config.prefix+"no \n"
-	txt+="+Put your attendance on 'no' for next woe \n\n"
-	txt+=""+config.prefix+"check \n"
-	txt+="+Checks your attendance status for next woe \n\n"
-	txt+=""+config.prefix+"build \n"
-	txt+="+Gets you a build for next woe (if it is available) \n\n"
-	txt+=""+config.prefix+"comment (alternative: "+config.prefix+"cmt)\n"
-	txt+="+Lets you put a comment on the roster sheet \n\n"
-	txt+=""+config.prefix+"devo \n"
-	txt+="+Gets you your devo targets \n\n"
-	txt+=""+config.prefix+"party (alternative: "+config.prefix+"pt)\n"
-	txt+="+Gets you party setup if you are a party leader \n\n"
-	txt+=""+config.prefix+"gstats (guildname - can be just a part of it) (alternative: "+config.prefix+"gs)\n"
-	txt+="+Gets you woe stats of specified guild \n---ex. '?gstats worst', '?gs 'pique', '?gs worst players', '?gstats love' \n"
-	txt+="+You can use this command to get archive woe data aswell using -d and -w options. -w specifies how many weeks ago from current date woe occured and -d lets you provide exact date of woe\n"
-	txt+="---ex. '?gs -w 3 guildname' (pulls woe from 3 weeks ago for specified guildname), '?gs -d 2019-09-08 guildname' (woe from 08 september 2019 for guildname - format is RRRR-MM-DD) \n\n"
-	txt+=""+config.prefix+"compare (class) (alternative: "+config.prefix+"cmp)\n"
-	txt+="+Compares classes stats (use command with class name \n---ex. '?cmp chem', '?compare sniper', '?compare creo', '?cmp wiz', '?cmp prof' \n"
-	txt+="+You can use this command to get archive woe data aswell using -d and -w options (usage is the same as ?gstats)\n\n"
-	txt+=""+config.prefix+"bgranks (class) (alternative: "+config.prefix+"bg)\n"
-	txt+="+Pulls data from BG rankings\n---ex. '?bg chem', '?bgranks sniper', '?bgranka creo', '?bg wiz' \n"
 	var embed = {
 	  "title": "HELP INFO",
-	  "color": 2889697,
-	  "description": txt
+	  "description": "\u200b",
+	  "color": 11104464,
+	  "fields": [
+		{
+		  "name": "​USER COMMANDS",
+		  "value": "​\u200b"
+		},
+		{
+		  "name": ""+config.prefix+"woeinfo (alternative: "+config.prefix+"wi)",
+		  "value": "Displays basic woe info"
+		},
+		{
+		  "name": ""+config.prefix+"yes",
+		  "value": "Put your attendance on 'yes' for next woe"
+		},
+		{
+		  "name": ""+config.prefix+"no",
+		  "value": "Put your attendance on 'no' for next woe"
+		},
+		{
+		  "name": ""+config.prefix+"check",
+		  "value": "Checks your attendance status for next woe"
+		},
+		{
+		  "name": ""+config.prefix+"build",
+		  "value": "Gets you a build for next woe (if it is available)"
+		},
+		{
+		  "name": ""+config.prefix+"comment (alternative: "+config.prefix+"cmt)",
+		  "value": "Lets you put a comment on the roster sheet"
+		},
+		{
+		  "name": ""+config.prefix+"devo",
+		  "value": "Gets you your devo targets"
+		},
+		{
+		  "name": ""+config.prefix+"party (alternative: "+config.prefix+"pt)",
+		  "value": "Gets you party setup if you are a party leader"
+		},
+		{
+		  "name": ""+config.prefix+"gstats (guildname - can be just a part of it) (alternative: "+config.prefix+"gs)",
+		  "value": "Gets you woe stats of specified guild ```diff\nex. '?gstats worst', '?gs 'pique', '?gs worst players', '?gstats love' \n```You can use this command to get archive woe data aswell using -d and -w options. -w specifies how many weeks ago from current date woe occured and -d lets you provide exact date of woe\n```diff\nex. '?gs -w 3 guildname' (pulls woe from 3 weeks ago for specified guildname), '?gs -d 2019-09-08 guildname' (woe from 08 september 2019 for guildname - format is RRRR-MM-DD)```"
+		},
+		{
+		  "name": ""+config.prefix+"compare (class) (alternative: "+config.prefix+"cmp)",
+		  "value": "Compares classes stats (use command with class name \n ```diff\nex. '?cmp chem', '?compare sniper', '?compare creo', '?cmp wiz', '?cmp prof'```You can use this command to get archive woe data aswell using -d and -w options (usage is the same as ?gstats)"
+		},
+		{
+		  "name": ""+config.prefix+"bgranks (class) (alternative: "+config.prefix+"bg)",
+		  "value": "Pulls data from BG rankings\n```diff\nex. '?bg chem', '?bgranks sniper', '?bgranka creo', '?bg wiz'"
+		}
+	  ]
 	};
 	message.author.send({embed});
-	//txt+="```"
-	//message.author.send(txt);
-	//txt="```diff\n"
-	txt="-ADMIN COMMANDS: \n\n\n"
-	txt+=""+config.prefix+"getusers (alternative: "+config.prefix+"gusers)\n"
-	txt+="+Gets all users from server into roster sheet. Use ONLY when creating attendance from scratch. \n\n"
-	txt+=""+config.prefix+"cleanusers (alternative: "+config.prefix+"cusers)\n"
-	txt+="+Cleans all users on roster sheet. \n\n"
-	txt+=""+config.prefix+"forceyes @username (alternative: "+config.prefix+"fyes)\n"
-	txt+="+Forces 'yes' for specified user. \n\n"
-	txt+=""+config.prefix+"forceno @username (alternative: "+config.prefix+"fno)\n"
-	txt+="+Forces 'no' for specified user. \n\n"
-	txt+=""+config.prefix+"fcheck @username \n"
-	txt+="+Forces attendance check on specified user. \n\n"
-	txt+=""+config.prefix+"cdevo @username \n"
-	txt+="+Checks devo targets of specified user. \n\n"
-	txt+=""+config.prefix+"devoall (alternative: "+config.prefix+"dall)\n"
-	txt+="+Checks all devo targets. \n\n"
-	txt+=""+config.prefix+"cparty (1-2 or leave empty for both) (alternative: "+config.prefix+"cpt)\n"
-	txt+="+Checks party setup of specified party. \n\n"
-	txt+=""+config.prefix+"add @username \n"
-	txt+="+Adds specified user into roster sheet. \n\n"
-	txt+=""+config.prefix+"remove @username (alternative: "+config.prefix+"rmv)\n"
-	txt+="+Removes specified user from roster sheet. \n\n"
-	txt+=""+config.prefix+"purge (1-100) \n"
-	txt+="+Purges from 1 to 100 messages on channel. \n\n\n\n"
-	//txt+="```"
-	txt+="If you want some new commands or something doesnt work - DM clepto"
-	message.reply("Sending commands info. Check your DM.");
 	var embed = {
 	  "title": "HELP INFO",
-	  "color": 2889697,
-	  "description": txt
+	  "description": "\u200b",
+	  "color": 11104464,
+	  "fields": [
+		{
+		  "name": "​ADMIN COMMANDS",
+		  "value": "​\u200b"
+		},
+		{
+		  "name": ""+config.prefix+"getusers (alternative: "+config.prefix+"gusers)",
+		  "value": "Gets all users from server into roster sheet. Use ONLY when creating attendance from scratch."
+		},
+		{
+		  "name": ""+config.prefix+"cleanusers (alternative: "+config.prefix+"cusers)",
+		  "value": "Cleans all user data on roster sheet. Use ONLY when done with the server or making roster from scratch."
+		},
+		{
+		  "name": ""+config.prefix+"forceyes @username (alternative: "+config.prefix+"fyes)",
+		  "value": "Forces 'yes' for specified user."
+		},
+		{
+		  "name": ""+config.prefix+"forceno @username (alternative: "+config.prefix+"fno)",
+		  "value": "Forces 'no' for specified user."
+		},
+		{
+		  "name": ""+config.prefix+"fcheck @username",
+		  "value": "Forces attendance check on specified user."
+		},
+		{
+		  "name": ""+config.prefix+"cdevo @username",
+		  "value": "Checks devo targets of specified user."
+		},
+		{
+		  "name": ""+config.prefix+"devoall (alternative: "+config.prefix+"dall)",
+		  "value": "Checks all devo targets."
+		},
+		{
+		  "name": ""+config.prefix+"cparty (1-2 or leave empty for both) (alternative: "+config.prefix+"cpt)",
+		  "value": "Checks party setup of specified party."
+		},
+		{
+		  "name": ""+config.prefix+"add @username",
+		  "value": "Adds specified user into roster sheet."
+		},
+		{
+		  "name": ""+config.prefix+"remove @username (alternative: "+config.prefix+"rmv)",
+		  "value": "Removes specified user from roster sheet."
+		},
+		{
+		  "name": ""+config.prefix+"purge (1-100)",
+		  "value": "Purges from 1 to 100 messages on channel."
+		}
+	  ]
 	};
-	//return message.author.send(txt);
+	message.reply("Sending commands info. Check your DM.");
 	return message.author.send({embed});
 }
 if(command === "ctime") {
@@ -1092,15 +1135,42 @@ doc.getInfo(function(err, info) {
 				if (cells[i].value == message.author.id)
 				{
 					if (cells[i+2].value == 'yes') {
-						var reply = "Your attendance status is set to **'yes'**. Use following commands to get more info:";
-						reply+="```fix\n"+config.prefix+"build - used to get you a build for woe (if someone bothered to make it :clown:)\n";
-						reply+=config.prefix+"devo - check your devo targets (only for pallies)\n";
-						reply+=config.prefix+"party - check your party setup (only for party leaders)\n";
-						reply+=config.prefix+"check - check your attendance status\n";
-						reply+=config.prefix+"comment - put your comment on the roster sheet\n";
-						reply+=config.prefix+"no - sets your attendance status on no (not recommended :smile:)\n```";
-					
-						return message.reply(reply);
+						const embed = {
+						  "title": "ATTENDANCE",
+						  "description": "<@"+message.author.id+"> Your attendance status is set to **'yes'**. Use following commands to get more info:",
+						  "color": 11104464,
+						  "fields": [
+							{
+							  "name": "​\u200b",
+							  "value": "​\u200b"
+							},
+							{
+							  "name": ""+config.prefix+"build",
+							  "value": "used to get you a build for woe (if someone bothered to make it :clown:)"
+							},
+							{
+							  "name": ""+config.prefix+"devo",
+							  "value": "check your devo targets (only for pallies)"
+							},
+							{
+							  "name": ""+config.prefix+"party",
+							  "value": "check your party setup (only for party leaders)"
+							},
+							{
+							  "name": "**"+config.prefix+"check**",
+							  "value": "check your attendance status"
+							},
+							{
+							  "name": ""+config.prefix+"comment",
+							  "value": "put your comment on the roster sheet"
+							},
+							{
+							  "name": ""+config.prefix+"no",
+							  "value": "sets your attendance status on no (not recommended :smile:)"
+							}
+						  ]
+						};
+					return message.channel.send({ embed });
 					}
 					if (cells[i+2].value == 'no')
 					return message.reply("Your attendance status is set to: **'"+cells[i+2].value+"'** :cry:");
@@ -1244,7 +1314,7 @@ doc.getInfo(function(err, info) {
 						  "value": "check your party setup (only for party leaders)"
 						},
 						{
-						  "name": ""+config.prefix+"check",
+						  "name": "**"+config.prefix+"check**",
 						  "value": "check your attendance status"
 						},
 						{
@@ -1257,7 +1327,7 @@ doc.getInfo(function(err, info) {
 						}
 					  ]
 					};
-					return message.reply({ embed });
+					return message.channel.send({ embed });
 				}
 			}
 		return message.reply("You are not in the roster :slight_frown: Ask someone with access rights to add you.");				
