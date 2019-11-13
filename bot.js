@@ -1216,8 +1216,44 @@ doc.getInfo(function(err, info) {
 					reply+=config.prefix+"check - check your attendance status\n";
 					reply+=config.prefix+"comment - put your comment on the roster sheet\n";
 					reply+=config.prefix+"no - sets your attendance status on no (not recommended :smile:)\n```";
+					const embed = {
+					  "title": "ATTENDANCE",
+					  "description": "I've set your attendance to **'yes'**. Use following commands to get more info:",
+					  "color": 11104464,
+					  "fields": [
+						{
+						  "name": "​\u200b",
+						  "value": "​\u200b"
+						},
+						{
+						  "name": ""+config.prefix+"build",
+						  "value": "used to get you a build for woe (if someone bothered to make it :clown:)"
+						},
+						{
+						  "name": ""+config.prefix+"devo",
+						  "value": "check your devo targets (only for pallies)"
+						},
+						{
+						  "name": ""+config.prefix+"party",
+						  "value": "check your party setup (only for party leaders)"
+						},
+						{
+						  "name": ""+config.prefix+"check",
+						  "value": "check your attendance status"
+						},
+						{
+						  "name": ""+config.prefix+"comment",
+						  "value": "put your comment on the roster sheet"
+						},
+						{
+						  "name": ""+config.prefix+"no",
+						  "value": "sets your attendance status on no (not recommended :smile:)"
+						}
+					  ]
+					};
+					//channel.send({ embed });
 				
-					return message.reply(reply);
+					return message.reply({ embed });
 				}
 			}
 		return message.reply("You are not in the roster :slight_frown: Ask someone with access rights to add you.");				
