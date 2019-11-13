@@ -1941,7 +1941,7 @@ return message.channel.send({ embed });
 	      {
 			  "name": "**"+config.prefix+"help ("+config.prefix+"h)",
 			  "value": "Use this command to get more info."
-		  },
+		  }
 	};
 	return message.channel.send({ embed });
 	}
