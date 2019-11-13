@@ -1795,35 +1795,12 @@ else if (command === "vidlist"){
 		return message.channel.send('Provide guildname');
 	var gn = args[0].toLowerCase();
 	var txt = '';
-	var offset;
-	var gap="";
 	if (gn == 'po' || gn == 'pokeflute') {
 		var vidl = vids.po;
 		var gname = vids.gn[0];
 	}
-	txt+="```diff\n";
-	txt+="-VID LIST FOR: "+gname+"\n\n\n";
-	txt+="!link:"+nbs.repeat(46);
-	txt+="name:"+nbs.repeat(10);
-	txt+="class:"+nbs.repeat(9);
-	txt+="server:"+nbs.repeat(8);
-	txt+="date:\n";
-	txt="";
 	var j = 1;
 	for (var i = 0; i < vidl.length; i++) {
-		/*offset = 52 - vidl[i].link.length;
-		gap=nbs.repeat(offset);
-		txt+=vidl[i].link+gap;
-		offset = 15 - vidl[i].name.length;
-		gap=nbs.repeat(offset);
-		txt+=vidl[i].name+gap;
-		offset = 15 - vidl[i].class.length;
-		gap=nbs.repeat(offset);
-		txt+=vidl[i].class+gap;
-		offset = 15 - vidl[i].server.length;
-		gap=nbs.repeat(offset);
-		txt+=vidl[i].server+gap;
-		txt+=vidl[i].date+"\n"; */
 		txt+="["+vidl[i].name+" | "+vidl[i].class+" | "+vidl[i].server+" | "+vidl[i].date+"]("+vidl[i].link+")\n";
 		if (j>4) {
 			var embed = {
@@ -1832,18 +1809,17 @@ else if (command === "vidlist"){
 			  "description": txt
 			};
 			message.channel.send({ embed });
+			txt="";
 			j=0;
 		}
 		j++;
 	}
-	//txt+="```";
 var embed = {
   "title": "VIDEOS LIST",
   "color": 2889697,
   "description": txt
 };
 return message.channel.send({ embed });
-	//return message.channel.send(txt);
 }
 
   else {
