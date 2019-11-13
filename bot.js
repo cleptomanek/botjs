@@ -860,10 +860,16 @@ else if(command === "help" || command === "h") {
 	txt+="+You can use this command to get archive woe data aswell using -d and -w options (usage is the same as ?gstats)\n\n"
 	txt+=""+config.prefix+"bgranks (class) (alternative: "+config.prefix+"bg)\n"
 	txt+="+Pulls data from BG rankings\n---ex. '?bg chem', '?bgranks sniper', '?bgranka creo', '?bg wiz' \n"
+	var embed = {
+	  "title": "HELP INFO",
+	  "color": 2889697,
+	  "description": txt
+	};
+	message.author.send({embed});
 	//txt+="```"
 	//message.author.send(txt);
 	//txt="```diff\n"
-	txt+="-ADMIN COMMANDS: \n\n\n"
+	txt="-ADMIN COMMANDS: \n\n\n"
 	txt+=""+config.prefix+"getusers (alternative: "+config.prefix+"gusers)\n"
 	txt+="+Gets all users from server into roster sheet. Use ONLY when creating attendance from scratch. \n\n"
 	txt+=""+config.prefix+"cleanusers (alternative: "+config.prefix+"cusers)\n"
@@ -890,10 +896,10 @@ else if(command === "help" || command === "h") {
 	txt+="If you want some new commands or something doesnt work - DM clepto"
 	message.reply("Sending commands info. Check your DM.");
 	var embed = {
-  "title": "HELP INFO",
-  "color": 2889697,
-  "description": txt
-};
+	  "title": "HELP INFO",
+	  "color": 2889697,
+	  "description": txt
+	};
 	//return message.author.send(txt);
 	return message.author.send({embed});
 }
@@ -1218,7 +1224,7 @@ doc.getInfo(function(err, info) {
 					cells[i+2].save();
 					const embed = {
 					  "title": "ATTENDANCE",
-					  "description": "I've set your attendance to **'yes'**. Use following commands to get more info:",
+					  "description": "<@"+message.author.id+"> I've set your attendance to **'yes'**. Use following commands to get more info:",
 					  "color": 11104464,
 					  "fields": [
 						{
