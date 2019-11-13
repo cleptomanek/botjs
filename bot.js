@@ -1808,8 +1808,9 @@ else if (command === "vidlist"){
 	txt+="class:"+nbs.repeat(9);
 	txt+="server:"+nbs.repeat(8);
 	txt+="date:\n";
+	txt="";
 	for (var i = 0; i < vidl.length; i++) {
-		offset = 52 - vidl[i].link.length;
+		/*offset = 52 - vidl[i].link.length;
 		gap=nbs.repeat(offset);
 		txt+=vidl[i].link+gap;
 		offset = 15 - vidl[i].name.length;
@@ -1821,9 +1822,16 @@ else if (command === "vidlist"){
 		offset = 15 - vidl[i].server.length;
 		gap=nbs.repeat(offset);
 		txt+=vidl[i].server+gap;
-		txt+=vidl[i].date+"\n";
+		txt+=vidl[i].date+"\n"; */
+		txt+="["+vidl[i].name+" | "+vidl[i].class+" | "+vidl[i].server+" | "+vidl[i].date+"]("+vidl[i].link+")\n";
 	}
-	txt+="```";
+	//txt+="```";
+const embed = {
+  "title": "VIDEOS LIST",
+  "color": 2889697,
+  "description": txt
+};
+channel.send({ embed });
 	return message.channel.send(txt);
 }
 
