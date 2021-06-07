@@ -1,5 +1,6 @@
 {
   "gn": ["Pokeflute Orchestra", "Peach", "This Means War"],
+  "gshort": ["po", "peach", "tmw"],
   "po": [
 	{"link": "https://www.youtube.com/watch?v=nXAuDjFHYAM", "name": "Proxy", "class": "Gypsy", "server": "Estland", "date": "08.11.2015"},
 	{"link": "https://www.youtube.com/watch?v=Uk1KK8em_Xw", "name": "Proxy", "class": "DD HWiz", "server": "Estland", "date": "15.11.2015"},
