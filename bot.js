@@ -3,7 +3,7 @@ const async = require('async');
 const request = require('request');
 const cheerio = require('cheerio');
 const fs = require('fs');
-const doc = new GoogleSpreadsheet('tWvPkelVl3NxF6vlrJxS6OL5gbWHoepSr0Btcfp9p5Q');
+const doc = new GoogleSpreadsheet('1tWvPkelVl3NxF6vlrJxS6OL5gbWHoepSr0Btcfp9p5Q');
 //const doc = new GoogleSpreadsheet('1Q47r52ICYGl2QQo5x45N3pzKOdO9lz9hGCb5hF6aeWc'); //test sheet
 var sheet;
 const Discord = require("discord.js");
@@ -11,7 +11,6 @@ const client = new Discord.Client();
 const moment = require('moment');
 const ec = require('./ec.json');
 const vids = require('./vids.json');
-const nbs = String.fromCharCode(160);
 
 
 //!!! IMPORTANT STUFF !!!
@@ -183,61 +182,61 @@ var txt = "```diff\n"
 var j=1;
 var section=0;
 txt+="-BG RANKS FOR: "+jobtext+"\n"
-txt+="!name:"+nbs.repeat(19);
-txt+="guild:"+nbs.repeat(19);
-txt+="W:"+nbs.repeat(3);
-txt+="L:"+nbs.repeat(3);
-txt+="W%:"+nbs.repeat(2);
-txt+="K:"+nbs.repeat(5);
-txt+="D:"+nbs.repeat(5);
-txt+="TOP:"+nbs.repeat(5);
-txt+="DONE:"+nbs.repeat(9);
+txt+="!name:                   ";
+txt+="guild:                   ";
+txt+="W:   ";
+txt+="L:   ";
+txt+="W%:  ";
+txt+="K:     ";
+txt+="D:     ";
+txt+="TOP:     ";
+txt+="DONE:         ";
 txt+="RECV:\n";
 		request(url, function (error, response, body) {
 			const $ = cheerio.load(body);
 			$("div.rankingbg > div > table").each (function () {
 				name=$("> tbody > tr:nth-child(1) > th:nth-child(2) > span", this).text().trim();
 				offset = 25 - name.length;
-				gap=nbs.repeat(offset);
+				gap=" ".repeat(offset);
 				txt+=name+gap;	
 				guild=$("> tbody > tr:nth-child(2) > th", this).text().trim();
 				offset = 25 - guild.length;
-				gap=nbs.repeat(offset);
+				gap=" ".repeat(offset);
 				txt+=guild+gap;
 				w = $("> tbody > tr:nth-child(3) table table tr:nth-child(1) td:nth-child(1) table tr:nth-child(2) td:nth-child(1)", this).text().trim().replace(/[^0-9]/gi, '');
 				offset = 5 - w.length;
 				w=parseFloat(w);
-				gap=nbs.repeat(offset);
+				gap=" ".repeat(offset);
 				txt+=w+gap;	
 				l = $("> tbody > tr:nth-child(3) table table tr:nth-child(1) td:nth-child(1) table tr:nth-child(2) td:nth-child(3)", this).text().trim().replace(/[^0-9]/gi, '');
 				offset = 5 - l.length;
 				l=parseFloat(l);
-				gap=nbs.repeat(offset);
+				gap=" ".repeat(offset);
 				txt+=l+gap;
 				r=w/(w+l)*100;
 				r=r.toFixed(0)
 				offset = 5 - r.length;
-				gap=nbs.repeat(offset);
+				gap=" ".repeat(offset);
 				txt+=r+gap;		
 				k = $("> tbody > tr:nth-child(3) table table tr:nth-child(2) td:nth-child(1) table tr:nth-child(2) td:nth-child(1)", this).text().trim().replace(/[^0-9]/gi, '');
 				offset = 7 - k.length;
 				k=parseFloat(k);
-				gap=nbs.repeat(offset);
+				gap=" ".repeat(offset);
 				txt+=k+gap;		
 				d = $("> tbody > tr:nth-child(3) table table tr:nth-child(2) td:nth-child(1) table tr:nth-child(2) td:nth-child(2)", this).text().trim().replace(/[^0-9]/gi, '');
 				offset = 7 - d.length;
 				d=parseFloat(d);
-				gap=nbs.repeat(offset);
+				gap=" ".repeat(offset);
 				txt+=d+gap;			
 				top = parseFloat($("> tbody > tr:nth-child(3) table table tr:nth-child(2) td:nth-child(2) table tr:nth-child(2) td:nth-child(1)", this).text().trim().replace(/[^0-9]/gi, ''));
 				top = top.toLocaleString().split(',').join('.');
 				offset = 9 - top.length;
-				gap=nbs.repeat(offset);
+				gap=" ".repeat(offset);
 				txt+=top+gap;
 				done = parseFloat($("> tbody > tr:nth-child(3) table table tr:nth-child(2) td:nth-child(2) table tr:nth-child(2) td:nth-child(2)", this).text().trim().replace(/[^0-9]/gi, ''));
 				done = done.toLocaleString().split(',').join('.');
 				offset = 14 - done.length;
-				gap=nbs.repeat(offset);
+				gap=" ".repeat(offset);
 				txt+=done+gap;				
 				recv = parseFloat($("> tbody > tr:nth-child(3) table table tr:nth-child(2) td:nth-child(2) table tr:nth-child(2) td:nth-child(3)", this).text().trim().replace(/[^0-9]/gi, ''));
 				recv = recv.toLocaleString().split(',').join('.');
@@ -530,81 +529,81 @@ if (displaydate!=0)
 	txt+="-ARCHIVE WOE DATE: "+d+"\n\n"
 txt+="-GUILD STATS FOR: "+fullname+"\n\n\n"
 txt+="--- Basic info:\n";
-txt+="!kills:"+nbs.repeat(13);
-txt+="deaths:"+nbs.repeat(13);
-txt+="damage done:"+nbs.repeat(8);
+txt+="!kills:             ";
+txt+="deaths:             ";
+txt+="damage done:        ";
 txt+="received:\n";
 offset = 20 - kills.length; //calculates spaces for text formatting
-gap=nbs.repeat(offset);
+gap=" ".repeat(offset);
 txt+=kills+gap;
 offset = 20 - deaths.length;
-gap=nbs.repeat(offset);
+gap=" ".repeat(offset);
 txt+=deaths+gap;
 offset = 20 - done.length;
-gap=nbs.repeat(offset);
+gap=" ".repeat(offset);
 txt+=done+gap;
 offset = 20 - recv.length;
-gap=nbs.repeat(offset);
+gap=" ".repeat(offset);
 txt+=recv;
 txt+="\n\n--- Additional stuff:\n";
-txt+="!ad used:"+nbs.repeat(11);
-txt+="hp potions:"+nbs.repeat(9);
-txt+="sp potions:"+nbs.repeat(9);
+txt+="!ad used:           ";
+txt+="hp potions:         ";
+txt+="sp potions:         ";
 txt+="gypsy deaths:\n";
 offset = 20 - ad.length;
-gap=nbs.repeat(offset);
+gap=" ".repeat(offset);
 txt+=ad+gap;
 offset = 20 - hp.length;
-gap=nbs.repeat(offset);
+gap=" ".repeat(offset);
 txt+=hp+gap;
 offset = 20 - sp.length;
-gap=nbs.repeat(offset);
+gap=" ".repeat(offset);
 txt+=sp+gap;
 offset = 20 - gypsyd.length;
-gap=nbs.repeat(offset);
+gap=" ".repeat(offset);
 txt+=gypsyd;
-txt+="\n\n!dmg per ad:"+nbs.repeat(8);
-txt+="dmg per fas:"+nbs.repeat(8);
-txt+="ganb used:"+nbs.repeat(10);
+txt+="\n\n!dmg per ad:        ";
+txt+="dmg per fas:        ";
+txt+="ganb used:          ";
 txt+="dispel used:\n";
 offset = 20 - add.length;
-gap=nbs.repeat(offset);
+gap=" ".repeat(offset);
 txt+=add+gap;
 offset = 20 - fas.length;
-gap=nbs.repeat(offset);
+gap=" ".repeat(offset);
 txt+=fas+gap;
 offset = 20 - ganb.length;
-gap=nbs.repeat(offset);
+gap=" ".repeat(offset);
 txt+=ganb+gap;
 offset = 20 - dispel.length;
-gap=nbs.repeat(offset);
+gap=" ".repeat(offset);
 txt+=dispel;
 
 txt+="\n\n--- Roster composition:\n";
 txt+="+class:                        count:\n";
-if (rlk > 0)txt+="Lord Knight:"+nbs.repeat(19)+rlk+"\n";
-if (rhp > 0)txt+="High Priest:"+nbs.repeat(19)+rhp+"\n";
-if (rhw > 0)txt+="DD High Wizard:"+nbs.repeat(16)+rhw+"\n";
-if (rhwfs > 0)txt+="FS High Wizard:"+nbs.repeat(16)+rhwfs+"\n";
-if (rws > 0)txt+="Whitesmith:"+nbs.repeat(20)+rws+"\n";
-if (rsnip > 0)txt+="Sniper:"+nbs.repeat(24)+rsnip+"\n";
-if (rsin > 0)txt+="Assassin Cross:"+nbs.repeat(16)+rsin+"\n";
-if (rpal > 0)txt+="Paladin:"+nbs.repeat(23)+rpal+"\n";
-if (rchamp > 0)txt+="Champion:"+nbs.repeat(22)+rchamp+"\n";
-if (rprof > 0)txt+="Dispel Prof:"+nbs.repeat(19)+rprof+"\n";
-if (rdlp > 0)txt+="DLP Prof:"+nbs.repeat(22)+rdlp+"\n";
-if (rstalk> 0)txt+="Stalker:"+nbs.repeat(23)+rstalk+"\n";
-if (rchem > 0)txt+="DD Chem:"+nbs.repeat(23)+rchem+"\n";
-if (rspp > 0)txt+="SPP Chem:"+nbs.repeat(22)+rspp+"\n";
-if (rclown > 0)txt+="Clown:"+nbs.repeat(25)+rclown+"\n";
-if (rgyp > 0)txt+="Gypsy:"+nbs.repeat(25)+rgyp+"\n";
-if (rslinger > 0)txt+="Gunslinger:"+nbs.repeat(20)+rslinger+"\n";
-if (rninja > 0)txt+="Ninja:"+nbs.repeat(25)+rninja+"\n";
-if (rtaek > 0)txt+="Taekwon:"+nbs.repeat(23)+rtaek+"\n";
-if (rsg > 0)txt+="Star Gladiator:"+nbs.repeat(16)+rsg+"\n";
-if (rlinker > 0)txt+="Soul Linker:"+nbs.repeat(19)+rlinker+"\n";
+if (rlk > 0)txt+="Lord Knight:                   "+rlk+"\n";
+if (rhp > 0)txt+="High Priest:                   "+rhp+"\n";
+if (rhw > 0)txt+="DD High Wizard:                "+rhw+"\n";
+if (rhwfs > 0)txt+="FS High Wizard:                "+rhwfs+"\n";
+if (rws > 0)txt+="Whitesmith:                    "+rws+"\n";
+if (rsnip > 0)txt+="Sniper:                        "+rsnip+"\n";
+if (rsin > 0)txt+="Assassin Cross:                "+rsin+"\n";
+if (rpal > 0)txt+="Paladin:                       "+rpal+"\n";
+if (rchamp > 0)txt+="Champion:                      "+rchamp+"\n";
+if (rprof > 0)txt+="Dispel Prof:                   "+rprof+"\n";
+if (rdlp > 0)txt+="DLP Prof:                      "+rdlp+"\n";
+if (rstalk> 0)txt+="Stalker:                       "+rstalk+"\n";
+if (rchem > 0)txt+="DD Chem:                       "+rchem+"\n";
+if (rspp > 0)txt+="SPP Chem:                      "+rspp+"\n";
+if (rclown > 0)txt+="Clown:                         "+rclown+"\n";
+if (rgyp > 0)txt+="Gypsy:                         "+rgyp+"\n";
+if (rslinger > 0)txt+="Gunslinger:                    "+rslinger+"\n";
+if (rninja > 0)txt+="Ninja:                         "+rninja+"\n";
+if (rtaek > 0)txt+="Taekwon:                       "+rtaek+"\n";
+if (rsg > 0)txt+="Star Gladiator:                "+rsg+"\n";
+if (rlinker > 0)txt+="Soul Linker:                   "+rlinker+"\n";
 var total = rlk+rhp+rhw+rhwfs+rws+rsnip+rsin+rpal+rchamp+rprof+rdlp+rstalk+rchem+rspp+rclown+rgyp+rslinger+rninja+rtaek+rsg+rlinker;
-txt+="+TOTAL:"+nbs.repeat(24)+total+"\n";
+txt+="+TOTAL:                        "+total+"\n";
 txt+="\n```";
 return m.edit(txt);
 }, 2000);
@@ -688,21 +687,21 @@ var txt="```diff\n";
 if (displaydate!=0)
 	txt+="-ARCHIVE WOE DATE: "+d+"\n\n"
 txt+="-COMPARING "+jobtext+"\n\n"
-txt+="!name:"+nbs.repeat(19);
-txt+="guild:"+nbs.repeat(19);
-txt+="K:"+nbs.repeat(3);
-txt+="D:"+nbs.repeat(3);
-if (job == 'wiz')txt+="top dmg:"+nbs.repeat(4);
-if (job != 'prof')txt+="dmg done:"+nbs.repeat(4);
-txt+="received:"+nbs.repeat(4);
+txt+="!name:                   ";
+txt+="guild:                   ";
+txt+="K:   ";
+txt+="D:   ";
+if (job == 'wiz')txt+="top dmg:    ";
+if (job != 'prof')txt+="dmg done:    ";
+txt+="received:    ";
 if (job == 'wiz')txt+="ganb used:\n";
 if (job == 'prof')txt+="dispel used:\n";
 if (job == 'snip') {
-	txt+="fas used:"+nbs.repeat(2);
+	txt+="fas used:  ";
 	txt+="dmg/fas:\n";
 }
 if (job == 'chem') {
-	txt+="ad used:"+nbs.repeat(2);
+	txt+="ad used:  ";
 	txt+="dmg/ad:\n";
 }
 for (var page = 1; page < 7; page++)
@@ -722,10 +721,10 @@ function (error, response, body) {
 			if (guild) guild=guild.substring(22);
 			name = ($("tr:nth-child(1) >td >h2>a", this).text());
 			offset = 25 - name.length;
-			gap=nbs.repeat(offset);
+			gap=" ".repeat(offset);
 			results.push(name+gap);
 			offset = 25 - guild.length;
-			gap=nbs.repeat(offset);
+			gap=" ".repeat(offset);
 			results.push(guild+gap);
 			var k = 1;
 			$("tr", this).each (function () {
@@ -738,35 +737,35 @@ function (error, response, body) {
 						kills=stat;
 						kills = kills.toLocaleString().split(',').join('.');
 						offset = 5 - kills.length;
-						gap=nbs.repeat(offset);
+						gap=" ".repeat(offset);
 						results.push(kills+gap);
 					}
 					if (i==3) {
 						deaths=stat;
 						deaths = deaths.toLocaleString().split(',').join('.');
 						offset = 5 - deaths.length;
-						gap=nbs.repeat(offset);
+						gap=" ".repeat(offset);
 						results.push(deaths+gap);
 					}
 					if (i==4 && job=='wiz') {
 						top=stat;
 						top = top.toLocaleString().split(',').join('.');
 						offset = 12 - top.length;
-						gap=nbs.repeat(offset);
+						gap=" ".repeat(offset);
 						results.push(top+gap);
 					}
 					if (i==5 && job!='prof') {
 						donef=stat;
 						done = donef.toLocaleString().split(',').join('.');
 						offset = 13 - done.length;
-						gap=nbs.repeat(offset);
+						gap=" ".repeat(offset);
 						results.push(done+gap);
 					}
 					if (i==6) {
 						recv=stat;
 						recv = recv.toLocaleString().split(',').join('.');
 						offset = 13 - recv.length;
-						gap=nbs.repeat(offset);
+						gap=" ".repeat(offset);
 						results.push(recv+gap);
 					}
 					if (i==22 && (job=='wiz' || job=='prof')) {						
@@ -781,7 +780,7 @@ function (error, response, body) {
 						fas = Math.round(fas);
 						fas = fas.toLocaleString().split(',').join('.');
 						offset = 11 - arrow.length;
-						gap=nbs.repeat(offset);
+						gap=" ".repeat(offset);
 						results.push(arrow+gap);
 						results.push(fas+"\n");
 					}
@@ -792,7 +791,7 @@ function (error, response, body) {
 						add = Math.round(add);
 						add = add.toLocaleString().split(',').join('.');
 						offset = 10 - ad.length;
-						gap=nbs.repeat(offset);
+						gap=" ".repeat(offset);
 						results.push(ad+gap);
 						results.push(add+"\n");
 					}
@@ -832,119 +831,63 @@ function (error, response, body) {
 }
   
 else if(command === "help" || command === "h") {
-	var embed = {
-	  "title": "HELP INFO",
-	  "description": "\u200b",
-	  "color": 11104464,
-	  "fields": [
-		{
-		  "name": "​USER COMMANDS:",
-		  "value": "​\u200b"
-		},
-		{
-		  "name": ""+config.prefix+"woeinfo (alternative: "+config.prefix+"wi)",
-		  "value": "Displays basic woe info\n"
-		},
-		{
-		  "name": ""+config.prefix+"yes",
-		  "value": "Put your attendance on 'yes' for next woe\n"
-		},
-		{
-		  "name": ""+config.prefix+"no",
-		  "value": "Put your attendance on 'no' for next woe\n"
-		},
-		{
-		  "name": ""+config.prefix+"check",
-		  "value": "Checks your attendance status for next woe\n"
-		},
-		{
-		  "name": ""+config.prefix+"build",
-		  "value": "Gets you a build for next woe (if it is available)\n"
-		},
-		{
-		  "name": ""+config.prefix+"comment (alternative: "+config.prefix+"cmt)",
-		  "value": "Lets you put a comment on the roster sheet\n"
-		},
-		{
-		  "name": ""+config.prefix+"devo",
-		  "value": "Gets you your devo targets\n"
-		},
-		{
-		  "name": ""+config.prefix+"party (alternative: "+config.prefix+"pt)",
-		  "value": "Gets you party setup if you are a party leader\n"
-		},
-		{
-		  "name": ""+config.prefix+"gstats (guildname - can be just a part of it) (alternative: "+config.prefix+"gs)",
-		  "value": "Gets you woe stats of specified guild ```diff\nex. '?gstats worst', '?gs 'pique', '?gs worst players', '?gstats love' \n```You can use this command to get archive woe data aswell using **-d** and **-w** options. **-w** specifies how many weeks ago from current date woe occured and **-d** lets you provide exact date of woe\n```diff\nex. '?gs -w 3 guildname' (pulls woe from 3 weeks ago for specified guildname), '?gs -d 2019-09-08 guildname' (woe from 08 september 2019 for guildname - format is RRRR-MM-DD)```\n"
-		},
-		{
-		  "name": ""+config.prefix+"compare (class) (alternative: "+config.prefix+"cmp)",
-		  "value": "Compares classes stats (use command with class name \n ```diff\nex. '?cmp chem', '?compare sniper', '?compare creo', '?cmp wiz', '?cmp prof'```You can use this command to get archive woe data aswell using **-d** and **-w** options (usage is the same as ?gstats)\n"
-		},
-		{
-		  "name": ""+config.prefix+"bgranks (class) (alternative: "+config.prefix+"bg)",
-		  "value": "Pulls data from BG rankings\n```diff\nex. '?bg chem', '?bgranks sniper', '?bgranka creo', '?bg wiz'```\n"
-		}
-	  ]
-	};
-	message.author.send({embed});
-	var embed = {
-	  "title": "HELP INFO",
-	  "description": "\u200b",
-	  "color": 11104464,
-	  "fields": [
-		{
-		  "name": "​ADMIN COMMANDS:",
-		  "value": "​\u200b"
-		},
-		{
-		  "name": ""+config.prefix+"getusers (alternative: "+config.prefix+"gusers)",
-		  "value": "Gets all users from server into roster sheet. Use ONLY when creating attendance from scratch.\n"
-		},
-		{
-		  "name": ""+config.prefix+"cleanusers (alternative: "+config.prefix+"cusers)",
-		  "value": "Cleans all user data on roster sheet. Use ONLY when done with the server or making roster from scratch.\n"
-		},
-		{
-		  "name": ""+config.prefix+"forceyes @username (alternative: "+config.prefix+"fyes)\n",
-		  "value": "Forces 'yes' for specified user."
-		},
-		{
-		  "name": ""+config.prefix+"forceno @username (alternative: "+config.prefix+"fno)\n",
-		  "value": "Forces 'no' for specified user."
-		},
-		{
-		  "name": ""+config.prefix+"fcheck @username",
-		  "value": "Forces attendance check on specified user.\n"
-		},
-		{
-		  "name": ""+config.prefix+"cdevo @username",
-		  "value": "Checks devo targets of specified user.\n"
-		},
-		{
-		  "name": ""+config.prefix+"devoall (alternative: "+config.prefix+"dall)",
-		  "value": "Checks all devo targets.\n"
-		},
-		{
-		  "name": ""+config.prefix+"cparty (1-2 or leave empty for both) (alternative: "+config.prefix+"cpt)",
-		  "value": "Checks party setup of specified party.\n"
-		},
-		{
-		  "name": ""+config.prefix+"add @username",
-		  "value": "Adds specified user into roster sheet.\n"
-		},
-		{
-		  "name": ""+config.prefix+"remove @username (alternative: "+config.prefix+"rmv)",
-		  "value": "Removes specified user from roster sheet.\n"
-		},
-		{
-		  "name": ""+config.prefix+"purge (1-100)",
-		  "value": "Purges from 1 to 100 messages on channel.\n"
-		}
-	  ]
-	};
+	var txt="```diff\n";
+	txt+="-USER COMMANDS: \n\n\n"
+	txt+=""+config.prefix+"woeinfo (alternative: "+config.prefix+"wi)\n"
+	txt+="+Displays basic woe info \n\n"
+	txt+=""+config.prefix+"yes \n"
+	txt+="+Put your attendance on 'yes' for next woe \n\n"
+	txt+=""+config.prefix+"no \n"
+	txt+="+Put your attendance on 'no' for next woe \n\n"
+	txt+=""+config.prefix+"check \n"
+	txt+="+Checks your attendance status for next woe \n\n"
+	txt+=""+config.prefix+"build \n"
+	txt+="+Gets you a build for next woe (if it is available) \n\n"
+	txt+=""+config.prefix+"comment (alternative: "+config.prefix+"cmt)\n"
+	txt+="+Lets you put a comment on the roster sheet \n\n"
+	txt+=""+config.prefix+"devo \n"
+	txt+="+Gets you your devo targets \n\n"
+	txt+=""+config.prefix+"party (alternative: "+config.prefix+"pt)\n"
+	txt+="+Gets you party setup if you are a party leader \n\n"
+	txt+=""+config.prefix+"gstats (guildname - can be just a part of it) (alternative: "+config.prefix+"gs)\n"
+	txt+="+Gets you woe stats of specified guild \n---ex. '?gstats worst', '?gs 'pique', '?gs worst players', '?gstats love' \n"
+	txt+="+You can use this command to get archive woe data aswell using -d and -w options. -w specifies how many weeks ago from current date woe occured and -d lets you provide exact date of woe\n"
+	txt+="---ex. '?gs -w 3 guildname' (pulls woe from 3 weeks ago for specified guildname), '?gs -d 2019-09-08 guildname' (woe from 08 september 2019 for guildname - format is RRRR-MM-DD) \n\n"
+	txt+=""+config.prefix+"compare (class) (alternative: "+config.prefix+"cmp)\n"
+	txt+="+Compares classes stats (use command with class name \n---ex. '?cmp chem', '?compare sniper', '?compare creo', '?cmp wiz', '?cmp prof' \n"
+	txt+="+You can use this command to get archive woe data aswell using -d and -w options (usage is the same as ?gstats)\n\n"
+	txt+=""+config.prefix+"bgranks (class) (alternative: "+config.prefix+"bg)\n"
+	txt+="+Pulls data from BG rankings\n---ex. '?bg chem', '?bgranks sniper', '?bgranka creo', '?bg wiz' \n"
+	txt+="```"
+	message.author.send(txt);
+	txt="```diff\n"
+	txt+="-ADMIN COMMANDS: \n\n\n"
+	txt+=""+config.prefix+"getusers (alternative: "+config.prefix+"gusers)\n"
+	txt+="+Gets all users from server into roster sheet. Use ONLY when creating attendance from scratch. \n\n"
+	txt+=""+config.prefix+"cleanusers (alternative: "+config.prefix+"cusers)\n"
+	txt+="+Cleans all users on roster sheet. \n\n"
+	txt+=""+config.prefix+"forceyes @username (alternative: "+config.prefix+"fyes)\n"
+	txt+="+Forces 'yes' for specified user. \n\n"
+	txt+=""+config.prefix+"forceno @username (alternative: "+config.prefix+"fno)\n"
+	txt+="+Forces 'no' for specified user. \n\n"
+	txt+=""+config.prefix+"fcheck @username \n"
+	txt+="+Forces attendance check on specified user. \n\n"
+	txt+=""+config.prefix+"cdevo @username \n"
+	txt+="+Checks devo targets of specified user. \n\n"
+	txt+=""+config.prefix+"devoall (alternative: "+config.prefix+"dall)\n"
+	txt+="+Checks all devo targets. \n\n"
+	txt+=""+config.prefix+"cparty (1-2 or leave empty for both) (alternative: "+config.prefix+"cpt)\n"
+	txt+="+Checks party setup of specified party. \n\n"
+	txt+=""+config.prefix+"add @username \n"
+	txt+="+Adds specified user into roster sheet. \n\n"
+	txt+=""+config.prefix+"remove @username (alternative: "+config.prefix+"rmv)\n"
+	txt+="+Removes specified user from roster sheet. \n\n"
+	txt+=""+config.prefix+"purge (1-100) \n"
+	txt+="+Purges from 1 to 100 messages on channel. \n\n\n\n"
+	txt+="```"
+	txt+="If you want some new commands or something doesnt work - DM clepto"
 	message.reply("Sending commands info. Check your DM.");
-	return message.author.send({embed});
+	return message.author.send(txt);
 }
 if(command === "ctime") {
 	doc.useServiceAccountAuth(creds, function (err) {
@@ -1006,26 +949,26 @@ doc.getInfo(function(err, info) {
 			var offset;
 			var txt="```diff\n";
 			txt+="+PARTY LEADERS: \n\n";
-			txt+="-ingame name:"+nbs.repeat(11)+"name:\n";
+			txt+="-ingame name:           name:\n";
 			offset = 21 - cells[ptl1+ingap].value.length; //party leader 1 ingame name
-			gap = nbs.repeat(offset);;
+			gap = " ".repeat(offset);
 			txt+="\n1. "+cells[ptl1+ingap].value+gap;
 			txt+=cells[ptl1].value; //party leader 1 name
 			offset = 21 - cells[ptl2+ingap].value.length;
-			gap = nbs.repeat(offset);;
+			gap = " ".repeat(offset);
 			txt+="\n2. "+cells[ptl2+ingap].value+gap;
 			txt+=cells[ptl2].value;
 			txt+="\n\n-Check party setup with ?party command!";
 			txt+="```";
 			txt+="```diff\n";
 			txt+="+PALADINS: \n\n";
-			txt+="-ingame name:"+nbs.repeat(11)+"name:\n";
+			txt+="-ingame name:           name:\n";
 			var k=0;
 				for (i = 0; i < cells.length; i++) {
 					if (cells[i].value.substring(0, 7) == 'Paladin') {
 						k++;
 						offset = 21 - cells[i+icgap].value.length; //ingame name
-						gap = nbs.repeat(offset);;
+						gap = " ".repeat(offset);
 						txt+="\n"+k+". "+cells[i+icgap].value+gap;
 						txt+=cells[i+cngap].value; //class name
 					}
@@ -1135,42 +1078,15 @@ doc.getInfo(function(err, info) {
 				if (cells[i].value == message.author.id)
 				{
 					if (cells[i+2].value == 'yes') {
-						const embed = {
-						  "title": "ATTENDANCE",
-						  "description": "<@"+message.author.id+"> Your attendance status is set to **'yes'**. Use following commands to get more info:",
-						  "color": 11104464,
-						  "fields": [
-							{
-							  "name": "​\u200b",
-							  "value": "​\u200b"
-							},
-							{
-							  "name": "**"+config.prefix+"build**",
-							  "value": "used to get you a build for woe (if someone bothered to make it :clown:)"
-							},
-							{
-							  "name": "**"+config.prefix+"devo**",
-							  "value": "check your devo targets (only for pallies)"
-							},
-							{
-							  "name": "**"+config.prefix+"party**",
-							  "value": "check your party setup (only for party leaders)"
-							},
-							{
-							  "name": "**"+config.prefix+"check**",
-							  "value": "check your attendance status"
-							},
-							{
-							  "name": "**"+config.prefix+"comment**",
-							  "value": "put your comment on the roster sheet"
-							},
-							{
-							  "name": "**"+config.prefix+"no**",
-							  "value": "sets your attendance status on no (not recommended :smile:)"
-							}
-						  ]
-						};
-					return message.channel.send({ embed });
+						var reply = "Your attendance status is set to **'yes'**. Use following commands to get more info:";
+						reply+="```fix\n"+config.prefix+"build - used to get you a build for woe (if someone bothered to make it :clown:)\n";
+						reply+=config.prefix+"devo - check your devo targets (only for pallies)\n";
+						reply+=config.prefix+"party - check your party setup (only for party leaders)\n";
+						reply+=config.prefix+"check - check your attendance status\n";
+						reply+=config.prefix+"comment - put your comment on the roster sheet\n";
+						reply+=config.prefix+"no - sets your attendance status on no (not recommended :smile:)\n```";
+					
+						return message.reply(reply);
 					}
 					if (cells[i+2].value == 'no')
 					return message.reply("Your attendance status is set to: **'"+cells[i+2].value+"'** :cry:");
@@ -1292,42 +1208,15 @@ doc.getInfo(function(err, info) {
 				{
 					cells[i+2].value = 'yes';
 					cells[i+2].save();
-					const embed = {
-					  "title": "ATTENDANCE",
-					  "description": "<@"+message.author.id+"> I've set your attendance to **'yes'**. Use following commands to get more info:",
-					  "color": 11104464,
-					  "fields": [
-						{
-						  "name": "​\u200b",
-						  "value": "​\u200b"
-						},
-						{
-						  "name": "**"+config.prefix+"build**",
-						  "value": "used to get you a build for woe (if someone bothered to make it :clown:)"
-						},
-						{
-						  "name": "**"+config.prefix+"devo**",
-						  "value": "check your devo targets (only for pallies)"
-						},
-						{
-						  "name": "**"+config.prefix+"party**",
-						  "value": "check your party setup (only for party leaders)"
-						},
-						{
-						  "name": "**"+config.prefix+"check**",
-						  "value": "check your attendance status"
-						},
-						{
-						  "name": "**"+config.prefix+"comment**",
-						  "value": "put your comment on the roster sheet"
-						},
-						{
-						  "name": "**"+config.prefix+"no**",
-						  "value": "sets your attendance status on no (not recommended :smile:)"
-						}
-					  ]
-					};
-					return message.channel.send({ embed });
+					var reply = "I've set your attendance to **'yes'**. Use following commands to get more info:";
+					reply+="```fix\n"+config.prefix+"build - used to get you a build for woe (if someone bothered to make it :clown:)\n";
+					reply+=config.prefix+"devo - check your devo targets (only for pallies)\n";
+					reply+=config.prefix+"party - check your party setup (only for party leaders)\n";
+					reply+=config.prefix+"check - check your attendance status\n";
+					reply+=config.prefix+"comment - put your comment on the roster sheet\n";
+					reply+=config.prefix+"no - sets your attendance status on no (not recommended :smile:)\n```";
+				
+					return message.reply(reply);
 				}
 			}
 		return message.reply("You are not in the roster :slight_frown: Ask someone with access rights to add you.");				
@@ -1539,16 +1428,16 @@ doc.getInfo(function(err, info) {
 							var gap = "";
 							var txt="```diff\n";
 							txt+="+DEVO TARGETS: \n\n";
-							txt+="-name:"+nbs.repeat(18)+"class:"+nbs.repeat(15)+"priority:\n";
+							txt+="-name:                  class:               priority:\n";
 							for (i = 0; i < cells.length; i++) {
 								if ((cells[i].value.substring(0, 1) == pal)) //find devo targets (same number before P,T or X)
 								{ 
 									if ((cells[i].value.substring(1, 2) == 'X') || (cells[i].value.substring(1, 2) == 'T')){ //devo symbol
 										var offset = 21 - cells[i+idgap].value.length;
-										gap = nbs.repeat(offset);;
+										gap = " ".repeat(offset);
 										txt+=k+'. '+cells[i+idgap].value+gap; //name
 										offset = 21 - cells[i-cdgap].value.length; //class
-										gap = nbs.repeat(offset);;
+										gap = " ".repeat(offset);
 										txt+=cells[i-cdgap].value+gap;
 										if (cells[i].value.substring(1, 2) == 'X')
 											txt+="HIGH\n";
@@ -1621,16 +1510,16 @@ doc.getInfo(function(err, info) {
 							var gap='';
 							var txt="```diff\n";
 							txt+="+DEVO TARGETS: \n\n";
-							txt+="-name:"+nbs.repeat(18)+"class:"+nbs.repeat(15)+"priority:\n";
+							txt+="-name:                  class:               priority:\n";
 							for (i = 0; i < cells.length; i++) {
 								if ((cells[i].value.substring(0, 1) == pal))
 								{ 
 									if ((cells[i].value.substring(1, 2) == 'X') || (cells[i].value.substring(1, 2) == 'T')){
 										var offset = 21 - cells[i+idgap].value.length;
-										gap = nbs.repeat(offset);;
+										gap = " ".repeat(offset);
 										txt+=k+'. '+cells[i+idgap].value+gap;
 										offset = 21 - cells[i-cdgap].value.length;
-										gap = nbs.repeat(offset);;
+										gap = " ".repeat(offset);
 										txt+=cells[i-cdgap].value+gap;
 										if (cells[i].value.substring(1, 2) == 'X')
 											txt+="HIGH\n";
@@ -1688,16 +1577,16 @@ doc.getInfo(function(err, info) {
 			for (var j = 0; j < pals.length; j++) {
 				txt+="```diff\n";
 				txt+="+DEVO TARGETS FOR: "+palsign[j]+" ("+palsn[j]+")\n\n";
-				txt+="-name:"+nbs.repeat(18)+"class:"+nbs.repeat(15)+"priority:\n";
+				txt+="-name:                  class:               priority:\n";
 				for (i = 0; i < cells.length; i++) {
 					if ((cells[i].value.substring(0, 1) == pals[j].substring(0, 1)))
 					{ 
 						if ((cells[i].value.substring(1, 2) == 'X') || (cells[i].value.substring(1, 2) == 'T')){
 							var offset = 21 - cells[i+idgap].value.length;
-							gap = nbs.repeat(offset);;
+							gap = " ".repeat(offset);
 							txt+=k+'. '+cells[i+idgap].value+gap;
 							offset = 21 - cells[i-cdgap].value.length;
-							gap = nbs.repeat(offset);;
+							gap = " ".repeat(offset);
 							txt+=cells[i-cdgap].value+gap;
 							if (cells[i].value.substring(1, 2) == 'X')
 								txt+="HIGH\n";
@@ -1749,7 +1638,7 @@ doc.getInfo(function(err, info) {
 								pt=1;
 								var txt="```diff\n";
 								txt+="+PARTY SETUP: \n\n";
-								txt+="-name:"+nbs.repeat(19)+"class:\n";
+								txt+="-name:                   class:\n";
 								var k=0;
 								m.edit("Sending party setup. Check DM.");
 							for (i = 0; i < cells.length; i++) {
@@ -1758,7 +1647,7 @@ doc.getInfo(function(err, info) {
 									for (i; i < cells.length; i+=8) { //ROWS LENGTH - IMPORTANT!!!
 										k++;
 										var offset = 21 - cells[i].value.length;
-										gap = nbs.repeat(offset);;
+										gap = " ".repeat(offset);
 										if (k < 10)
 											gap+=" ";
 										txt+=k+". "+cells[i].value+gap+cells[i-icgap].value+"\n"; //class name
@@ -1816,14 +1705,14 @@ doc.getInfo(function(err, info) {
 				txt+="```diff\n";
 				if (j==0 && p!=2) txt+="+1ST PARTY SETUP: \n\n";
 				if (j==1 || p==2) txt+="+2ND PARTY SETUP: \n\n";
-				txt+="-name:"+nbs.repeat(19)+"class:\n";
+				txt+="-name:                   class:\n";
 				for (i = 0; i < cells.length; i++) {
 					if (cells[i].value == name[j]) {
 						i+=ingap;
 						for (i; i < cells.length; i+=8) { //ROWS LENGTH - IMPORTANT!!!
 							k++;
 							var offset = 21 - cells[i].value.length;
-							gap = nbs.repeat(offset);;
+							gap = " ".repeat(offset);
 							if (k < 10)
 								gap+=" ";
 							txt+=k+". "+cells[i].value+gap+cells[i-icgap].value+"\n";
@@ -1883,10 +1772,8 @@ else if (command === "ec") {
 
 else if (command === "vids" || command === "videos") {
 	if (!args[0])
-		var gn = vids.gshort[Math.floor(Math.random()*vids.gshort.length)]
-		//return message.channel.send('Provide guildname');
-	if (args[0])
-		var gn = args[0].toLowerCase();
+		return message.channel.send('Provide guildname');
+	var gn = args[0].toLowerCase();
 	if (gn == 'po' || gn == 'pokeflute') {
 		var vid = vids.po[Math.floor(Math.random()*vids.po.length)].link;
 		return message.channel.send(vid);
@@ -1905,46 +1792,40 @@ else if (command === "vidlist"){
 		return message.channel.send('Provide guildname');
 	var gn = args[0].toLowerCase();
 	var txt = '';
+	var offset;
+	var gap="";
 	if (gn == 'po' || gn == 'pokeflute') {
 		var vidl = vids.po;
 		var gname = vids.gn[0];
 	}
-	var j = 1;
+	txt+="```diff\n";
+	txt+="-VID LIST FOR: "+gname+"\n\n\n";
+	txt+="!link:                                              ";
+	txt+="name:          ";
+	txt+="class:         ";
+	txt+="server:        ";
+	txt+="date:\n";
 	for (var i = 0; i < vidl.length; i++) {
-		txt+="["+vidl[i].name+" | "+vidl[i].class+" | "+vidl[i].server+" | "+vidl[i].date+"]("+vidl[i].link+")\n";
-		if (j==20) {
-			var embed = {
-			  "title": "VIDEOS LIST",
-			  "color": 2889697,
-			  "description": txt
-			};
-			message.channel.send({ embed });
-			txt="";
-			j=0;
-		}
-		j++;
+		offset = 52 - vidl[i].link.length;
+		gap=" ".repeat(offset);
+		txt+=vidl[i].link+gap;
+		offset = 15 - vidl[i].name.length;
+		gap=" ".repeat(offset);
+		txt+=vidl[i].name+gap;
+		offset = 15 - vidl[i].class.length;
+		gap=" ".repeat(offset);
+		txt+=vidl[i].class+gap;
+		offset = 15 - vidl[i].server.length;
+		gap=" ".repeat(offset);
+		txt+=vidl[i].server+gap;
+		txt+=vidl[i].date+"\n";
 	}
-var embed = {
-  "title": "VIDEOS LIST",
-  "color": 2889697,
-  "description": txt
-};
-return message.channel.send({ embed });
+	txt+="```";
+	return message.channel.send(txt);
 }
 
   else {
-	  var embed = {
-	  "title": "ERROR",
-	  "color": 2889697,
-	  "description": "<@"+message.author.id+"> you are doing something wrong :slight_smile:",
-	  "fields": [
-	      {
-			  "name": "**"+config.prefix+"help (alternative: "+config.prefix+"h)**",
-			  "value": "Use this command to get more info."
-		  }
-		  ]
-	};
-	return message.channel.send({ embed });
+	  message.reply(" you are doing something wrong :slight_smile: use ```fix\n "+config.prefix+"help\n``` command for info!");
 	}
 });
 
