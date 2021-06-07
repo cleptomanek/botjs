@@ -3,7 +3,7 @@ const async = require('async');
 const request = require('request');
 const cheerio = require('cheerio');
 const fs = require('fs');
-const doc = new GoogleSpreadsheet('17oY9qXfjko0s9LUZSQTyTxShbL5Fx_s96DsN_2VSyRc');
+const doc = new GoogleSpreadsheet('tWvPkelVl3NxF6vlrJxS6OL5gbWHoepSr0Btcfp9p5Q');
 //const doc = new GoogleSpreadsheet('1Q47r52ICYGl2QQo5x45N3pzKOdO9lz9hGCb5hF6aeWc'); //test sheet
 var sheet;
 const Discord = require("discord.js");
@@ -86,7 +86,7 @@ client.on("message", async message => {
 	if(message.content.indexOf(config.prefix) !== 0) return; //ignore messages without prefix
 	var args = message.content.slice(config.prefix.length).trim().split(/ +/g);
 	const command = args.shift().toLowerCase();
-	if ((message.author.id == 444) || (message.author.id == 177107237053923328) || (message.author.id == 184327765070315521) || (message.author.id == 162610908307259392) || (message.author.id == 293057517578354688)) //admin ids
+	if ((message.author.id == 269131221408153610) || (message.author.id == 444) || (message.author.id == 177107237053923328) || (message.author.id == 184327765070315521) || (message.author.id == 162610908307259392) || (message.author.id == 293057517578354688)) //admin ids
 		admin=1;
 
 if (command === "bot-status") {
